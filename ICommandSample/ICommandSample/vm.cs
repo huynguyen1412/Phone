@@ -7,22 +7,27 @@ namespace ICommandSample {
 
     public class ViewModel : ViewModelBase {
 
+        // Backing fields for properties
         private Model _data;
         private string _inputText;
-        public bool InputTextChanged {get; set;}
+        private bool _inputTextChanged;
+
         public ICommand LoadStringCommand { get; set; }
         public event EventHandler CanExecuteChanged;
 
+        #region @property string OutputText
         public string OutputText {
             get { 
                 return _inputText as string; 
             }
             set {
                 _inputText = value;
+                InputTextChanged = false;
                 OnPropertyChanged("OutputText");
             }
         }
-
+        #endregion
+        #region @property string InputText
         public string InputText {
             get { 
                 return _data.Data as string; 
@@ -33,12 +38,24 @@ namespace ICommandSample {
                 OnPropertyChanged("InputText");
             }
         }
+        #endregion
+        #region @property bool InputTextChanged
+        public bool InputTextChanged {
+
+            get {
+                return _inputTextChanged;
+            }
+            set {
+                _inputTextChanged = value;
+                OnPropertyChanged("InputTextChanged");
+            } 
+        }
+        #endregion
 
         public ViewModel() {
             _data = new Model();
             InputText = "Input Text Here!";
             InputTextChanged = false;
-
            
             CanExecuteChanged += new EventHandler((sender, e) => {
             });
@@ -51,7 +68,7 @@ namespace ICommandSample {
         }
 
         private bool CanLoadString(object param) {
-            return InputTextChanged;
+            return true;
         }
     }
 
@@ -66,10 +83,7 @@ namespace ICommandSample {
         }
 
         protected virtual void OnPropertyChanged(string propertyName) {
-
             var handler = PropertyChanged;
-
-
             if (handler != null) {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }

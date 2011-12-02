@@ -36,12 +36,13 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" DataContext="{Binding Source={StaticResource vm}}">
             <StackPanel>
                 <TextBox Width="300" Name="txtInput" VerticalAlignment="Center" HorizontalAlignment="Center" 
-                         Text="{Binding Path=InputText, UpdateSourceTrigger=Explicit}"/>
+                         Text="{Binding Mode=TwoWay, Path=InputText}"/>
                 <TextBox Width="300" Name="txtOutput" VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding Path=OutputText}"/>
                 <Button Content="Update" Height="71" Name="updateButton" Width="160" 
                  Command="{Binding LoadStringCommand}" 
-                 CommandParameter="{Binding ElementName=txtInput, Path=Text}" 
-                 IsEnabled="{Binding Path=InputTextChanged}"/>
+                 CommandParameter="{Binding ElementName=txtInput, Path=Text}"
+                 IsEnabled="{Binding Mode=TwoWay, Path=InputTextChanged}"
+                 />
             </StackPanel>
         </Grid>
     </Grid>
