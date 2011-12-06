@@ -34,8 +34,8 @@ namespace ICommandSample {
             }
             set {
                 _data.Data = value;
-                InputTextChanged = true;
                 OnPropertyChanged("InputText");
+                InputTextChanged = false;
             }
         }
         #endregion
@@ -54,13 +54,17 @@ namespace ICommandSample {
 
         public ViewModel() {
             _data = new Model();
-            InputText = "Input Text Here!";
             InputTextChanged = false;
            
             CanExecuteChanged += new EventHandler((sender, e) => {
             });
 
             LoadStringCommand = new DelegateCommand(LoadString, CanLoadString, CanExecuteChanged);
+        }
+
+        public void TextChanged() {
+
+            InputTextChanged = true;
         }
 
         private void LoadString(object param) {

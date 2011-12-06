@@ -8,7 +8,8 @@ namespace ICommandSample {
         }
 
         private void txtInput_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e) {
-
+            ViewModel vm = Resources["vm"] as ViewModel;
+            vm.TextChanged();
         }
     }
 }
