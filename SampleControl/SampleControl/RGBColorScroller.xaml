@@ -22,7 +22,8 @@
                            Grid.Column="1"
                            Foreground="Green"
                            Label="Green"
-                           ValueChanged="OnColorColumnValueChanged">
+                           ValueChanged="OnColorColumnValueChanged"
+                           >
         </local:ColorColumn>
 
         <local:ColorColumn x:Name="blueColumn"

@@ -17,17 +17,19 @@ namespace SampleControlApp {
         public MainPage() {
             InitializeComponent();
             colorScroller.Color = Color.FromArgb(0xFF, 0xC0, 0x80, 0x40);
+            colorScroller1.Color = Color.FromArgb(0xFF, 0x40, 0x80, 0xC0);
+
         }
 
-        private void colorScroller_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e) {
+        private void OnColorScrollerColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e) {
             Brush brush = new SolidColorBrush(e.NewValue);
 
             if (sender == colorScroller) {
+                rectangle.Stroke = brush;
             }
-        }
-
-        private void colorScroller1_ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e) {
-
+            else if (sender == colorScroller1) {
+                rectangle.Fill = brush;
+            }
         }
     }
 }

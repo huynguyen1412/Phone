@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,12,0">
             <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
@@ -35,14 +35,27 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
      
-            <Border Grid.Column="0" BorderThickness="2" Margin="12" Padding="12" BorderBrush="{StaticResource PhoneForegroundBrush}">
-                <tony:RGBColorScroller Grid.Column="0" Name="colorScroller" ColorChanged="colorScroller_ColorChanged">
-                </tony:RGBColorScroller>
+            <Border Grid.Column="0" 
+                    BorderThickness="2" 
+                    Margin="12" 
+                    BorderBrush="{StaticResource PhoneForegroundBrush}">
+                <tony:RGBColorScroller Name="colorScroller" FontSize="12"
+                                       ColorChanged="OnColorScrollerColorChanged"/>
             </Border>
             
-            <Rectangle Grid.Column="1" Name="rectangle" Margin="12" StrokeThickness="24"></Rectangle>
-            <tony:RGBColorScroller Grid.Column="2" Name="colorScroller1" ColorChanged="colorScroller1_ColorChanged">
-            </tony:RGBColorScroller>
+            <Rectangle Grid.Column="1" 
+                       Name="rectangle" 
+                       Margin="12" 
+                       StrokeThickness="24">
+            </Rectangle>
+            <Border Grid.Column="2"
+                    BorderBrush="{StaticResource PhoneForegroundBrush}"
+                    BorderThickness="2"
+                    Margin="12">
+                <tony:RGBColorScroller Grid.Column="2" Name="colorScroller1" FontSize="12"
+                                       ColorChanged="OnColorScrollerColorChanged"/>
+            </Border>
+                   
         </Grid>
     </Grid>
  

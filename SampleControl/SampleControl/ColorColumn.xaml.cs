@@ -34,14 +34,14 @@ namespace SampleControl {
 
         public event RoutedPropertyChangedEventHandler<byte> ValueChanged;
 
- 
-        static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args) {
+         static void OnValueChanged(DependencyObject obj, DependencyPropertyChangedEventArgs args) {
             (obj as ColorColumn).OnValueChanged((byte)args.OldValue, (byte)args.NewValue);
         }
 
         private void OnValueChanged(byte oldValue, byte newValue) {
             slider.Value = newValue;
             colorValue.Text = newValue.ToString("X2");
+            slider.Foreground = colorLabel.Foreground;
 
             if (ValueChanged != null) {
                 ValueChanged(this, new RoutedPropertyChangedEventArgs<byte>(oldValue, newValue));                
