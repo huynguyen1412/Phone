@@ -23,8 +23,8 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,0,12,0">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="RGB CONTROL" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="slider fun" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -35,7 +35,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
      
-            <Border Grid.Column="0" 
+            <Border Grid.Column="0" CornerRadius="10"
                     BorderThickness="2" 
                     Margin="12" 
                     BorderBrush="{StaticResource PhoneForegroundBrush}">
@@ -43,12 +43,12 @@
                                        ColorChanged="OnColorScrollerColorChanged"/>
             </Border>
             
-            <Rectangle Grid.Column="1" 
+            <Rectangle Grid.Column="1" RadiusX="5" RadiusY="5"
                        Name="rectangle" 
                        Margin="12" 
                        StrokeThickness="24">
             </Rectangle>
-            <Border Grid.Column="2"
+            <Border Grid.Column="2" CornerRadius="10"
                     BorderBrush="{StaticResource PhoneForegroundBrush}"
                     BorderThickness="2"
                     Margin="12">
