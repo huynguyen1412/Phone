@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NotepadService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://127.0.0.1:81/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://127.0.0.1:81/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://127.0.0.1:81/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/NotepadServiceRole" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="INotepadService_AddUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUser" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_AddUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_AddNote_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNote" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_AddNote_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_UpdateNote_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNote" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_UpdateNote_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateNoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_DeleteNote_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteNote" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_DeleteNote_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteNoteResponse" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_GetNotes_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNotes" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_GetNotes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_GetNote_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNote" />
+  </wsdl:message>
+  <wsdl:message name="INotepadService_GetNote_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNoteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="INotepadService">
+    <wsdl:operation name="AddUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/AddUser" message="tns:INotepadService_AddUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/AddUserResponse" message="tns:INotepadService_AddUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddNote">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/AddNote" message="tns:INotepadService_AddNote_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/AddNoteResponse" message="tns:INotepadService_AddNote_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNote">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/UpdateNote" message="tns:INotepadService_UpdateNote_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/UpdateNoteResponse" message="tns:INotepadService_UpdateNote_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteNote">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/DeleteNote" message="tns:INotepadService_DeleteNote_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/DeleteNoteResponse" message="tns:INotepadService_DeleteNote_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNotes">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/GetNotes" message="tns:INotepadService_GetNotes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/GetNotesResponse" message="tns:INotepadService_GetNotes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNote">
+      <wsdl:input wsaw:Action="http://tempuri.org/INotepadService/GetNote" message="tns:INotepadService_GetNote_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/INotepadService/GetNoteResponse" message="tns:INotepadService_GetNote_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_INotepadService" type="tns:INotepadService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddUser">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/AddUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddNote">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/AddNote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateNote">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/UpdateNote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteNote">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/DeleteNote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotes">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/GetNotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNote">
+      <soap:operation soapAction="http://tempuri.org/INotepadService/GetNote" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotepadService">
+    <wsdl:port name="BasicHttpBinding_INotepadService" binding="tns:BasicHttpBinding_INotepadService">
+      <soap:address location="http://127.0.0.1:81/Service1.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
