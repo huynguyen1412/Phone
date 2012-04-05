@@ -35,7 +35,7 @@ namespace SlideToggle {
         public event RoutedEventHandler Unchecked;
 
         static TapSlideToggle() {
-           IsEnabledProperty.OverrideMetadata(null, new PropertyMetadata(OnIsEnabledChanged));
+        //   IsEnabledProperty.OverrideMetadata(null, new PropertyMetadata(OnIsEnabledChanged));
         }
 
         public TapSlideToggle() {

@@ -23,8 +23,6 @@ namespace TestApp {
         private void OnSlideToggle1Checked(object sender, RoutedEventArgs e) {
             TapSlideToggle toggle = sender as TapSlideToggle;
             option1TextBlock.Text = toggle.IsChecked ? "on" : "off";
-            slideToggle2.IsEnabled = false;
-
         }
 
         private void OnSlideToggle2Checked(object sender, RoutedEventArgs e) {

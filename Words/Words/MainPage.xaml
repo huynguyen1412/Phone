@@ -1,0 +1,107 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Words.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="24">
+            <!--Create a grid to hold 5x7 buttons-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="0" Grid.Row="0" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="0" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="0" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="0" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="0" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="1" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="1" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="1" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="1" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="1" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="2" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="2" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="2" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="2" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="2" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="3" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="3" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="3" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="3" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="3" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="4" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="4" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="4" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="4" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="4" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="5" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="5" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="5" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="5" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="5" Content="E"/>
+
+            <Button Grid.Column="0" Grid.Row="6" Content="A"/>
+            <Button Grid.Column="1" Grid.Row="6" Content="B"/>
+            <Button Grid.Column="2" Grid.Row="6" Content="C"/>
+            <Button Grid.Column="3" Grid.Row="6" Content="D"/>
+            <Button Grid.Column="4" Grid.Row="6" Content="E"/>
+
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

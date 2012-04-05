@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NotepadService" generation="1" functional="0" release="0" Id="e61a4880-aaa4-4d9c-9ad1-e7fbe80126cf" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="NotepadService" generation="1" functional="0" release="0" Id="65d66e96-fa64-4784-b6de-b10a7ce8ceb6" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="NotepadServiceGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -42,7 +42,7 @@
       </maps>
       <components>
         <groupHascomponents>
-          <role name="NotepadServiceRole" generation="1" functional="0" release="0" software="C:\Users\Tony\Projects\Phone\NotepadService\NotepadService\csx\Debug\roles\NotepadServiceRole" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="1792" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
+          <role name="NotepadServiceRole" generation="1" functional="0" release="0" software="C:\Users\tromano.REDMOND\Projects\Phone\NotepadService\NotepadService\csx\Debug\roles\NotepadServiceRole" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="1792" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
             <componentports>
               <inPort name="Endpoint1" protocol="http" portRanges="80" />
             </componentports>
@@ -69,9 +69,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="68a29ac5-6d7b-4ee3-918d-91ef59420992" ref="Microsoft.RedDog.Contract\ServiceContract\NotepadServiceContract@ServiceDefinition.build">
+    <implementation Id="d714e709-f7f1-45f7-9a39-b5f5e6676af0" ref="Microsoft.RedDog.Contract\ServiceContract\NotepadServiceContract@ServiceDefinition.build">
       <interfacereferences>
-        <interfaceReference Id="f19e01fc-ee22-4c28-9325-a8550eb464a2" ref="Microsoft.RedDog.Contract\Interface\NotepadServiceRole:Endpoint1@ServiceDefinition.build">
+        <interfaceReference Id="a23a9fdb-5f9d-4bab-984b-21e451211f32" ref="Microsoft.RedDog.Contract\Interface\NotepadServiceRole:Endpoint1@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/NotepadService/NotepadServiceGroup/NotepadServiceRole:Endpoint1" />
           </inPort>
