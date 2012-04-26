@@ -22,7 +22,7 @@ namespace AccelSample {
             // This handler is called on a different thread
             Deployment.Current.Dispatcher.BeginInvoke(() => ProcessAccelerometerReading(e));
         }
-
+        
         private void ProcessAccelerometerReading(SensorReadingEventArgs<AccelerometerReading> e) {
 
             Vector3 reading = e.SensorReading.Acceleration;
@@ -30,6 +30,25 @@ namespace AccelSample {
             txtX.Text = reading.X.ToString();
             txtY.Text = reading.Y.ToString();
             txtZ.Text = reading.Z.ToString();
+
+            ProcessPRY(e);
+        }
+
+        private void ProcessPRY(SensorReadingEventArgs<AccelerometerReading> e) {
+
+            Vector3 reading = e.SensorReading.Acceleration;
+
+            txtPitch.Text = ((180 / Math.PI) * (
+
+                Math.Atan(reading.X/Math.Sqrt(Math.Pow(reading.Y,2))) + Math.Pow(reading.Z,2))).ToString();
+
+            txtRoll.Text = ((180 / Math.PI) * (
+
+                Math.Atan(reading.Y / Math.Sqrt(Math.Pow(reading.X, 2))) + Math.Pow(reading.Z, 2))).ToString();
+
+            txtYaw.Text = ((180 / Math.PI) * (
+
+                Math.Atan(Math.Sqrt(Math.Pow(reading.X, 2))) + Math.Pow(reading.Y, 2)/reading.Z)).ToString();
 
         }
 
@@ -39,7 +58,7 @@ namespace AccelSample {
                 _ac.Start();
             }
             catch (AccelerometerFailedException) {
-                MessageBox.Show("Acceleromter Failed to Start");
+                MessageBox.Show("Accelerometer Failed to Start");
             }
 
         }
@@ -50,7 +69,7 @@ namespace AccelSample {
                 _ac.Stop();
             }
             catch (AccelerometerFailedException) {
-                MessageBox.Show("Acceleromter Failed to Stop");
+                MessageBox.Show("Accelerometer Failed to Stop");
             }
         }
     }

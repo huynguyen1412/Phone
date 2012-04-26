@@ -47,12 +47,12 @@
             <TextBlock FontSize="40" Margin="66,97,331,551" Name="lblY" Text="Y" TextAlignment="Right"/>
             <TextBlock FontSize="40" Margin="66,159,331,489" Name="lblZ" Text="Z" TextAlignment="Right"/>
             <TextBlock FontSize="40" Margin="24,222,331,0" Name="lblTime" Text="Time" Height="57" VerticalAlignment="Top" TextAlignment="Right"/>
-            <TextBlock FontSize="35" Margin="24,326,0,323" Name="txtPitch" Text="Pitch" TextAlignment="Right" HorizontalAlignment="Left" Width="101" />
-            <TextBlock FontSize="35" Margin="24,388,331,261" Name="txtRoll" Text="Roll" TextAlignment="Right" />
-            <TextBlock FontSize="35" Margin="24,450,331,199" Name="txtYaw" Text="Yaw" TextAlignment="Right"/>
-            <TextBlock FontSize="20" Height="31" Margin="155,342,12,0" Name="lblPitch" Text="TextBlock" VerticalAlignment="Top" />
-            <TextBlock FontSize="20" Height="31" Margin="155,404,12,0" Name="lblRoll" Text="TextBlock" VerticalAlignment="Top" />
-            <TextBlock FontSize="20" Height="31" Margin="155,466,12,0" Name="lblYaw" Text="TextBlock" VerticalAlignment="Top" />
+            <TextBlock FontSize="35" Margin="24,326,0,323" Name="lblPitch" Text="Pitch" TextAlignment="Right" HorizontalAlignment="Left" Width="101" />
+            <TextBlock FontSize="35" Margin="24,388,331,261" Name="lblRoll" Text="Roll" TextAlignment="Right" />
+            <TextBlock FontSize="35" Margin="24,450,331,199" Name="lblYaw" Text="Yaw" TextAlignment="Right"/>
+            <TextBlock FontSize="20" Height="31" Margin="155,342,12,0" Name="txtPitch" Text="TextBlock" VerticalAlignment="Top" />
+            <TextBlock FontSize="20" Height="31" Margin="155,404,12,0" Name="txtRoll" Text="TextBlock" VerticalAlignment="Top" />
+            <TextBlock FontSize="20" Height="31" Margin="155,466,12,0" Name="txtYaw" Text="TextBlock" VerticalAlignment="Top" />
         </Grid>
     </Grid>
  
