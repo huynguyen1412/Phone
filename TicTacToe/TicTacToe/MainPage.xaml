@@ -22,33 +22,37 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="Tic-Tac-Toe" FontSize ="{StaticResource PhoneFontSizeExtraLarge}" 
+                       Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="150"/>                
-                <RowDefinition Height="150"/>                           
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="21"/>                
+                <RowDefinition Height="140"/>
+                <RowDefinition Height="21"/>
+                <RowDefinition Height="140"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>                
-                <ColumnDefinition Width="150"></ColumnDefinition>              
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="21"/>
+                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="21"/>
+                <ColumnDefinition Width="140"/>
             </Grid.ColumnDefinitions>
-            <Image Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="0"/>
-            <Image Source="Images\BlueSq.jpg" Grid.Row="0" Grid.Column="1"/>
-            <Image Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="2"/>
-            
-            <Image Source="Images\BlueSq.jpg" Grid.Row="1" Grid.Column="0"/>
-            <Image Source="Images\RedSq.jpg" Grid.Row="1" Grid.Column="1"/>
-            <Image Source="Images\BlueSq.jpg" Grid.Row="1" Grid.Column="2"/>
 
-            <Image Source="Images\RedSq.jpg" Grid.Row="2" Grid.Column="0"/>
-            <Image Source="Images\BlueSq.jpg" Grid.Row="2" Grid.Column="1"/>
-            <Image Source="Images\RedSq.jpg" Grid.Row="2" Grid.Column="2"/>
+            <!-- Game Board-->             
+            <Line Grid.Row="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" X1="8" X2="450" VerticalAlignment="Center" Grid.ColumnSpan="5"/>
+            <Line Grid.Row="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" X1="8" X2="450" VerticalAlignment="Center" Grid.ColumnSpan="5"/>
+            <Line Grid.Column="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5"/>
+            <Line Grid.Column="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5"/>
+
+            <!-- Images for X and O -->
+            <Image Name="S00" Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom"/>
+            <Image Name="S02" Source="Images\BlueSq.jpg" Grid.Row="0" Grid.Column="2"/>
+            <Image Name="S04" Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="4"/>
         </Grid>
     </Grid>
  
