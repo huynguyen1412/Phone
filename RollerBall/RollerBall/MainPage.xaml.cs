@@ -38,7 +38,7 @@ namespace RollerBall {
             double bottomBumper = ContentGrid.Height - ball.Height - boundingBoxStrokeThickness;
             double topBumper = ContentGrid.Margin.Top + boundingBoxStrokeThickness;
 
-            double acceleration = Math.Abs(currentReading.Z) == 0 ? 0.1 : Math.Abs(currentReading.Z);
+            double acceleration = Math.Abs(currentReading.Z) == 0 ? 0.02 : Math.Abs(currentReading.Z);
           //  acceleration = (acceleration * 2)%2;
             Debug.WriteLine("Accel" + acceleration);
             double ballX = (double)ball.GetValue(Canvas.LeftProperty) +(double)distanceTraveled * (currentReading.X / acceleration);
