@@ -13,6 +13,10 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <SolidColorBrush Color="Red" x:Key="GridColor" />
+    </phone:PhoneApplicationPage.Resources>
+    
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -30,29 +34,37 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="140"/>
-                <RowDefinition Height="21"/>                
+                <RowDefinition Height="20"/>                
                 <RowDefinition Height="140"/>
-                <RowDefinition Height="21"/>
+                <RowDefinition Height="20"/>
                 <RowDefinition Height="140"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="21"/>
+                <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="21"/>
+                <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="140"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Game Board-->             
-            <Line Grid.Row="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" X1="8" X2="450" VerticalAlignment="Center" Grid.ColumnSpan="5"/>
-            <Line Grid.Row="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" X1="8" X2="450" VerticalAlignment="Center" Grid.ColumnSpan="5"/>
-            <Line Grid.Column="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5"/>
-            <Line Grid.Column="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="8" Stroke="Magenta" Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5"/>
+            <!-- Game Board-->
+            <Line Grid.Row="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="7" Stroke="{StaticResource GridColor}"                              X1="8" X2="450"    VerticalAlignment="Center" Grid.ColumnSpan="5" Margin="0,2,0,0"/>
+            <Line Grid.Row="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="7" Stroke="{StaticResource GridColor}"                              X1="8" X2="450" VerticalAlignment="Center" Grid.ColumnSpan="5" Margin="0,2,0,0"/>
+            <Line Grid.Column="1" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="7" Stroke="{StaticResource GridColor}"                           Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5" Margin="2,0,0,0"/>
+            <Line Grid.Column="3" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeThickness="7" Stroke="{StaticResource GridColor}"                           Y1="8" Y2="450" HorizontalAlignment="Center" Grid.RowSpan="5" Margin="2,0,0,0"/>
 
             <!-- Images for X and O -->
-            <Image Name="S00" Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="0" VerticalAlignment="Bottom"/>
-            <Image Name="S02" Source="Images\BlueSq.jpg" Grid.Row="0" Grid.Column="2"/>
-            <Image Name="S04" Source="Images\RedSq.jpg" Grid.Row="0" Grid.Column="4"/>
+            <Image Name="S00" Source="Images\O.jpg" Grid.Row="0" Grid.Column="0"/>
+            <Image Name="S02" Source="Images\O.jpg" Grid.Column="2"/>
+            <Image Name="S04" Source="Images\X.jpg" Grid.Row="0" Grid.Column="4"/>
+            
+            <Button BorderBrush="Transparent" Grid.Row="2" Grid.Column="0">
+                <Button.Background>
+                    <ImageBrush ImageSource="Images\O.jpg"/>
+                </Button.Background>
+            </Button>
+            <Button BorderBrush="Transparent" Grid.Row="2" Grid.Column="2" Content="O" />
+            <Button BorderBrush="Transparent" Grid.Row="2" Grid.Column="4" Content="X" />
         </Grid>
     </Grid>
  

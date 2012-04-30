@@ -55,7 +55,8 @@
                 <tony:RGBColorScroller Grid.Column="2" Name="colorScroller1" FontSize="12"
                                        ColorChanged="OnColorScrollerColorChanged"/>
             </Border>
-                   
+
+ 
         </Grid>
     </Grid>
  
