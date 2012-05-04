@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="TicTacToe.ai">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <NestedTypes>
+      <Enum Name="TicTacToe.ai.boardState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ai.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="TicTacToe.ai.value" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ai.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="TicTacToe.ai.slotState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ai.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="TicTacToe.ai.opponent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>ai.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAgQEAAAACAAAAAAACAAAAAAAIAAAGAAAAIAAEBAAA=</HashCode>
+      <FileName>ai.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
