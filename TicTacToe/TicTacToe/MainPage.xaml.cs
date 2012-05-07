@@ -18,6 +18,8 @@ namespace TicTacToe {
 
         GameAI gameEngine;
         bool gameOver;
+        GameAI.value state = GameAI.value.unclear;
+
         GameAI.opponent whoMovesNext = GameAI.opponent.human;
 
         public bool ComputerMoveFirst {
@@ -72,9 +74,14 @@ namespace TicTacToe {
                 SetSelectedGameSquare(b, computer, bestRow, bestColumn);
             }
 
-            GameAI.value v = EvaulateGame();
+            state = EvaulateGame();
 
-            Debug.WriteLine("Evaluate:" + v);
+            Debug.WriteLine("Evaluate:" + state);
+
+            //if (v != GameAI.value.draw) {
+                
+            //    MessageBox.Show(v.ToString());
+            //}
         }
 
 
@@ -92,13 +99,13 @@ namespace TicTacToe {
 		    break;
 	
 		    case GameAI.value.xWins: {				
-			    gameOver = false;
+			    gameOver = true;
                 v = GameAI.value.xWins;
 		    }
 		    break;
 
 		    case GameAI.value.oWins:	{
-			    gameOver = false;
+			    gameOver = true;
                 v = GameAI.value.oWins;
 		    }
 		    break;
@@ -170,6 +177,10 @@ namespace TicTacToe {
         private void ComputerFirstOption_Checked(object sender, RoutedEventArgs e) {
             ComputerMoveFirst ^= true;
             Debug.WriteLine("Checked:" + ComputerMoveFirst);
+        }
+
+        private void Move_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+
         }
     }
 }
