@@ -44,7 +44,7 @@ namespace TicTacToe {
                 }
             }
 
-            void SetBoardPositionToOwner(int x,  int y, slotState state)
+            public void SetBoardPositionToOwner(int x,  int y, slotState state)
             {
 	            if ((x >=0 && x < NumOfRows) && (y >=0 && y < NumOfCols)) {
 		            gameBoardSlots[x,y] = state;
@@ -57,7 +57,7 @@ namespace TicTacToe {
 	            }
             }
 
-            bool IsPositionEmpty(int x, int y)
+            public bool IsPositionEmpty(int x, int y)
             {
 	            if ((x >=0 && x < NumOfRows) && (y >=0 && y < NumOfCols)) {
 		            return (gameBoardSlots[x, y] == slotState.ownedByNull);
@@ -66,6 +66,7 @@ namespace TicTacToe {
 	            return false;
             }
 
+            
             public value GenerateMove( opponent op, ref int bestRow, ref int bestColumn, value alpha, value beta)
             {
 	            value state, results;
