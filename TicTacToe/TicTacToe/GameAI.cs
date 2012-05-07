@@ -125,7 +125,7 @@ namespace TicTacToe {
              Determine if we have a winner.  Look at each slot and see if we have three of X or O in
              a row, there are a total of 8 patterns, 3 rows, 3 columns, and 2 diagonals.
             */
-            value evaluate()
+            public value evaluate()
             {
 	            return evaluateHelper(opponent.X) == value.winner ? value.xWins : 
 		               evaluateHelper(opponent.O) == value.winner ? value.oWins : 
@@ -141,7 +141,7 @@ namespace TicTacToe {
 			            a win.
             */
 
-            boardState GetBoardState()
+            public boardState GetBoardState()
             {
 	            if (slotCounter == NumOfCols*NumOfRows)
 		            return boardState.fullBoard;
