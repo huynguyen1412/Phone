@@ -30,8 +30,11 @@ namespace TicTacToe {
                 X, O, human, machine
             };
 
-            const int NumOfRows = 3;
-            const int NumOfCols = 3;
+            public int NumberOfColumns() { return NumOfCols; }
+            public int NumberOfRows() { return NumOfRows; }
+  
+            private const int NumOfRows = 3;
+            private const int NumOfCols = 3;
             private int slotCounter { get; set; }
             
             slotState[,] gameBoardSlots = new slotState[3,3];

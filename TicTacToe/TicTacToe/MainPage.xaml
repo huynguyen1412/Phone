@@ -6,53 +6,70 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    xmlns:local="clr-namespace:System;assembly=mscorlib"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
-
     
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar Opacity="1" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Config" Click="ApplicationBarIconButton_Config"/>
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="New Game" Click="ApplicationBarIconButton_Restart"/>
+            </shell:ApplicationBar.Buttons>
+            
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="Config" IsEnabled="True"/>
+                <shell:ApplicationBarMenuItem Text="New Game" IsEnabled="True"/>                
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+     </phone:PhoneApplicationPage.ApplicationBar>
     <phone:PhoneApplicationPage.Resources>
-        <ControlTemplate x:Key="buttonTemplate" TargetType="Button">
-            <Grid>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStateGroups">
-                        <VisualState x:Name="Normal" />
-                        <VisualState x:Name="MouseOver" />
-                        <VisualState x:Name="Pressed">
-                            <Storyboard>
-                                <ObjectAnimationUsingKeyFrames  Storyboard.TargetProperty="Background">
-                                    <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="{StaticResource PhoneBackgroundBrush}"/>
-                                </ObjectAnimationUsingKeyFrames>
-                            </Storyboard>
-                        </VisualState>
-                        <VisualState x:Name="Disabled" />
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Grid>
-        </ControlTemplate>
-      
+        <local:Int32 x:Key="ImageSize">
+            130
+        </local:Int32>
         <Style x:Key="gameButton" TargetType="Button">
-             <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Width" Value="140" />
-            <Setter Property="Height" Value="140" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="Width" Value="{StaticResource ImageSize}"/>
+            <Setter Property="Height" Value="{StaticResource ImageSize}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />            
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Image Stretch="Fill"/>
+                            <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                            Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" 
+                                            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
-        
         <SolidColorBrush Color="Red" x:Key="GridColor" />
-
         <Style x:Key="gridProperties" TargetType="Line">
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
             <Setter Property="StrokeThickness" Value="7"/>
             <Setter Property="Stroke" Value="{StaticResource GridColor}"/>
         </Style>
-
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" >
         
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -116,23 +133,7 @@
             </Button>
             <Button Name="GS22" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="4" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
             </Button>
-            
-            <CheckBox Content="Computer First" Grid.Row="5" Height="72" HorizontalAlignment="Left" Margin="-2,137,0,0"                                              Name="ComputerFirstOption" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="253"
-                     IsChecked="{Binding Path=ComputerMoveFirst}" Checked="ComputerFirstOption_Checked"
-                      Unchecked="ComputerFirstOption_Checked"/>
         </Grid>
     </Grid>
  
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
-
 </phone:PhoneApplicationPage>

@@ -18,7 +18,7 @@ namespace TicTacToe {
 
         GameAI gameEngine;
         bool gameOver;
-        GameAI.value state = GameAI.value.unclear;
+        GameAI.value state;
 
         GameAI.opponent whoMovesNext = GameAI.opponent.human;
 
@@ -35,32 +35,42 @@ namespace TicTacToe {
         public MainPage() {
             InitializeComponent();
             ContentPanel.DataContext = this;
-            gameOver = false;
             gameEngine = new GameAI();
+            ResetGame();
+        }
+
+        private void ResetGame() {
+            gameOver = false;
+            state = GameAI.value.unclear;
             gameEngine.ResetBoard();
+            Button b;
+
+            for (int i=0; i < gameEngine.NumberOfRows(); i++) {
+                for (int x=0; x < gameEngine.NumberOfColumns(); x++) {
+                    b = FindButton(i,x);
+                    b.Content = null;
+                }
+            }
         }
 
         private void Square_Clicked(object sender, RoutedEventArgs e)
         {
-
             if (gameOver == true)
                 return;
 
             Button b = (Button)sender;
             Debug.WriteLine("Button " + b.Name + "Source");
 
-            int row=0, col=0;
-            GetRowColFromName(b.Name, ref row, ref col);
-
-
             GameAI.opponent player = GameAI.opponent.X, computer = GameAI.opponent.O;
             GameAI.value alpha = GameAI.value.oWins, beta = GameAI.value.xWins, winner = GameAI.value.unclear;
-
-            SetSelectedGameSquare(b, player, row, col);
 
             if(ComputerMoveFirst == true) {
                 player = GameAI.opponent.O; computer = GameAI.opponent.X;
             }
+
+            int row = 0, col = 0;
+            GetRowColFromName(b.Name, ref row, ref col);
+            SetSelectedGameSquare(b, player, row, col);
 
             int bestRow=0, bestColumn=0;
             GameAI.value res;
@@ -82,6 +92,9 @@ namespace TicTacToe {
                 
             //    MessageBox.Show(v.ToString());
             //}
+
+           Debug.WriteLine("Checked:" + ComputerMoveFirst);
+
         }
 
 
@@ -117,8 +130,6 @@ namespace TicTacToe {
 
             return v;
     }
-
-
 
         void GetRowColFromName(String name, ref int row, ref int col) {
 
@@ -174,13 +185,37 @@ namespace TicTacToe {
             return true;
         }
 
-        private void ComputerFirstOption_Checked(object sender, RoutedEventArgs e) {
-            ComputerMoveFirst ^= true;
+        private void ComputerGoesFirst_Click(object sender, EventArgs e) {
+
+            int bestRow = 0, bestColumn = 0;
+            gameEngine.GenerateMove(GameAI.opponent.X, ref bestRow, ref bestColumn, GameAI.value.oWins, GameAI.value.xWins);
+
+            Button b = FindButton(bestRow, bestColumn);
+
+            if (b != null) {
+                SetSelectedGameSquare(b, GameAI.opponent.X, bestRow, bestColumn);
+            }
+
             Debug.WriteLine("Checked:" + ComputerMoveFirst);
         }
 
         private void Move_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
 
+        }
+
+        private void ApplicationBarIconButton_Config(object sender, EventArgs e) {
+
+            if (gameOver == false) {
+                ComputerMoveFirst ^= true;
+
+                if (ComputerMoveFirst) {
+                    ComputerGoesFirst_Click(sender, e);
+                }
+            }
+        }
+
+        private void ApplicationBarIconButton_Restart(object sender, EventArgs e) {
+            ResetGame();
         }
     }
 }
