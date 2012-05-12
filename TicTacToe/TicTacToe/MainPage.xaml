@@ -111,27 +111,27 @@
                   Grid.RowSpan="5" Margin="2,0,0,0"/>
 
              <!--Row 0 buttons -->
-            <Button Name="GS00" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="0" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS00" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="0" Click="Square_Clicked">
             </Button>
-            <Button Name="GS01" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="2" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS01" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="2" Click="Square_Clicked">
             </Button>
-            <Button Name="GS02" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="4" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS02" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="4" Click="Square_Clicked">
             </Button>
 
             <!--Row 1 buttons -->
-            <Button Name="GS10" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="0" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS10" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="0" Click="Square_Clicked">
             </Button>
-            <Button Name="GS11" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="2" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS11" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="2" Click="Square_Clicked">
             </Button>
-            <Button Name="GS12" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="4" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS12" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="4" Click="Square_Clicked">
             </Button>
 
             <!--Row 2 buttons -->
-            <Button Name="GS20" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="0" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS20" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="0" Click="Square_Clicked">
             </Button>
-            <Button Name="GS21" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="2" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS21" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="2" Click="Square_Clicked">
             </Button>
-            <Button Name="GS22" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="4" MouseLeftButtonUp="Move_MouseLeftButtonUp" Click="Square_Clicked">
+            <Button Name="GS22" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="4" Click="Square_Clicked">
             </Button>
         </Grid>
     </Grid>

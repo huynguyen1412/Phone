@@ -45,6 +45,8 @@ namespace TicTacToe {
 			            gameBoardSlots[x,y] = slotState.ownedByNull;
                     }
                 }
+
+                slotCounter = 0;
             }
 
             public void SetBoardPositionToOwner(int x,  int y, slotState state)

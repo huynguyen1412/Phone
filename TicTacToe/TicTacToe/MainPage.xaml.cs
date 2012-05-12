@@ -20,8 +20,7 @@ namespace TicTacToe {
         bool gameOver;
         GameAI.value state;
 
-        GameAI.opponent whoMovesNext = GameAI.opponent.human;
-
+ 
         public bool ComputerMoveFirst {
             get { return (bool)GetValue(ComputerMoveFirstProperty); }
             set { SetValue(ComputerMoveFirstProperty, value); }
@@ -62,7 +61,7 @@ namespace TicTacToe {
             Debug.WriteLine("Button " + b.Name + "Source");
 
             GameAI.opponent player = GameAI.opponent.X, computer = GameAI.opponent.O;
-            GameAI.value alpha = GameAI.value.oWins, beta = GameAI.value.xWins, winner = GameAI.value.unclear;
+            GameAI.value alpha = GameAI.value.oWins, beta = GameAI.value.xWins;
 
             if(ComputerMoveFirst == true) {
                 player = GameAI.opponent.O; computer = GameAI.opponent.X;
@@ -75,7 +74,6 @@ namespace TicTacToe {
             int bestRow=0, bestColumn=0;
             GameAI.value res;
 
-            whoMovesNext = GameAI.opponent.machine;
             res = gameEngine.GenerateMove(computer, ref bestRow, ref bestColumn, alpha, beta);
 
             b = FindButton(bestRow, bestColumn);
@@ -87,14 +85,7 @@ namespace TicTacToe {
             state = EvaulateGame();
 
             Debug.WriteLine("Evaluate:" + state);
-
-            //if (v != GameAI.value.draw) {
-                
-            //    MessageBox.Show(v.ToString());
-            //}
-
-           Debug.WriteLine("Checked:" + ComputerMoveFirst);
-
+            Debug.WriteLine("Checked:" + ComputerMoveFirst);
         }
 
 
@@ -199,15 +190,8 @@ namespace TicTacToe {
             Debug.WriteLine("Checked:" + ComputerMoveFirst);
         }
 
-        private void Move_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
-
-        }
-
-        private void ApplicationBarIconButton_Config(object sender, EventArgs e) {
-
+         private void ApplicationBarIconButton_Config(object sender, EventArgs e) {
             ComputerMoveFirst ^= true;
-
-            
         }
 
         private void ApplicationBarIconButton_Restart(object sender, EventArgs e) {
