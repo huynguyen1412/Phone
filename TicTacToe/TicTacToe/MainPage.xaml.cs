@@ -205,17 +205,19 @@ namespace TicTacToe {
 
         private void ApplicationBarIconButton_Config(object sender, EventArgs e) {
 
-            if (gameOver == false) {
-                ComputerMoveFirst ^= true;
+            ComputerMoveFirst ^= true;
 
-                if (ComputerMoveFirst) {
-                    ComputerGoesFirst_Click(sender, e);
-                }
-            }
+            
         }
 
         private void ApplicationBarIconButton_Restart(object sender, EventArgs e) {
             ResetGame();
+
+            if(gameOver == false) {
+                if(ComputerMoveFirst) {
+                    ComputerGoesFirst_Click(sender, e);
+                }
+            }
         }
     }
 }
