@@ -23,16 +23,14 @@
         </shell:ApplicationBar>
      </phone:PhoneApplicationPage.ApplicationBar>
     <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GridResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
         <local:Int32 x:Key="ImageSize">
             130
-        </local:Int32>
-        
-        <local:Int32 x:Key="BeginAt">
-            8
-        </local:Int32>
-
-        <local:Int32 x:Key="EndAt">
-            450
         </local:Int32>
         
         <Style x:Key="gameButton" TargetType="Button">
@@ -63,13 +61,8 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush Color="AntiqueWhite" x:Key="GridColor" />
-        <Style x:Key="gridProperties" TargetType="Line">
-            <Setter Property="StrokeStartLineCap" Value="Round"/>
-            <Setter Property="StrokeEndLineCap" Value="Round"/>
-            <Setter Property="StrokeThickness" Value="7"/>
-            <Setter Property="Stroke" Value="{StaticResource GridColor}"/>
-        </Style>
+        <SolidColorBrush Color="{StaticResource PhoneForegroundColor}" x:Key="GridColor" />
+      
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
