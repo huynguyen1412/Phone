@@ -199,7 +199,7 @@ namespace TicTacToe {
             ApplicationBarIconButton appBarButton = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
             if(ComputerMoveFirst == true) {
                 appBarButton.IconUri = new Uri("/Images/person.png", UriKind.Relative);
-                appBarButton.Text = "Player";
+                appBarButton.Text = "Opponent";
             } else {
                 appBarButton.IconUri = new Uri("/Images/comp.png", UriKind.Relative);
                 appBarButton.Text = "Phone";

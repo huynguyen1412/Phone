@@ -9,4 +9,5 @@
         <Setter Property="StrokeThickness" Value="7"/>
         <Setter Property="Stroke" Value="{StaticResource GridColor}"/>
     </Style>
+    
 </ResourceDictionary>
