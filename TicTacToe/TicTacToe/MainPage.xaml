@@ -17,20 +17,24 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="1" IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="Config" Click="ApplicationBarIconButton_Config"/>
+                <shell:ApplicationBarIconButton IconUri="/Images/comp.png" Text="Phone" Click="ApplicationBarIconButton_AI_Opponent"/>
                 <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="New Game" Click="ApplicationBarIconButton_Restart"/>
             </shell:ApplicationBar.Buttons>
-            
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="Config" IsEnabled="True"/>
-                <shell:ApplicationBarMenuItem Text="New Game" IsEnabled="True"/>                
-            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
      </phone:PhoneApplicationPage.ApplicationBar>
     <phone:PhoneApplicationPage.Resources>
         <local:Int32 x:Key="ImageSize">
             130
         </local:Int32>
+        
+        <local:Int32 x:Key="BeginAt">
+            8
+        </local:Int32>
+
+        <local:Int32 x:Key="EndAt">
+            450
+        </local:Int32>
+        
         <Style x:Key="gameButton" TargetType="Button">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Width" Value="{StaticResource ImageSize}"/>
@@ -59,7 +63,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush Color="Red" x:Key="GridColor" />
+        <SolidColorBrush Color="AntiqueWhite" x:Key="GridColor" />
         <Style x:Key="gridProperties" TargetType="Line">
             <Setter Property="StrokeStartLineCap" Value="Round"/>
             <Setter Property="StrokeEndLineCap" Value="Round"/>
@@ -70,7 +74,6 @@
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -83,7 +86,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Background="Transparent">
             <Grid.RowDefinitions>
                 <RowDefinition Height="140"/>
                 <RowDefinition Height="20"/>                
@@ -133,6 +136,16 @@
             </Button>
             <Button Name="GS22" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="4" Click="Square_Clicked">
             </Button>
+            
+            <!--Game Results View-->
+            <TextBox Grid.ColumnSpan="5" Grid.Row="5" HorizontalAlignment="Center"  Name="GameResult" Width="460" 
+                     BorderBrush="Transparent"
+                     Background="{StaticResource PhoneBackgroundBrush}"
+                     Foreground="{StaticResource PhoneForegroundBrush}"
+                     TextAlignment="Center"
+                     TextChanged="textBox1_TextChanged" 
+                     Margin="32" 
+                     VerticalAlignment="Bottom" />
         </Grid>
     </Grid>
  

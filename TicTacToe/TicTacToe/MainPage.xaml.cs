@@ -1,17 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System.Diagnostics;
 using System.Windows.Media.Imaging;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace TicTacToe {
     public partial class MainPage : PhoneApplicationPage {
@@ -41,6 +35,8 @@ namespace TicTacToe {
         private void ResetGame() {
             gameOver = false;
             state = GameAI.value.unclear;
+            GameResult.Text = "";
+
             gameEngine.ResetBoard();
             Button b;
 
@@ -70,7 +66,7 @@ namespace TicTacToe {
             int row = 0, col = 0;
             GetRowColFromName(b.Name, ref row, ref col);
             SetSelectedGameSquare(b, player, row, col);
-
+                                                                                                                                       
             int bestRow=0, bestColumn=0;
             GameAI.value res;
 
@@ -119,7 +115,14 @@ namespace TicTacToe {
 			    break;
 	    }
 
-            return v;
+            if(v == GameAI.value.oWins)
+                GameResult.Text = "O Wins!";
+            else if(v == GameAI.value.xWins)
+                GameResult.Text = "X Wins!";
+            else if(gameOver == true)
+                GameResult.Text = "Draw!";
+        
+        return v;
     }
 
         void GetRowColFromName(String name, ref int row, ref int col) {
@@ -190,8 +193,20 @@ namespace TicTacToe {
             Debug.WriteLine("Checked:" + ComputerMoveFirst);
         }
 
-         private void ApplicationBarIconButton_Config(object sender, EventArgs e) {
+         private void ApplicationBarIconButton_AI_Opponent(object sender, EventArgs e) {
             ComputerMoveFirst ^= true;
+
+            ApplicationBarIconButton appBarButton = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
+            if(ComputerMoveFirst == true) {
+                appBarButton.IconUri = new Uri("/Images/person.png", UriKind.Relative);
+                appBarButton.Text = "Player";
+            } else {
+                appBarButton.IconUri = new Uri("/Images/comp.png", UriKind.Relative);
+                appBarButton.Text = "Phone";
+            }
+
+            // Opponent was changed, restart the game.
+            ApplicationBarIconButton_Restart(sender, e);
         }
 
         private void ApplicationBarIconButton_Restart(object sender, EventArgs e) {
@@ -202,6 +217,10 @@ namespace TicTacToe {
                     ComputerGoesFirst_Click(sender, e);
                 }
             }
+        }
+
+        private void textBox1_TextChanged(object sender, TextChangedEventArgs e) {
+
         }
     }
 }
