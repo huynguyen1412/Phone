@@ -17,25 +17,31 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar Opacity="1" IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/Images/comp.png" Text="Phone" Click="ApplicationBarIconButton_AI_Opponent"/>
+                <shell:ApplicationBarIconButton IconUri="/Images/comp.png" Text="Opponent" Click="ApplicationBarIconButton_AI_Opponent"/>
                 <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="New Game" Click="ApplicationBarIconButton_Restart"/>
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
      </phone:PhoneApplicationPage.ApplicationBar>
+    
     <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary x:Key="GridResources">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GridResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
         <local:Int32 x:Key="ImageSize">
             130
         </local:Int32>
-        
-        <local:Int32 x:Key="BeginAt">
-            8
-        </local:Int32>
 
-        <local:Int32 x:Key="EndAt">
-            450
-        </local:Int32>
+        <GridLength x:Key="GridSegmentLength">
+            140
+        </GridLength>
+        <GridLength x:Key="GridSegmentWidth">
+            20
+        </GridLength>
         
-        <Style x:Key="gameButton" TargetType="Button">
+        <Style TargetType="Button">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="Width" Value="{StaticResource ImageSize}"/>
             <Setter Property="Height" Value="{StaticResource ImageSize}" />
@@ -63,13 +69,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush Color="AntiqueWhite" x:Key="GridColor" />
-        <Style x:Key="gridProperties" TargetType="Line">
-            <Setter Property="StrokeStartLineCap" Value="Round"/>
-            <Setter Property="StrokeEndLineCap" Value="Round"/>
-            <Setter Property="StrokeThickness" Value="7"/>
-            <Setter Property="Stroke" Value="{StaticResource GridColor}"/>
-        </Style>
+      
     </phone:PhoneApplicationPage.Resources>
     
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -88,19 +88,19 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" Background="Transparent">
             <Grid.RowDefinitions>
-                <RowDefinition Height="140"/>
-                <RowDefinition Height="20"/>                
-                <RowDefinition Height="140"/>
-                <RowDefinition Height="20"/>
-                <RowDefinition Height="140"/>
+                <RowDefinition Height="{StaticResource GridSegmentLength}"/>
+                <RowDefinition Height="{StaticResource GridSegmentWidth}"/>
+                <RowDefinition Height="{StaticResource GridSegmentLength}"/>
+                <RowDefinition Height="{StaticResource GridSegmentWidth}"/>
+                <RowDefinition Height="{StaticResource GridSegmentLength}"/>
                 <RowDefinition Height="206*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="140"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="140"/>
+                <ColumnDefinition Width="{StaticResource GridSegmentLength}"/>
+                <ColumnDefinition Width="{StaticResource GridSegmentWidth}"/>
+                <ColumnDefinition Width="{StaticResource GridSegmentLength}" />
+                <ColumnDefinition Width="{StaticResource GridSegmentWidth}"/>
+                <ColumnDefinition Width="{StaticResource GridSegmentLength}"/>
             </Grid.ColumnDefinitions>
 
             <!-- Game Board-->
@@ -114,28 +114,19 @@
                   Grid.RowSpan="5" Margin="2,0,0,0"/>
 
              <!--Row 0 buttons -->
-            <Button Name="GS00" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="0" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS01" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="2" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS02" Style="{StaticResource gameButton}" Grid.Row="0" Grid.Column="4" Click="Square_Clicked">
-            </Button>
+            <Button Name="GS00"  Grid.Row="0" Grid.Column="0" Click="Square_Clicked"/>
+            <Button Name="GS01"  Grid.Row="0" Grid.Column="2" Click="Square_Clicked"/>
+            <Button Name="GS02"  Grid.Row="0" Grid.Column="4" Click="Square_Clicked"/>
 
             <!--Row 1 buttons -->
-            <Button Name="GS10" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="0" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS11" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="2" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS12" Style="{StaticResource gameButton}" Grid.Row="2" Grid.Column="4" Click="Square_Clicked">
-            </Button>
+            <Button Name="GS10"  Grid.Row="2" Grid.Column="0" Click="Square_Clicked"/>
+            <Button Name="GS11"  Grid.Row="2" Grid.Column="2" Click="Square_Clicked"/>
+            <Button Name="GS12"  Grid.Row="2" Grid.Column="4" Click="Square_Clicked"/>
 
             <!--Row 2 buttons -->
-            <Button Name="GS20" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="0" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS21" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="2" Click="Square_Clicked">
-            </Button>
-            <Button Name="GS22" Style="{StaticResource gameButton}" Grid.Row="4" Grid.Column="4" Click="Square_Clicked">
-            </Button>
+            <Button Name="GS20"  Grid.Row="4" Grid.Column="0" Click="Square_Clicked"/>
+            <Button Name="GS21"  Grid.Row="4" Grid.Column="2" Click="Square_Clicked"/>
+            <Button Name="GS22"  Grid.Row="4" Grid.Column="4" Click="Square_Clicked"/>
             
             <!--Game Results View-->
             <TextBox Grid.ColumnSpan="5" Grid.Row="5" HorizontalAlignment="Center"  Name="GameResult" Width="460" 
