@@ -181,8 +181,12 @@ namespace TicTacToe {
 
         private void ComputerGoesFirst_Click(object sender, EventArgs e) {
 
-            int bestRow = 0, bestColumn = 0;
-            gameEngine.GenerateMove(GameAI.opponent.X, ref bestRow, ref bestColumn, GameAI.value.oWins, GameAI.value.xWins);
+            Random rndNumber = new Random();
+
+            int bestRow = (rndNumber.Next() % 3);
+            int bestColumn = (rndNumber.Next() % 3);
+            Debug.WriteLine("bestRow:" + bestRow + "bestCol:" + bestColumn);
+           // gameEngine.GenerateMove(GameAI.opponent.X, ref bestRow, ref bestColumn, GameAI.value.oWins, GameAI.value.xWins);
 
             Button b = FindButton(bestRow, bestColumn);
 
