@@ -186,8 +186,6 @@ namespace TicTacToe {
             int bestRow = (rndNumber.Next() % 3);
             int bestColumn = (rndNumber.Next() % 3);
             Debug.WriteLine("bestRow:" + bestRow + "bestCol:" + bestColumn);
-           // gameEngine.GenerateMove(GameAI.opponent.X, ref bestRow, ref bestColumn, GameAI.value.oWins, GameAI.value.xWins);
-
             Button b = FindButton(bestRow, bestColumn);
 
             if (b != null) {
@@ -203,10 +201,8 @@ namespace TicTacToe {
             ApplicationBarIconButton appBarButton = (ApplicationBarIconButton)ApplicationBar.Buttons[0];
             if(ComputerMoveFirst == true) {
                 appBarButton.IconUri = new Uri("/Images/person.png", UriKind.Relative);
-                appBarButton.Text = "Opponent";
             } else {
                 appBarButton.IconUri = new Uri("/Images/comp.png", UriKind.Relative);
-                appBarButton.Text = "Phone";
             }
 
             // Opponent was changed, restart the game.
@@ -221,10 +217,6 @@ namespace TicTacToe {
                     ComputerGoesFirst_Click(sender, e);
                 }
             }
-        }
-
-        private void textBox1_TextChanged(object sender, TextChangedEventArgs e) {
-
         }
     }
 }
