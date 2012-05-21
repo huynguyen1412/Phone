@@ -22,50 +22,65 @@ namespace MVVM {
         private ICommand saveData;
 
         public ViewModel() {
-            this.loadData= new DelegateCommand(LoadData);
+            this.loadData = new DelegateCommand(LoadDataAction);
+            this.saveData = new DelegateCommand(SaveSelectePerson);
+            name = "";
+            age = 2;
         }
 
-        public void LoadData(object p) {
-            personDataSource.Add(new Person() { Name ="John", Age="32"});
-            personDataSource.Add(new Person() { Name ="Kate", Age = "27" });
-            personDataSource.Add(new Person() { Name ="Sam", Age = "30" });
+        public void LoadDataAction(object p) {
+            personDataSource.Add(new Person() { Name = "John", Age = 32 });
+            personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
+            personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
         }
-
         public void SaveSelectePerson(object p) {
-            if(this.SelectedPerson != null) {
+            if (this.SelectedPerson != null) {
                 this.SelectedPerson.Name = this.name;
                 this.SelectedPerson.Age = this.age;
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void RaisedPropertyChanged(String property) {
-            if(PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
+        public ICommand LoadDataCommand {
+            get {
+                return this.loadData;
             }
         }
-
-        private String SelectedName {
+        public ICommand SaveChangesCommand {
             get {
-                return this.name;
+                return this.saveData;
+            }
+        }
+        public ObservableCollection<Person> DataSource {
+            get {
+                if (personDataSource == null) {
+                    this.personDataSource = new ObservableCollection<Person>();
+                }
+                return this.personDataSource;
+            }
+        }
+        public String SelectedName {
+            get {
+                if (this.SelectedPerson != null) {
+                    return this.name;
+                }
+                return string.Empty;
             }
 
             set {
                 this.name = value;
             }
         }
-        private int SelectedAge {
+        public int SelectedAge {
             get {
-                return this.age;
+                if (this.SelectedPerson != null) {
+                    return this.age;
+                }
+                return 0;
             }
 
             set {
                 this.age = value;
-                }
             }
         }
- 
         private Person selectedPerson;
         public Person SelectedPerson {
             get { 
@@ -74,31 +89,21 @@ namespace MVVM {
             set {
                 if(selectedPerson != value) {
                     selectedPerson = value;
-                    this.selectedPerson.Name = selectedPerson.Name;
-                    this.selectedPerson.Age = selectedPerson.Age;
+                    if (this.selectedPerson != null) {
+                        this.selectedPerson.Name = selectedPerson.Name;
+                        this.selectedPerson.Age = selectedPerson.Age;
+                    }
 
                     RaisedPropertyChanged("SelectedName");
                     RaisedPropertyChanged("SelectedAge");
                 }
             }
         }
-        public ObservableCollection<Person> DataSource {
-            get {
-                if(personDataSource == null) {
-                    this.personDataSource = new ObservableCollection<Person>();
-                }
-                return this.personDataSource;
-            }
-        }
-        public ICommand LoadDataCommand {
-            get {
-                return this.loadData;
-            }
-        }
 
-        public ICommand SaveDataCommand {
-            get {
-                return this.saveData;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void RaisedPropertyChanged(String property) {
+            if(PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(property));
             }
         }
     }

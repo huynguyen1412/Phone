@@ -28,23 +28,25 @@ namespace MVVM {
                 }
             }
 	    }
-        public String Age {
+        public int Age {
             get {
-                return Age;
+                return age;
             }
             set {
-                if(Age != value) {
+                if(age != value) {
 
-                    name = value;
+                    age = value;
                     RaisePropertyChanged("Age");
                 }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void RaisePropertyChanged(string propertyName) {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            PropertyChangedEventHandler handler = this.PropertyChanged; 
+            if (handler != null) { 
+                handler(this, new PropertyChangedEventArgs(propertyName)); 
             }
         }
     }

@@ -27,7 +27,26 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Button Content="LoadData" Command="{Binding LoadDataCommand}" />
+            <ListBox ItemsSource="{Binding DataSource}" SelectedItem="{Binding SelectedPerson, Mode=TwoWay}" Height="100">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Name:"/>
+                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="Age:" Margin="10,0,0,0"/>
+                            <TextBlock Text="{Binding Age}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Text="Name:"/>
+            <TextBox Text="{Binding SelectedName, Mode=TwoWay}" />
+            <TextBlock Text="Age:"/>
+            <TextBox Text="{Binding SelectedAge, Mode=TwoWay}" />
+            <Button Content="Save Changes" Command="{Binding SaveChangesCommand}" />
+        </StackPanel>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
