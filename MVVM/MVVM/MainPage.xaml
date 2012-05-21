@@ -23,32 +23,11 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Mango MVVM" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-       
-            <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-                <Button Content="LoadData" Command="{Binding LoadDataCommand}" />
-                <ListBox ItemsSource="{Binding DataSource}" SelectedItem="{Binding SelectedPerson, Mode=TwoWay}" Height="100">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Name:"/>
-                                <TextBlock Text="{Binding Name}" />
-                                <TextBlock Text="Age:" Margin="10,0,0,0"/>
-                                <TextBlock Text="{Binding Age}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <TextBlock Text="Name:"/>
-                <TextBox Text="{Binding SelectedName, Mode=TwoWay}" />
-                <TextBlock Text="Age:"/>
-                <TextBox Text="{Binding SelectedAge, Mode=TwoWay}" />
-                <Button Content="Save Changes" Command="{Binding SaveChangesCommand}" />
-            </StackPanel>
-       
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

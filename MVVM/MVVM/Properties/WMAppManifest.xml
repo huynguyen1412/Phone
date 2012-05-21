@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{f6126127-dc60-4916-8f00-2fe26b3d641a}" Title="MVVM" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="MVVM author" Description="Sample description" Publisher="MVVM">
+  <App xmlns="" ProductID="{4157180a-4e04-4792-94b0-ad25a3c45a4c}" Title="MVVM" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="MVVM author" Description="Sample description" Publisher="MVVM">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES"/>

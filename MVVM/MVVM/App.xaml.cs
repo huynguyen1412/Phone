@@ -35,7 +35,7 @@ namespace MVVM {
             InitializePhoneApplication();
 
             // Show graphics profiling information while debugging.
-            if (System.Diagnostics.Debugger.IsAttached) {
+            if(System.Diagnostics.Debugger.IsAttached) {
                 // Display the current frame rate counters.
                 Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
@@ -77,7 +77,7 @@ namespace MVVM {
 
         // Code to execute if a navigation fails
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e) {
-            if (System.Diagnostics.Debugger.IsAttached) {
+            if(System.Diagnostics.Debugger.IsAttached) {
                 // A navigation has failed; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
@@ -85,7 +85,7 @@ namespace MVVM {
 
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e) {
-            if (System.Diagnostics.Debugger.IsAttached) {
+            if(System.Diagnostics.Debugger.IsAttached) {
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
@@ -98,7 +98,7 @@ namespace MVVM {
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication() {
-            if (phoneApplicationInitialized)
+            if(phoneApplicationInitialized)
                 return;
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
@@ -116,7 +116,7 @@ namespace MVVM {
         // Do not add any additional code to this method
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e) {
             // Set the root visual to allow the application to render
-            if (RootVisual != RootFrame)
+            if(RootVisual != RootFrame)
                 RootVisual = RootFrame;
 
             // Remove this handler since it is no longer needed

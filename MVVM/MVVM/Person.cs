@@ -2,55 +2,51 @@
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel;
 using System.Windows.Documents;
 using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace MVVM {
-    public class Person {
+    public class Person : INotifyPropertyChanged {
+    private String name;
+    private int age;
 
-        private String name;
-        private int age;
-
-        public String Name { 
-            get { 
-                return name; 
+	    public String Name
+	    {
+		    get { 
+                return name;
             }
+		    set { 
+                if (name != value) {
 
-            set {
-                if (this.name != value) {
-                    this.name = value;
-                    this.RaisePropertyChanged("Name");
+                    name = value;
+                    RaisePropertyChanged("Name");
                 }
             }
-        }
-  
-        public int Age {
-            get { 
-                return age; 
+	    }
+        public String Age {
+            get {
+                return Age;
             }
-            
-            set { 
-                this.age = value;
-                this.RaisePropertyChanged("Age");
+            set {
+                if(Age != value) {
+
+                    name = value;
+                    RaisePropertyChanged("Age");
+                }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private void RaisePropertyChanged(String propertyName) {
-
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null) {
-                handler(this, new PropertyChangedEventArgs(propertyName));
+        public void RaisePropertyChanged(string propertyName) {
+            if (PropertyChanged != null) {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
-
-    
-    
     }
+
 }

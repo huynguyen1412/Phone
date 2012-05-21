@@ -11,44 +11,47 @@ using System.Windows.Shapes;
 
 namespace MVVM {
     public class DelegateCommand : ICommand {
+
         Func<object, bool> canExecute;
         Action<object> executeAction;
+
+        public DelegateCommand(Action<object> executeAction, Func<object, bool> canExecute) {
+
+            if(executeAction == null) {
+                throw new ArgumentNullException("executeAction");
+            }
+            
+            this.canExecute = canExecute;
+            this.executeAction = executeAction;
+        }
 
         public DelegateCommand(Action<object> executeAction)
             : this(executeAction, null) {
         }
 
-        public DelegateCommand(Action<object> executeAction, Func<object, bool> canExecute) {
-
-            if (executeAction == null) {
-                throw new ArgumentNullException("executeAction");
-            }
-
-            this.executeAction = executeAction;
-            this.canExecute = canExecute;
-        }
-
-        public bool CanExecute(object p) {
-
+        public bool CanExecute(object param) {
+            bool result = true;
             Func<object, bool> canExecuteHandler = this.canExecute;
 
-            bool result = false;
             if (canExecuteHandler != null) {
-                result = canExecuteHandler(p);
+                result = canExecuteHandler(param);
             }
 
             return result;
         }
 
-        public void Execute(object p) {
-            this.executeAction(p);
+        public void Execute(object param) {
+            this.executeAction(param);
         }
+
 
         public event EventHandler CanExecuteChanged;
 
         public void RaiseCanExecuteChanged() {
+
             EventHandler handler = this.CanExecuteChanged;
-            if (handler != null) {
+
+            if(handler != null) {
                 handler(this, new EventArgs());
             }
         }

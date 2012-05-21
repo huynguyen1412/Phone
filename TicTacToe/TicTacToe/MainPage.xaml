@@ -7,21 +7,13 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="clr-namespace:System;assembly=mscorlib"
-    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
+ 
+   mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="696"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
-    
-    <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar Opacity="1" IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/Images/comp.png" Text="Opponent" Click="ApplicationBarIconButton_AI_Opponent"/>
-                <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="New Game" Click="ApplicationBarIconButton_Restart"/>
-            </shell:ApplicationBar.Buttons>
-        </shell:ApplicationBar>
-     </phone:PhoneApplicationPage.ApplicationBar>
     
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary x:Key="GridResources">
@@ -30,16 +22,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
         
-        <local:Int32 x:Key="ImageSize">
-            130
-        </local:Int32>
+        <local:Int32 x:Key="ImageSize">130</local:Int32>
+        <local:String x:Key="OpponentLabel">Opponent</local:String>
+        <local:String x:Key="RestartGame">New Game</local:String>
 
-        <GridLength x:Key="GridSegmentLength">
-            140
-        </GridLength>
-        <GridLength x:Key="GridSegmentWidth">
-            20
-        </GridLength>
+        <GridLength x:Key="GridSegmentLength">140</GridLength>
+        <GridLength x:Key="GridSegmentWidth">20</GridLength>
         
         <Style TargetType="Button">
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -71,7 +59,21 @@
         </Style>
       
     </phone:PhoneApplicationPage.Resources>
-    
+
+    <phone:PhoneApplicationPage.ApplicationBar>
+
+        <shell:ApplicationBar Opacity="1" IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton IconUri="/Images/comp.png" 
+                                                Text="{StaticResource OpponentLabel}" 
+                                                Click="ApplicationBarIconButton_AI_Opponent"/>
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" 
+                                                Text="{StaticResource RestartGame}"
+                                                Click="ApplicationBarIconButton_Restart"/>
+            </shell:ApplicationBar.Buttons>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" >
         <Grid.RowDefinitions>
@@ -134,7 +136,6 @@
                      Background="{StaticResource PhoneBackgroundBrush}"
                      Foreground="{StaticResource PhoneForegroundBrush}"
                      TextAlignment="Center"
-                     TextChanged="textBox1_TextChanged" 
                      Margin="32" 
                      VerticalAlignment="Bottom" />
         </Grid>
