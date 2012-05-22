@@ -24,9 +24,7 @@ namespace MVVM {
         public ViewModel() {
             this.loadData = new DelegateCommand(LoadDataAction);
             this.saveData = new DelegateCommand(SaveSelectePerson);
-            name = "";
-            age = 2;
-        }
+         }
 
         public void LoadDataAction(object p) {
             personDataSource.Add(new Person() { Name = "John", Age = 32 });
@@ -60,7 +58,7 @@ namespace MVVM {
         public String SelectedName {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.name;
+                    return this.SelectedPerson.Name;
                 }
                 return string.Empty;
             }
@@ -72,7 +70,7 @@ namespace MVVM {
         public int SelectedAge {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.age;
+                    return this.SelectedPerson.Age;
                 }
                 return 0;
             }

@@ -28,6 +28,9 @@
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            
+            
+                
             <Button Content="LoadData" Command="{Binding LoadDataCommand}" />
             <ListBox ItemsSource="{Binding DataSource}" SelectedItem="{Binding SelectedPerson, Mode=TwoWay}" Height="100">
                 <ListBox.ItemTemplate>
