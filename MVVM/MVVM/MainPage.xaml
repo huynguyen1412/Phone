@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:MVVM"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -29,8 +30,16 @@
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             
+            <!--Create the ViewModel in XAML to establish the DataContext-->
+            <StackPanel.Resources>
+                <vm:ViewModel x:Key="ViewModelDataSource"/>
+            </StackPanel.Resources>
             
-                
+            <!--Establish the DataContext for everything in the Stack Panel(i.e. all it's children-->
+            <StackPanel.DataContext>
+                <Binding Source="{StaticResource ViewModelDataSource}" />
+            </StackPanel.DataContext>
+            
             <Button Content="LoadData" Command="{Binding LoadDataCommand}" />
             <ListBox ItemsSource="{Binding DataSource}" SelectedItem="{Binding SelectedPerson, Mode=TwoWay}" Height="100">
                 <ListBox.ItemTemplate>

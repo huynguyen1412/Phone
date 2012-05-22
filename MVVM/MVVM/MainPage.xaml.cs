@@ -16,9 +16,6 @@ namespace MVVM {
         // Constructor
         public MainPage() {
             InitializeComponent();
-
-            // simple way to bind the view to the view model   
-            this.DataContext = new ViewModel();
         }
     }
 }
