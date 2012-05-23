@@ -27,16 +27,26 @@ namespace MVVM {
          }
 
         public void LoadDataAction(object p) {
-            personDataSource.Add(new Person() { Name = "John", Age = 32 });
-            personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
-            personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
+            if (personDataSource.Count == 0) {
+                personDataSource.Add(new Person() { Name = "John", Age = 32 });
+                personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
+                personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
+
+                
+                SelectedPerson = personDataSource[0];
+
+                
+               
+            }
         }
+
         public void SaveSelectePerson(object p) {
             if (this.SelectedPerson != null) {
                 this.SelectedPerson.Name = this.name;
                 this.SelectedPerson.Age = this.age;
             }
         }
+
         public ICommand LoadDataCommand {
             get {
                 return this.loadData;
@@ -94,6 +104,7 @@ namespace MVVM {
 
                     RaisedPropertyChanged("SelectedName");
                     RaisedPropertyChanged("SelectedAge");
+                    RaisedPropertyChanged("SelectedPerson");
                 }
             }
         }
