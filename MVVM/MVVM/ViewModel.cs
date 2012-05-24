@@ -24,21 +24,29 @@ namespace MVVM {
         public ViewModel() {
             this.loadData = new DelegateCommand(LoadDataAction);
             this.saveData = new DelegateCommand(SaveSelectePerson);
-            name = "";
-            age = 2;
-        }
+         }
 
         public void LoadDataAction(object p) {
-            personDataSource.Add(new Person() { Name = "John", Age = 32 });
-            personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
-            personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
+            if (personDataSource.Count == 0) {
+                personDataSource.Add(new Person() { Name = "John", Age = 32 });
+                personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
+                personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
+
+                
+                SelectedPerson = personDataSource[0];
+
+                
+               
+            }
         }
+
         public void SaveSelectePerson(object p) {
             if (this.SelectedPerson != null) {
                 this.SelectedPerson.Name = this.name;
                 this.SelectedPerson.Age = this.age;
             }
         }
+
         public ICommand LoadDataCommand {
             get {
                 return this.loadData;
@@ -60,7 +68,7 @@ namespace MVVM {
         public String SelectedName {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.name;
+                    return this.SelectedPerson.Name;
                 }
                 return string.Empty;
             }
@@ -72,7 +80,7 @@ namespace MVVM {
         public int SelectedAge {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.age;
+                    return this.SelectedPerson.Age;
                 }
                 return 0;
             }
@@ -96,6 +104,7 @@ namespace MVVM {
 
                     RaisedPropertyChanged("SelectedName");
                     RaisedPropertyChanged("SelectedAge");
+                    RaisedPropertyChanged("SelectedPerson");
                 }
             }
         }

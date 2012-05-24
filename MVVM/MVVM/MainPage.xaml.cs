@@ -17,8 +17,9 @@ namespace MVVM {
         public MainPage() {
             InitializeComponent();
 
-            // simple way to bind the view to the view model   
-            this.DataContext = new ViewModel();
+//            PeopleListView.SelectedItem = 0;
         }
+
+     
     }
 }
