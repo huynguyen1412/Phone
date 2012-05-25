@@ -16,10 +16,6 @@ namespace MVVM {
         // Constructor
         public MainPage() {
             InitializeComponent();
-
-//            PeopleListView.SelectedItem = 0;
         }
-
-     
     }
 }
