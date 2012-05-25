@@ -71,7 +71,7 @@ namespace MVVM {
 
             set {
                 this.name = value;
-                OnPropertyChanged("SelectedName");
+                RaisedPropertyChanged("SelectedName");
             }
         }
         public int SelectedAge {
@@ -84,7 +84,7 @@ namespace MVVM {
 
             set {
                 this.age = value;
-                OnPropertyChanged("SelectedAge");
+                RaisedPropertyChanged("SelectedAge");
             }
         }
         private Person selectedPerson;
@@ -100,13 +100,13 @@ namespace MVVM {
                         SelectedAge = selectedPerson.Age;
                     }
 
-                    OnPropertyChanged("SelectedPerson");
+                    RaisedPropertyChanged("SelectedPerson");
                 }
             }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(String property) {
+        public void RaisedPropertyChanged(String property) {
             if(PropertyChanged != null) {
                 PropertyChanged(this, new PropertyChangedEventArgs(property));
             }

@@ -47,7 +47,7 @@ namespace MVVM {
 
         public event EventHandler CanExecuteChanged;
 
-        public void OnCanExecuteChanged() {
+        public void RaiseCanExecuteChanged() {
 
             EventHandler handler = this.CanExecuteChanged;
 
