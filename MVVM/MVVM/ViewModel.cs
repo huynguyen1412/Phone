@@ -27,18 +27,14 @@ namespace MVVM {
          }
 
         public void LoadDataAction(object p) {
-            if (personDataSource.Count == 0) {
-                personDataSource.Add(new Person() { Name = "John", Age = 32 });
-                personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
-                personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
-
-                
-                SelectedPerson = personDataSource[0];
-
-                
-               
-            }
+        if (personDataSource.Count == 0) {
+            personDataSource.Add(new Person() { Name = "John", Age = 32 });
+            personDataSource.Add(new Person() { Name = "Kate", Age = 27 });
+            personDataSource.Add(new Person() { Name = "Sam", Age = 30 });
+                 
+            SelectedPerson = personDataSource[0];
         }
+}
 
         public void SaveSelectePerson(object p) {
             if (this.SelectedPerson != null) {
@@ -68,25 +64,27 @@ namespace MVVM {
         public String SelectedName {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.SelectedPerson.Name;
+                    return this.name;
                 }
                 return string.Empty;
             }
 
             set {
                 this.name = value;
+                RaisedPropertyChanged("SelectedName");
             }
         }
         public int SelectedAge {
             get {
                 if (this.SelectedPerson != null) {
-                    return this.SelectedPerson.Age;
+                    return this.age;
                 }
                 return 0;
             }
 
             set {
                 this.age = value;
+                RaisedPropertyChanged("SelectedAge");
             }
         }
         private Person selectedPerson;
@@ -98,12 +96,10 @@ namespace MVVM {
                 if(selectedPerson != value) {
                     selectedPerson = value;
                     if (this.selectedPerson != null) {
-                        this.selectedPerson.Name = selectedPerson.Name;
-                        this.selectedPerson.Age = selectedPerson.Age;
+                        SelectedName = selectedPerson.Name;
+                        SelectedAge = selectedPerson.Age;
                     }
 
-                    RaisedPropertyChanged("SelectedName");
-                    RaisedPropertyChanged("SelectedAge");
                     RaisedPropertyChanged("SelectedPerson");
                 }
             }
