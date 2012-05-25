@@ -16,10 +16,7 @@ namespace IsolatedStorageDemo {
         // Constructor
         public MainPage() {
             InitializeComponent();
-        }
-
-        private void btnGetImage_Click(object sender, RoutedEventArgs e) {
-
+            SupportedOrientations = SupportedPageOrientation.PortraitOrLandscape;
         }
     }
 }
