@@ -28,12 +28,9 @@ namespace IsolatedStorageDemo {
             }
             set { 
                 imageUrl = value;
-                ImageFileName = imageUrl.AbsolutePath.Substring(imageUrl.AbsolutePath.LastIndexOf('/') + 1);
                 RaisedPropertyChanged("ImageUrl");
             }
         }
-
-        public String ImageFileName { get; set; }
 
         private BitmapImage imageSource;
         public BitmapImage ImageSource {
@@ -56,10 +53,13 @@ namespace IsolatedStorageDemo {
             }
         }
         public ViewModel() {
-            ImageUrl = new Uri("http://res1.newagesolution.net/Portals/0/twitter2_icon.jpg");
-            phoneStorage = new IOStorage(ImageFileName);
+           // ImageUrl = new Uri("http://res1.newagesolution.net/Portals/0/twitter2_icon.jpg");
+            ImageUrl = new Uri("http://8020.photos.jpgmag.com/3106321_283814_9433b77615_m.jpg");
+            phoneStorage = new IOStorage();
             this.getImage = new DelegateCommand(GetImageFromUrl);
             webClient = new WebClient();
+
+            // install the delegate for the web async call
             LoadImageFromWebResult();
         }
 
@@ -67,7 +67,7 @@ namespace IsolatedStorageDemo {
             BitmapImage image = new BitmapImage();
 
             try {
-                Stream result = phoneStorage.Load();
+                Stream result = phoneStorage.Load(ImageUrl);
                 image.SetSource(result);
             }
             catch(Exception e) {
@@ -93,10 +93,11 @@ namespace IsolatedStorageDemo {
                             byte[] b = new byte[imgLength];
                             e1.Result.Read(b, 0, b.Length);
 
-                            // Attempt to save the image to IsolatedStorage
-                            phoneStorage.Save(b, imgLength);
                             image = new BitmapImage();
                             image.SetSource(e1.Result);
+
+                            // Attempt to save the image to IsolatedStorage
+                            phoneStorage.Save(b, imgLength);
                         } 
                     }
                     catch(Exception e) {
