@@ -1,25 +1,18 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.ComponentModel;
-using System.IO.IsolatedStorage;
-using System.Windows.Media.Imaging;
+using System.Diagnostics;
 using System.IO;
+using System.IO.IsolatedStorage;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 
 namespace IsolatedStorageDemo {
+
+    public delegate void ImageFromUrl(Stream stream);
     public class ViewModel : INotifyPropertyChanged {
 
-        WebClient webClient;
-        IOStorage phoneStorage;
-
+        Model dataModel = new Model();
         private ICommand getImage;
         private Uri imageUrl;
         public Uri ImageUrl {
@@ -32,6 +25,7 @@ namespace IsolatedStorageDemo {
             }
         }
 
+        public ImageFromUrl webHandler { get; set; }
         private BitmapImage imageSource;
         public BitmapImage ImageSource {
             get { 
@@ -44,7 +38,7 @@ namespace IsolatedStorageDemo {
         }
         private void GetImageFromUrl(object p) {
 
-            LoadImageFromWeb();
+            LoadImage();
         }
 
         public ICommand LoadImageFromUrl {
@@ -55,56 +49,44 @@ namespace IsolatedStorageDemo {
         public ViewModel() {
            // ImageUrl = new Uri("http://res1.newagesolution.net/Portals/0/twitter2_icon.jpg");
             ImageUrl = new Uri("http://8020.photos.jpgmag.com/3106321_283814_9433b77615_m.jpg");
-            phoneStorage = new IOStorage();
             this.getImage = new DelegateCommand(GetImageFromUrl);
-            webClient = new WebClient();
-
-            // install the delegate for the web async call
-            LoadImageFromWebResult();
+            webHandler = new ImageFromUrl(this.ImageFromUrl);
+ 
+            dataModel.Controller = this;
         }
 
-        private void LoadImageFromWeb() {
+        /// <summary>
+        /// Images from URL. This is the dispatch handler for the http web request to get the image.
+        /// It also attempts to save the image to Isolated Storage
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        public void ImageFromUrl(Stream stream) {
+            BitmapImage image = new BitmapImage();
+            image.SetSource(stream);
+            ImageSource = image;
+            dataModel.Save(stream);
+            stream.Close();
+        }
+
+        /// <summary>
+        /// Loads the image from the Url if the image is not in the Isolated Storage and assigns
+        /// it to the binding ImageSource.
+        /// </summary>
+        private void LoadImage() {
             BitmapImage image = new BitmapImage();
 
             try {
-                Stream result = phoneStorage.Load(ImageUrl);
-                image.SetSource(result);
+                Stream stream = dataModel.Load(ImageUrl);
+                image.SetSource(stream);
+                stream.Close();
             }
-            catch(Exception e) {
-                webClient.OpenReadAsync(ImageUrl);
+            catch(IsolatedStorageException e) {
+                Debug.WriteLine(e);
+                dataModel.LoadFromWeb(imageUrl);  
             }
             finally {
                 ImageSource = image;
             }
-        }
-
-        // Web IO
-        private void LoadImageFromWebResult() {
- 
-            // Get the image from the web
-            webClient.OpenReadCompleted += (s1, e1) =>
-                {
-                    BitmapImage image = null;
-
-                    try {
-                        if(e1.Error == null) {
-                            // read the image into memory
-                            int imgLength = (int)e1.Result.Length;
-                            byte[] b = new byte[imgLength];
-                            e1.Result.Read(b, 0, b.Length);
-
-                            image = new BitmapImage();
-                            image.SetSource(e1.Result);
-
-                            // Attempt to save the image to IsolatedStorage
-                            phoneStorage.Save(b, imgLength);
-                        } 
-                    }
-                    catch(Exception e) {
-                    }
-
-                    ImageSource = image;
-                };
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

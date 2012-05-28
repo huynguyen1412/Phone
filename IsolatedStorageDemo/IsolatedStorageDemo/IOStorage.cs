@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.IO.IsolatedStorage;
-using System.IO;
 using System.ComponentModel;
+using System.IO;
+using System.IO.IsolatedStorage;
+
+
 
 namespace IsolatedStorageDemo {
 
@@ -88,25 +81,26 @@ namespace IsolatedStorageDemo {
         /// <returns></returns>
         public Stream Load() {
 
-            MemoryStream result = null;
+            MemoryStream stream = null;
             if(String.IsNullOrEmpty(IOFilenameString)) {
                 throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
             }
 
             try {
- 
+
+                stream = new MemoryStream();
                 using(IsolatedStorageFile file = IsolatedStorageFile.GetUserStoreForApplication()) {
                     using(IsolatedStorageFileStream ioStream = file.OpenFile(IOFilenameString, FileMode.Open)) {
-
-                        result = new MemoryStream();
-                        ioStream.CopyTo(result);
+                        ioStream.CopyTo(stream);
+                        ioStream.Close();
                     }
                 }
             }
             catch(Exception e) {
+                throw new IsolatedStorageException("Url " + IOFilenameString + " not found in Isolated Storage");
             }
 
-            return result;
+            return stream;
         }
 
         /// <summary>
@@ -128,11 +122,11 @@ namespace IsolatedStorageDemo {
                     throw new ArgumentOutOfRangeException("Buffer length parameter too long for Save");
                 }
  
-                using(IsolatedStorageFileStream isfs = new IsolatedStorageFileStream(IOFilenameString, System.IO.FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
+                using(IsolatedStorageFileStream stream = new IsolatedStorageFileStream(IOFilenameString, System.IO.FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
 
                     // Write it out to the file
-                    isfs.Write(buffer, 0, (int)bufferLength);
-                    isfs.Flush();
+                    stream.Write(buffer, 0, (int)bufferLength);
+                    stream.Close();
                 }
             }
             finally {
@@ -148,6 +142,16 @@ namespace IsolatedStorageDemo {
         public void Save(Uri filename, Byte[] buffer, int bufferLength) {
             this.IOFilenameUri = filename;
             this.Save(buffer, bufferLength);
+        }
+
+        public void Save(Stream stream) {
+
+            // Make sure the stream is at the beginning of the file
+            stream.Position = 0;
+
+            byte[] buffer = new byte[stream.Length];
+            stream.Read(buffer, 0, (int)stream.Length);
+            this.Save(buffer, (int)stream.Length);
         }
 
         /// <summary>
