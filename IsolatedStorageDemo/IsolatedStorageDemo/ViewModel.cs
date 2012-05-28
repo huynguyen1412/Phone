@@ -57,24 +57,31 @@ namespace IsolatedStorageDemo {
             }
         }
         public ViewModel() {
-           // ImageUrl = new Uri("http://res1.newagesolution.net/Portals/0/twitter2_icon.jpg");
+
+            // Test url for jpeg image
             ImageUrl = new Uri("http://8020.photos.jpgmag.com/3106321_283814_9433b77615_m.jpg");
+            
+            // Button ICommand handler
             this.getImage = new DelegateCommand(GetImageFromUrl);
+
+            // Listen for changes in the model 
             dataModel.ImageChanged += ImageFromUrl;
         }
 
         /// <summary>
-        /// Images from URL. This is the dispatch handler for the http web request to get the image.
+        /// Images from URL. This is the event handler the model sends when a new image is ready.
         /// It also attempts to save the image to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
         public void ImageFromUrl(object s, StreamEventArgs e) {
          
+            // Extract the stream from the event args update Image control
             Stream stream = e.stream;
             BitmapImage image = new BitmapImage();
             image.SetSource(stream);
             ImageSource = image;
 
+            // Save it to Isolated Storage
             dataModel.Save(stream);
             stream.Close();
         }

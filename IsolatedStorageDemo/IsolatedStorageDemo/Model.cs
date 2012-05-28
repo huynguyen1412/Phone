@@ -23,7 +23,7 @@ namespace IsolatedStorageDemo {
         /// Loads from web asynchronously and installs the async ReadWebRequestHandler
         /// </summary>
         /// <param name="url">The URL.</param>
-        public void LoadFromWeb(Uri url) {
+        public virtual void LoadFromWeb(Uri url) {
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             request.BeginGetResponse(new AsyncCallback(ReadWebRequestHandler), request); 
         }
@@ -33,7 +33,7 @@ namespace IsolatedStorageDemo {
         /// </summary>
         /// <param name="filename">The filename.</param>
         /// <returns></returns>
-        public Stream Load(Uri filename) {
+        public virtual Stream Load(Uri filename) {
             return phoneStorage.Load(filename);
         }
 
@@ -41,12 +41,16 @@ namespace IsolatedStorageDemo {
         /// Saves the specified stream to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public void Save(Stream stream) {
+        public virtual void Save(Stream stream) {
             phoneStorage.Save(stream);
         }
 
+        /// <summary>
+        /// Occurs when [image changed].  Subscribe to this event to 
+        /// receive the Image stream when is arrives.
+        /// </summary>
         public event ImageFromUrl ImageChanged;
-        private void OnImageChanged(Stream stream) {
+        protected virtual void OnImageChanged(Stream stream) {
             StreamEventArgs e = new StreamEventArgs(stream);
 
             if(ImageChanged != null)
