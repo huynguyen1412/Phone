@@ -73,17 +73,20 @@ namespace IsolatedStorageDemo {
         /// It also attempts to save the image to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public void ImageFromUrl(object s, StreamEventArgs e) {
+        public void ImageFromUrl(object o, StreamEventArgs e) {
          
             // Extract the stream from the event args update Image control
-            Stream stream = e.stream;
+            Stream s = new MemoryStream();
+            e.stream.Position = 0;
+            e.stream.CopyTo(s);
+
             BitmapImage image = new BitmapImage();
-            image.SetSource(stream);
+            image.SetSource(s);
             ImageSource = image;
 
             // Save it to Isolated Storage
-            dataModel.Save(stream);
-            stream.Close();
+            dataModel.Save(s);
+            s.Close();
         }
 
         /// <summary>

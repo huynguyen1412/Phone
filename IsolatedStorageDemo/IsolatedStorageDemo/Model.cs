@@ -55,6 +55,8 @@ namespace IsolatedStorageDemo {
 
             if(ImageChanged != null)
                 ImageChanged(this, e);
+
+            e.stream.Close();
         }
 
         /// <summary>
