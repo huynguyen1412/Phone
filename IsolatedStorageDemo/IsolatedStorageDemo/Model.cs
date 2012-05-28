@@ -5,13 +5,18 @@ using System.Windows;
 
 
 namespace IsolatedStorageDemo {
+    public delegate void webResponseHandler(Stream stream);
+ 
     public class Model {
-        IOStorage phoneStorage;
-        ImageFromUrl webHandler;
-        public ViewModel Controller { get; set; }
 
+        IOStorage phoneStorage;
+        private webResponseHandler webHandlerMethod { get; set; }
+  
         public Model() {
             phoneStorage = new IOStorage();
+
+            // create a new delegate (OnImageChanged) and assign it.
+            webHandlerMethod = new webResponseHandler(this.OnImageChanged);
         }
 
         /// <summary>
@@ -23,12 +28,29 @@ namespace IsolatedStorageDemo {
             request.BeginGetResponse(new AsyncCallback(ReadWebRequestHandler), request); 
         }
 
+        /// <summary>
+        /// Loads the specified filename from Isolated Storage.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns></returns>
         public Stream Load(Uri filename) {
             return phoneStorage.Load(filename);
         }
 
+        /// <summary>
+        /// Saves the specified stream to Isolated Storage
+        /// </summary>
+        /// <param name="stream">The stream.</param>
         public void Save(Stream stream) {
             phoneStorage.Save(stream);
+        }
+
+        public event ImageFromUrl ImageChanged;
+        private void OnImageChanged(Stream stream) {
+            StreamEventArgs e = new StreamEventArgs(stream);
+
+            if(ImageChanged != null)
+                ImageChanged(this, e);
         }
 
         /// <summary>
@@ -37,7 +59,6 @@ namespace IsolatedStorageDemo {
         /// </summary>
         /// <param name="results">The results.</param>
         private void ReadWebRequestHandler(IAsyncResult results) {
-            webHandler = Controller.webHandler;
             HttpWebRequest webRequest = (HttpWebRequest)results.AsyncState;
             HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(results);
 
@@ -46,7 +67,7 @@ namespace IsolatedStorageDemo {
                 try {
                     stream.CopyTo(streamCopy);
                     stream.Close();
-                    Deployment.Current.Dispatcher.BeginInvoke(webHandler, new Object[] { streamCopy });
+                    Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] {streamCopy});
                 }
                 catch(Exception e) {
                 }

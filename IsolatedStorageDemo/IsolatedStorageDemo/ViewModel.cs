@@ -9,10 +9,21 @@ using System.Windows.Media.Imaging;
 
 namespace IsolatedStorageDemo {
 
-    public delegate void ImageFromUrl(Stream stream);
+    public delegate void ImageFromUrl(object s, StreamEventArgs e);
+
+    /// <summary>
+    /// Defines an event type for Stream event
+    /// </summary>
+    public class StreamEventArgs : EventArgs {
+        public StreamEventArgs(Stream stream) {
+            this.stream = stream;
+        }
+        public Stream stream { get; set; }
+    }
     public class ViewModel : INotifyPropertyChanged {
 
         Model dataModel = new Model();
+        
         private ICommand getImage;
         private Uri imageUrl;
         public Uri ImageUrl {
@@ -25,7 +36,6 @@ namespace IsolatedStorageDemo {
             }
         }
 
-        public ImageFromUrl webHandler { get; set; }
         private BitmapImage imageSource;
         public BitmapImage ImageSource {
             get { 
@@ -50,9 +60,7 @@ namespace IsolatedStorageDemo {
            // ImageUrl = new Uri("http://res1.newagesolution.net/Portals/0/twitter2_icon.jpg");
             ImageUrl = new Uri("http://8020.photos.jpgmag.com/3106321_283814_9433b77615_m.jpg");
             this.getImage = new DelegateCommand(GetImageFromUrl);
-            webHandler = new ImageFromUrl(this.ImageFromUrl);
- 
-            dataModel.Controller = this;
+            dataModel.ImageChanged += ImageFromUrl;
         }
 
         /// <summary>
@@ -60,10 +68,13 @@ namespace IsolatedStorageDemo {
         /// It also attempts to save the image to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public void ImageFromUrl(Stream stream) {
+        public void ImageFromUrl(object s, StreamEventArgs e) {
+         
+            Stream stream = e.stream;
             BitmapImage image = new BitmapImage();
             image.SetSource(stream);
             ImageSource = image;
+
             dataModel.Save(stream);
             stream.Close();
         }
