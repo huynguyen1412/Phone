@@ -1,5 +1,6 @@
 ﻿using Microsoft.Phone.Controls;
 
+
 namespace IsolatedStorageDemo {
     public partial class MainPage : PhoneApplicationPage {
         // Constructor
