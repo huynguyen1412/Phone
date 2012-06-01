@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IsolatedStorageDemo;
 
 
-namespace TestHarness.AppCode.UnitTest
+namespace IsolatedStorageUnitTest
 {
     [TestClass]
     public class ViewModelTest : SilverlightTest

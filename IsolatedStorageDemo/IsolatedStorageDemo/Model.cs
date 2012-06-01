@@ -5,10 +5,11 @@ using System.Windows;
 
 
 namespace IsolatedStorageDemo {
-    public delegate void webResponseHandler(Stream stream);
+    public delegate void webResponseHandler(StorageStream stream);
  
     public class Model {
 
+        
         IOStorage phoneStorage;
         private webResponseHandler webHandlerMethod { get; set; }
   
@@ -50,13 +51,14 @@ namespace IsolatedStorageDemo {
         /// receive the Image stream when is arrives.
         /// </summary>
         public event ImageFromUrl ImageChanged;
-        protected virtual void OnImageChanged(Stream stream) {
+        protected virtual void OnImageChanged(StorageStream stream) {
             StreamEventArgs e = new StreamEventArgs(stream);
+            using (e.stream) {
+                if (ImageChanged != null)
+                    ImageChanged(this, e);
+            }
 
-            if(ImageChanged != null)
-                ImageChanged(this, e);
-
-            e.stream.Close();
+          //  e.stream.Close();
         }
 
         /// <summary>
@@ -68,12 +70,13 @@ namespace IsolatedStorageDemo {
             HttpWebRequest webRequest = (HttpWebRequest)results.AsyncState;
             HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(results);
 
-            Stream streamCopy = new MemoryStream();
-            using(Stream stream = webResponse.GetResponseStream()) {
+            StorageStream streamCopy;
+            using (Stream stream = webResponse.GetResponseStream()) {
                 try {
-                    stream.CopyTo(streamCopy);
-                    stream.Close();
-                    Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] {streamCopy});
+                    streamCopy = new StorageStream(stream);
+                    using (stream) {
+                        Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { streamCopy });
+                    };
                 }
                 catch(Exception e) {
                 }

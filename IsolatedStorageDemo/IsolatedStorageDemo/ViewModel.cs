@@ -15,10 +15,10 @@ namespace IsolatedStorageDemo {
     /// Defines an event type for Stream event
     /// </summary>
     public class StreamEventArgs : EventArgs {
-        public StreamEventArgs(Stream stream) {
+        public StreamEventArgs(StorageStream stream) {
             this.stream = stream;
         }
-        public Stream stream { get; set; }
+        public StorageStream stream { get; set; }
     }
     public class ViewModel : INotifyPropertyChanged {
 
@@ -76,16 +76,15 @@ namespace IsolatedStorageDemo {
         public void ImageFromUrl(object o, StreamEventArgs e) {
          
             // Extract the stream from the event args update Image control
-            Stream s = new MemoryStream();
-            e.stream.Position = 0;
-            e.stream.CopyTo(s);
+            StorageStream s = e.stream;
+            
 
             BitmapImage image = new BitmapImage();
-            image.SetSource(s);
+            image.SetSource(s.Stream);
             ImageSource = image;
 
             // Save it to Isolated Storage
-            dataModel.Save(s);
+            dataModel.Save(s.Stream);
             s.Close();
         }
 
