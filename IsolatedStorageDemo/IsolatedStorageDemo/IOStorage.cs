@@ -11,7 +11,7 @@ namespace IsolatedStorageDemo {
     /// 
     /// </summary>
     public class IOStorage : INotifyPropertyChanged {
-        private const String emptyUri = "http://null";
+        private const String emptyUri = "http://null/";
 
         private Uri iOFilenameUri;
         public Uri IOFilenameUri {

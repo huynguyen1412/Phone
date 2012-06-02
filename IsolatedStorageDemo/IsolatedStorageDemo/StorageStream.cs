@@ -36,6 +36,11 @@ namespace IsolatedStorageDemo
         }
 
         public StorageStream(Stream s) : this() {
+
+            if(s == null) {
+                throw new ArgumentNullException();
+            }
+
             s.CopyTo(_Stream);
             _Stream.Position = 0;
         }
