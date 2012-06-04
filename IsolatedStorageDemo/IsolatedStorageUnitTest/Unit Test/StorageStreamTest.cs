@@ -71,7 +71,7 @@ namespace IsolatedStorageUnitTest
 
             Assert.IsNotNull(streamCopy);
             Assert.Equals(stream, streamCopy);
-            Assert.IsTrue(streamCopy.Position == 0);
+            Assert.IsTrue(streamCopy.Position == 0, "StorageStreamTest: Position not set to zero after copy");
         }
 
         [TestMethod]
