@@ -11,16 +11,25 @@ namespace IsolatedStorageDemo {
     /// 
     /// </summary>
     public class IOStorage : INotifyPropertyChanged {
-        private const String emptyUri = "http://null/";
+        private Uri emptyUri = new Uri("http://null/");
 
         private Uri iOFilenameUri;
+
+        private string ParseUriToFilename() {
+            return IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
+        }
+
+        private void SetUriAndFilename(Uri url) {
+            iOFilenameUri = url;
+            iOFilenameString = ParseUriToFilename();
+        }
+
         public Uri IOFilenameUri {
             get { 
                 return iOFilenameUri; 
             }
-            set { 
-                iOFilenameUri = value;
-                IOFilenameString = value.AbsolutePath.Substring(value.AbsolutePath.LastIndexOf('/') + 1);
+            set {
+                SetUriAndFilename(value);
                 RaisePropertyChanged("IOFilenameUri");
             }
         }
@@ -40,8 +49,7 @@ namespace IsolatedStorageDemo {
         /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
         public IOStorage() {
-            IOFilenameString = "";
-            IOFilenameUri = new Uri(emptyUri);
+            SetUriAndFilename(emptyUri);
         }
 
         /// <summary>
@@ -49,17 +57,7 @@ namespace IsolatedStorageDemo {
         /// </summary>
         /// <param name="url">The URL.</param>
         public IOStorage(Uri url) {
-            IOFilenameUri = url;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IOStorage"/> class.
-        /// Note: Uri will be set to "emptyUri"
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        public IOStorage(String filename) {
-            IOFilenameString = filename;
-            IOFilenameUri = new Uri(emptyUri);
+            SetUriAndFilename(url);
         }
 
         /// <summary>
@@ -68,7 +66,7 @@ namespace IsolatedStorageDemo {
         /// <param name="newUrl">The new URL.</param>
         /// <returns></returns>
         public Stream Load(Uri newUrl) {
-            this.IOFilenameUri = newUrl;
+            SetUriAndFilename(newUrl);
             return this.Load();
         }
 
