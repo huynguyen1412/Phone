@@ -47,7 +47,7 @@ namespace IsolatedStorageUnitTest
             long position = stream.Position;
         }
 
-        [TestMethod, ExpectedException(typeof(System.ObjectDisposedException))]
+        [TestMethod, ExpectedException(typeof(ObjectDisposedException))]
         [Description("StorageStreamTest: Dispose should throw exception because of base:Dispose")]
         public void TestDispose() {
 
@@ -58,16 +58,27 @@ namespace IsolatedStorageUnitTest
             long position = stream.Position;
         }
 
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Description("StorageStreamTest: Test Position property")]
+        public void TestCopyNullArg() {
+            Assert.IsNotNull(stream);
+
+            StorageStream streamCopy = null;
+
+            // set to a non zero position to make sure the copy is reset back to 0
+            stream.CopyTo(streamCopy);
+        }
+
         [TestMethod]
         [Description("StorageStreamTest: Test copying a stream")]
         public void TestCopy() {
 
             Assert.IsNotNull(stream);
-            StorageStream streamCopy = null;
+            StorageStream streamCopy = new StorageStream();
             
             // set to a non zero position to make sure the copy is reset back to 0
             stream.Position = 2;
-            streamCopy = stream.Copy();
+            stream.CopyTo(streamCopy);
 
             Assert.IsNotNull(streamCopy);
             Assert.Equals(stream, streamCopy);

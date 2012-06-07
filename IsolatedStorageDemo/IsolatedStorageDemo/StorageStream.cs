@@ -12,51 +12,38 @@ using System.IO;
 
 namespace IsolatedStorageDemo
 {
-    public class StorageStream : IDisposable
+    public class StorageStream : MemoryStream
     {
-        private MemoryStream _Stream { get; set; }
-        public long Position {
+  
+        public MemoryStream Stream {
             get {
-                return _Stream.Position;
-            }
-
-            set {
-                _Stream.Position = value;
-            }
-        }
-        
-        public Stream Stream {
-            get { 
-                return _Stream;
+                Position = 0;
+                return this;
             }
         }
 
         public StorageStream() {
-            _Stream = new MemoryStream();
         }
-
-        public StorageStream(Stream s) : this() {
+     
+        public StorageStream(Stream s) {
 
             if(s == null) {
                 throw new ArgumentNullException();
             }
 
-            s.CopyTo(_Stream);
-            _Stream.Position = 0;
+            Position = 0;
+            s.CopyTo(this);
         }
 
-        public StorageStream Copy() {
+        new public void CopyTo(Stream destination) {
 
-            StorageStream stream = new StorageStream(_Stream);
-            return stream;
-        }
-        
-        public void Close() {
-            _Stream.Close();
-        }
+            if (destination == null) {
+              throw new ArgumentNullException();
+            }
 
-        public void Dispose() {
-            _Stream.Dispose();
+            base.CopyTo(destination);
+            destination.Position = 0;
+            return;
         }
     }
 }

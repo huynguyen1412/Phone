@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Windows;
+using System.Diagnostics;
 
 
 namespace IsolatedStorageDemo {
@@ -42,7 +43,7 @@ namespace IsolatedStorageDemo {
         /// Saves the specified stream to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public virtual void Save(Stream stream) {
+        public virtual void Save(StorageStream stream) {
             phoneStorage.Save(stream);
         }
 
@@ -57,8 +58,6 @@ namespace IsolatedStorageDemo {
                 if (ImageChanged != null)
                     ImageChanged(this, e);
             }
-
-          //  e.stream.Close();
         }
 
         /// <summary>
@@ -67,22 +66,25 @@ namespace IsolatedStorageDemo {
         /// </summary>
         /// <param name="results">The results.</param>
         private void ReadWebRequestHandler(IAsyncResult results) {
-            HttpWebRequest webRequest = (HttpWebRequest)results.AsyncState;
-            HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(results);
 
-            StorageStream streamCopy;
-            using (Stream stream = webResponse.GetResponseStream()) {
-                try {
+            try {
+                HttpWebRequest webRequest = (HttpWebRequest)results.AsyncState;
+                HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(results);
+
+                StorageStream streamCopy;
+                using (Stream stream = webResponse.GetResponseStream()) {
                     streamCopy = new StorageStream(stream);
                     using (stream) {
                         Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { streamCopy });
                     };
                 }
-                catch(Exception e) {
-                }
+                webResponse.Close();
             }
-
-            webResponse.Close();
+            catch (WebException w) {
+                Debug.WriteLine(w);
+            }
+            finally {
+            }
         }
     }
 }

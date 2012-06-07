@@ -30,7 +30,8 @@ namespace IsolatedStorageDemo {
             get { 
                 return imageUrl; 
             }
-            set { 
+
+            set {
                 imageUrl = value;
                 RaisedPropertyChanged("ImageUrl");
             }
@@ -80,11 +81,11 @@ namespace IsolatedStorageDemo {
             
 
             BitmapImage image = new BitmapImage();
-            image.SetSource(s.Stream);
+            image.SetSource(s);
             ImageSource = image;
 
             // Save it to Isolated Storage
-            dataModel.Save(s.Stream);
+            dataModel.Save(s);
             s.Close();
         }
 
@@ -100,9 +101,17 @@ namespace IsolatedStorageDemo {
                 image.SetSource(stream);
                 stream.Close();
             }
-            catch(IsolatedStorageException e) {
+
+            // file name could be null
+            catch (ArgumentNullException) {
+            }
+            // catch the invalid operation exception for parsing the Uri
+            catch (InvalidOperationException) {
+            }
+            // use this exception to try and load the file from the web if it's not in the storage
+            catch (IsolatedStorageException e) {
                 Debug.WriteLine(e);
-                dataModel.LoadFromWeb(imageUrl);  
+                dataModel.LoadFromWeb(imageUrl);
             }
             finally {
                 ImageSource = image;

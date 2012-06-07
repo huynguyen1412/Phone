@@ -11,19 +11,8 @@ namespace IsolatedStorageDemo {
     /// 
     /// </summary>
     public class IOStorage : INotifyPropertyChanged {
-        private Uri emptyUri = new Uri("http://null/");
 
         private Uri iOFilenameUri;
-
-        private string ParseUriToFilename() {
-            return IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
-        }
-
-        private void SetUriAndFilename(Uri url) {
-            iOFilenameUri = url;
-            iOFilenameString = ParseUriToFilename();
-        }
-
         public Uri IOFilenameUri {
             get { 
                 return iOFilenameUri; 
@@ -39,17 +28,35 @@ namespace IsolatedStorageDemo {
 		    get { 
                 return iOFilenameString;
             }
-		    set { 
+		    private set { 
                 iOFilenameString = value;
                 RaisePropertyChanged(IOFilenameString);
             }
 	    }
 
+
+        /// <summary>
+        /// Sets the URI and filename.
+        /// </summary>
+        /// <param name="url">The URL.</param>
+        /// <remarks></remarks>
+        private void SetUriAndFilename(Uri url) {
+
+            // At this point the url is null or a valid Uri.
+            iOFilenameUri = url;
+            if (url == null) {
+                iOFilenameString = null;
+            }
+            else {
+                iOFilenameString = IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
         public IOStorage() {
-            SetUriAndFilename(emptyUri);
+            SetUriAndFilename(null);
         }
 
         /// <summary>
@@ -66,6 +73,7 @@ namespace IsolatedStorageDemo {
         /// <param name="newUrl">The new URL.</param>
         /// <returns></returns>
         public Stream Load(Uri newUrl) {
+
             SetUriAndFilename(newUrl);
             return this.Load();
         }
@@ -80,24 +88,24 @@ namespace IsolatedStorageDemo {
         public Stream Load() {
 
             MemoryStream stream = null;
-            if(String.IsNullOrEmpty(IOFilenameString)) {
+            if (String.IsNullOrEmpty(IOFilenameString)) {
                 throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
             }
 
             try {
 
                 stream = new MemoryStream();
-                using(IsolatedStorageFile file = IsolatedStorageFile.GetUserStoreForApplication()) {
-                    using(IsolatedStorageFileStream ioStream = file.OpenFile(IOFilenameString, FileMode.Open)) {
+                using (IsolatedStorageFile file = IsolatedStorageFile.GetUserStoreForApplication()) {
+                    using (IsolatedStorageFileStream ioStream = file.OpenFile(IOFilenameString, FileMode.Open)) {
                         ioStream.CopyTo(stream);
                         ioStream.Close();
                     }
                 }
             }
-            catch(Exception e) {
+            catch (IsolatedStorageException e) {
                 throw new IsolatedStorageException("Url " + IOFilenameString + " not found in Isolated Storage");
             }
-
+            
             return stream;
         }
 
@@ -142,7 +150,7 @@ namespace IsolatedStorageDemo {
             this.Save(buffer, bufferLength);
         }
 
-        public void Save(Stream stream) {
+        public void Save(StorageStream stream) {
 
             // Make sure the stream is at the beginning of the file
             stream.Position = 0;
