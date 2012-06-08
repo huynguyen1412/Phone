@@ -28,7 +28,7 @@ namespace IsolatedStorageDemo {
 		    get { 
                 return iOFilenameString;
             }
-		    private set { 
+		    set { 
                 iOFilenameString = value;
                 RaisePropertyChanged(IOFilenameString);
             }
@@ -102,7 +102,7 @@ namespace IsolatedStorageDemo {
                     }
                 }
             }
-            catch (IsolatedStorageException e) {
+            catch (IsolatedStorageException) {
                 throw new IsolatedStorageException("Url " + IOFilenameString + " not found in Isolated Storage");
             }
             
