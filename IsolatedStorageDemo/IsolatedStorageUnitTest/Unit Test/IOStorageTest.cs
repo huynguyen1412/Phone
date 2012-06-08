@@ -14,6 +14,8 @@ using System.Diagnostics;
 using IsolatedStorageDemo;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Windows.Media.Imaging;
+using System.Windows.Resources;
 
 namespace IsolatedStorageDemo {
     [TestClass]
@@ -86,23 +88,10 @@ namespace IsolatedStorageDemo {
             IOStorage s = new IOStorage();
             Stream result = new MemoryStream();
 
-            // Give a non existant web resource, and test to see if it was found in storage.
+            // Give a non existent web resource, and test to see if it was found in storage.
             Uri sampleUrl = new Uri("http://www.msn.com/test.jpg");
             s.IOFilenameUri = sampleUrl;
             s.Load();
-        }
-
-        [TestMethod, ExpectedException(typeof(IsolatedStorageException), "Save a file")]
-        [Description("IOStorageTest: Test the Save()")]
-        public void TestSaveFile{
-
-            IOStorage s = new IOStorage();
-            Stream result = new MemoryStream();
-
-            // Give a non existant web resource, and test to see if it was found in storage.
-            Uri sampleUrl = new Uri("ApplicationIcon.png");
-            s.IOFilenameUri = sampleUrl;
-            s.Save();
         }
     }
 }
