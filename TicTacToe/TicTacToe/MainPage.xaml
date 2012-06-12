@@ -85,6 +85,9 @@
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="Tic-Tac-Toe" FontSize ="{StaticResource PhoneFontSizeExtraLarge}" 
                        Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="Statistics" Text="{Binding Stats, Mode=OneWay}" FontSize ="{StaticResource PhoneFontSizeMedium}" 
+                       Style="{StaticResource PhoneTextAccentStyle}" Margin="5"/>
+
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
@@ -95,7 +98,8 @@
                 <RowDefinition Height="{StaticResource GridSegmentLength}"/>
                 <RowDefinition Height="{StaticResource GridSegmentWidth}"/>
                 <RowDefinition Height="{StaticResource GridSegmentLength}"/>
-                <RowDefinition Height="206*" />
+                <RowDefinition Height="*"/>
+
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="{StaticResource GridSegmentLength}"/>
@@ -131,13 +135,14 @@
             <Button Name="GS22"  Grid.Row="4" Grid.Column="4" Click="Square_Clicked"/>
             
             <!--Game Results View-->
-            <TextBox Grid.ColumnSpan="5" Grid.Row="5" HorizontalAlignment="Center"  Name="GameResult" Width="460" 
+            <TextBox Grid.ColumnSpan="5" Grid.Row="5" 
+                     VerticalAlignment="Top"
+                     HorizontalAlignment="Center"  Name="GameResult" Height="80" Width="460" 
                      BorderBrush="Transparent"
                      Background="{StaticResource PhoneBackgroundBrush}"
                      Foreground="{StaticResource PhoneForegroundBrush}"
                      TextAlignment="Center"
-                     Margin="32" 
-                     VerticalAlignment="Bottom" />
+                     Margin="0,5,0,5" />
         </Grid>
     </Grid>
  

@@ -6,20 +6,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.IO.IsolatedStorage;
 
 namespace TicTacToe {
-    public partial class MainPage : PhoneApplicationPage {
+    public partial class MainPage : PhoneApplicationPage
+    {
+        private GameAI gameEngine;
+        private GameAI.value state;
+        GameAI.opponent player = GameAI.opponent.X, computer = GameAI.opponent.O;
 
-        GameAI gameEngine;
-        bool gameOver;
-        GameAI.value state;
+        private bool gameOver;
+        private IsolatedStorageSettings appSettings;
+        private const String playerWins = "PlayerWins";
+        private const String phoneWins = "PhoneWins";
+        private const String draws = "Draws";
 
- 
+
+        public String Stats {
+            get { return (String)GetValue(StatsProperty); }
+            set { SetValue(StatsProperty, value); }
+        }
+        // Using a DependencyProperty as the backing store for ComputerMoveFirst.  This enables animation, styling, binding, etc... 
+        public static readonly DependencyProperty StatsProperty =
+                DependencyProperty.Register("Stats", typeof(String), typeof(MainPage), null);
+         
         public bool ComputerMoveFirst {
             get { return (bool)GetValue(ComputerMoveFirstProperty); }
             set { SetValue(ComputerMoveFirstProperty, value); }
         }
-
         // Using a DependencyProperty as the backing store for ComputerMoveFirst.  This enables animation, styling, binding, etc... 
         public static readonly DependencyProperty ComputerMoveFirstProperty =
                 DependencyProperty.Register("ComputerMoveFirst", typeof(bool), typeof(MainPage), new PropertyMetadata(false));
@@ -27,9 +41,13 @@ namespace TicTacToe {
         // Constructor
         public MainPage() {
             InitializeComponent();
-            ContentPanel.DataContext = this;
+            DataContext = this;
+            InitializeSettings();
+
             gameEngine = new GameAI();
             ResetGame();
+            DisplayResults(GameAI.value.draw);
+
         }
 
         private void ResetGame() {
@@ -56,7 +74,6 @@ namespace TicTacToe {
             Button b = (Button)sender;
             Debug.WriteLine("Button " + b.Name + "Source");
 
-            GameAI.opponent player = GameAI.opponent.X, computer = GameAI.opponent.O;
             GameAI.value alpha = GameAI.value.oWins, beta = GameAI.value.xWins;
 
             if(ComputerMoveFirst == true) {
@@ -90,40 +107,102 @@ namespace TicTacToe {
             GameAI.value v = GameAI.value.draw;
 
             switch (gameEngine.evaluate()) {
-		    case GameAI.value.draw:{
-			    if (gameEngine.GetBoardState() == GameAI.boardState.fullBoard) {
-				    gameOver = true;
-                    v = GameAI.value.draw;
-			    }
-		    }
-		    break;
+		        case GameAI.value.draw:{
+			        if (gameEngine.GetBoardState() == GameAI.boardState.fullBoard) {
+				        gameOver = true;
+                        v = GameAI.value.draw;
+			        }
+		        }
+		        break;
 	
-		    case GameAI.value.xWins: {				
-			    gameOver = true;
-                v = GameAI.value.xWins;
-		    }
-		    break;
+		        case GameAI.value.xWins: {				
+			        gameOver = true;
+                    v = GameAI.value.xWins;
+		        }
+		        break;
 
-		    case GameAI.value.oWins:	{
-			    gameOver = true;
-                v = GameAI.value.oWins;
-		    }
-		    break;
+		        case GameAI.value.oWins:	{
+			        gameOver = true;
+                    v = GameAI.value.oWins;
+		        }
+		        break;
 			
-		    default:
-			    gameOver = false;
-			    break;
-	    }
+		        default:
+			        gameOver = false;
+			        break;
+	        }
 
-            if(v == GameAI.value.oWins)
+            DisplayResults(v);
+            return v;
+        }
+
+        void DisplayResults(GameAI.value v) {
+
+            // update screen
+            if (v == GameAI.value.oWins)
                 GameResult.Text = "O Wins!";
-            else if(v == GameAI.value.xWins)
+            else if (v == GameAI.value.xWins)
                 GameResult.Text = "X Wins!";
-            else if(gameOver == true)
+            else if (gameOver == true)
                 GameResult.Text = "Draw!";
-        
-        return v;
-    }
+
+            // Update settings
+            UpdateSettings(v);
+        }
+        void InitializeSettings() {
+
+            appSettings = IsolatedStorageSettings.ApplicationSettings;
+
+            if (appSettings.Contains(playerWins) == false) {
+                appSettings.Add(playerWins, 0);
+            }
+
+            if (appSettings.Contains(phoneWins) == false) {
+                appSettings.Add(phoneWins, 0);
+            }
+
+            if (appSettings.Contains(draws) == false) {
+                appSettings.Add(draws, 0);
+            }
+        }
+        void UpdateSettings(GameAI.value v) {
+
+            if (ComputerMoveFirst == true) {
+                if (v == GameAI.value.xWins) {
+                    UpdateStorage(phoneWins);
+                }
+                else if (v == GameAI.value.oWins) {
+                    UpdateStorage(playerWins);
+                }
+            }
+            else {
+                if (v == GameAI.value.xWins) {
+                    UpdateStorage(playerWins);
+                }
+                else if (v == GameAI.value.oWins) {
+                    UpdateStorage(phoneWins);
+
+                }
+            }
+
+            if (v == GameAI.value.draw && gameOver == true) {
+                UpdateStorage(draws);
+            }
+
+            int p, c, d;
+            appSettings.TryGetValue<int>(playerWins, out p);
+            appSettings.TryGetValue<int>(phoneWins, out c);
+            appSettings.TryGetValue<int>(draws, out d);
+
+            Stats = "Player:" + p + " Phone:" + c + " Draw:" + d;
+        }
+        void UpdateStorage(string key) {
+
+            int value = 0;
+            appSettings.TryGetValue<int>(key, out value);
+            value++;
+            appSettings[key] = value;;
+        }
 
         void GetRowColFromName(String name, ref int row, ref int col) {
 
