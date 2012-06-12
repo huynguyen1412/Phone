@@ -86,7 +86,7 @@
             <TextBlock x:Name="ApplicationTitle" Text="Tic-Tac-Toe" FontSize ="{StaticResource PhoneFontSizeExtraLarge}" 
                        Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="Statistics" Text="{Binding Stats, Mode=OneWay}" FontSize ="{StaticResource PhoneFontSizeMedium}" 
-                       Style="{StaticResource PhoneTextAccentStyle}" Margin="5"/>
+                       Style="{StaticResource PhoneTextAccentStyle}" Margin="12"/>
 
         </StackPanel>
 
