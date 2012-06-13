@@ -86,7 +86,7 @@
             <TextBlock x:Name="ApplicationTitle" Text="Tic-Tac-Toe" FontSize ="{StaticResource PhoneFontSizeExtraLarge}" 
                        Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="Statistics" Text="{Binding Stats, Mode=OneWay}" FontSize ="{StaticResource PhoneFontSizeMedium}" 
-                       Style="{StaticResource PhoneTextAccentStyle}" Margin="12"/>
+                       Style="{StaticResource PhoneTextTitle1Style}" Margin="12"/>
 
         </StackPanel>
 
@@ -135,12 +135,9 @@
             <Button Name="GS22"  Grid.Row="4" Grid.Column="4" Click="Square_Clicked"/>
             
             <!--Game Results View-->
-            <TextBox Grid.ColumnSpan="5" Grid.Row="5" 
+            <TextBlock Grid.ColumnSpan="5" Grid.Row="5" 
                      VerticalAlignment="Top"
                      HorizontalAlignment="Center"  Name="GameResult" Height="80" Width="460" 
-                     BorderBrush="Transparent"
-                     Background="{StaticResource PhoneBackgroundBrush}"
-                     Foreground="{StaticResource PhoneForegroundBrush}"
                      TextAlignment="Center"
                      Margin="0,5,0,5" />
         </Grid>
