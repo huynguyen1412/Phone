@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using WPToolKit;
 
 
 namespace IsolatedStorageDemo {
@@ -20,7 +21,8 @@ namespace IsolatedStorageDemo {
         }
         public StorageStream stream { get; set; }
     }
-    public class ViewModel : INotifyPropertyChanged {
+
+    public class ViewModel : ViewModelBase {
 
         Model dataModel = new Model();
         
@@ -33,7 +35,7 @@ namespace IsolatedStorageDemo {
 
             set {
                 imageUrl = value;
-                RaisedPropertyChanged("ImageUrl");
+                OnPropertyChanged("ImageUrl");
             }
         }
 
@@ -44,11 +46,10 @@ namespace IsolatedStorageDemo {
             }
             set { 
                 imageSource = value;
-                RaisedPropertyChanged("ImageSource");
+                OnPropertyChanged("ImageSource");
             }
         }
         private void GetImageFromUrl(object p) {
-
             LoadImage();
         }
 
@@ -115,15 +116,6 @@ namespace IsolatedStorageDemo {
             }
             finally {
                 ImageSource = image;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        void RaisedPropertyChanged(String property) {
-
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if(handler != null) {
-                handler(property, new PropertyChangedEventArgs(property));
             }
         }
     }

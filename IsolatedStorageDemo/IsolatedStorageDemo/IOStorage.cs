@@ -10,7 +10,7 @@ namespace IsolatedStorageDemo {
     /// <summary>
     /// 
     /// </summary>
-    public class IOStorage : INotifyPropertyChanged {
+    public class IOStorage  {
 
         private Uri iOFilenameUri;
         public Uri IOFilenameUri {
@@ -19,7 +19,6 @@ namespace IsolatedStorageDemo {
             }
             set {
                 SetUriAndFilename(value);
-                RaisePropertyChanged("IOFilenameUri");
             }
         }
 
@@ -30,7 +29,6 @@ namespace IsolatedStorageDemo {
             }
 		    set { 
                 iOFilenameString = value;
-                RaisePropertyChanged(IOFilenameString);
             }
 	    }
 
@@ -175,13 +173,5 @@ namespace IsolatedStorageDemo {
             return true;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void RaisePropertyChanged(String property) {
-            PropertyChangedEventHandler handler = PropertyChanged;
-
-            if (handler != null) {
-                handler(this, new PropertyChangedEventArgs(property));
-            }
-        }
     }
 }

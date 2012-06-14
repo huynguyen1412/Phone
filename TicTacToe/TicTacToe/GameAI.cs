@@ -61,7 +61,7 @@ namespace TicTacToe {
 	            return false;
             }
 
-            
+          
             public value GenerateMove( opponent op, ref int bestRow, ref int bestColumn, value alpha, value beta)
             {
 	            value state, results;
