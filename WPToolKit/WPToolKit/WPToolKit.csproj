@@ -52,6 +52,7 @@
     <Compile Include="ApplicationSettings.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="IOStorage.cs" />
+    <Compile Include="Notification.cs" />
     <Compile Include="ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
