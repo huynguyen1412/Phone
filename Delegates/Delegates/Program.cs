@@ -20,53 +20,55 @@ namespace Delegates {
     }
 
     class Notification {
-        private Dictionary<Type, Action<object, TMessage>> messageMap;
+        private Dictionary<Type, Delegate> messageMap;
 
         public Notification() {
-            messageMap = new Dictionary<Type, Action<object, TMessage>>();
+            messageMap = new Dictionary<Type, Delegate>();
         }
 
-        public void Register(TMessage message, Action<object, TMessage> handler) {
+        public void Register<T>(T message, Action<object, T> handler) {
 
-            if(messageMap.ContainsKey(message.GetType()) == false) {
+            Delegate action;
+
+            if (messageMap.TryGetValue(message.GetType(), out action) == true) {
+                action = Delegate.Combine(action, handler);
+                messageMap[message.GetType()] = action;
+            }
+            else {
                 messageMap.Add(message.GetType(), handler);
-                return;
             }
+        }
 
-            Action<object, TMessage> action;
+        public void Unregister<T>(T message, Action<object, T> handler) {
+
+            Delegate action;
             if(messageMap.TryGetValue(message.GetType(), out action) != false) {
-                action += handler;
+                action = MulticastDelegate.Remove((MulticastDelegate)action, handler);
 
                 messageMap[message.GetType()] = action;
             }
         }
 
-        public void Unregister(TMessage message, Action<object, TMessage> handler) {
-            
-            Action<object, TMessage> action;
-            if(messageMap.TryGetValue(message.GetType(), out action) != false) {
-                action -= handler;
+        public void Unregister<T>(T message) {
 
-                messageMap[message.GetType()] = action;
-            }
-        }
-
-        public void Unregister(TMessage message) {
-
-            Action<object, TMessage> action;
+            Delegate action;
             if(messageMap.TryGetValue(message.GetType(), out action) != false) {
                 // Remove all the delegates first then remove the key from the map
-                Delegate.RemoveAll(action, action);
+                Delegate[] dl = ((Action<object, T>)(action)).GetInvocationList();
+
+                foreach (Action<object, T> d in dl) {
+                    Delegate.Remove(d,d);
+                }
                 messageMap.Remove(message.GetType());
             }
         }
 
-        public void Send(object from, TMessage message) {
-            Action<object, TMessage> action;
+        public void Send<T>(object from, T message) {
+            Delegate action;
             if(messageMap.TryGetValue(message.GetType(), out action) != false) {
 
                 try {
-                    action(from, message);
+                    ((Action<object, T>)action)(from, message);
                 }
 
                 catch(Exception e) {
@@ -99,40 +101,40 @@ namespace Delegates {
             FileChanged f1 = new FileChanged();
             
             // for message type f1, send it to objects c & d
-            nc.Register(f1, c.OnFileChanged);
-            nc.Register(f1, d.OnFileChanged);
-            nc.Register(m1, d.OnFileChanged);
+            nc.Register<TMessage>(f1, c.OnFileChanged);
+            nc.Register<TMessage>(f1, d.OnFileChanged);
+            nc.Register<TMessage>(m1, d.OnFileChanged);
 
             // for message type m1, send it to objects a & b
-            nc.Register(m1, a.OnImageChanged);
-            nc.Register(m1, b.OnImageChanged);
-            nc.Send(p, m1);
-            nc.Send(p, f1);
+            nc.Register<TMessage>(m1, a.OnImageChanged);
+            nc.Register<TMessage>(m1, b.OnImageChanged);
+            nc.Send<TMessage>(p, m1);
+            nc.Send<TMessage>(p, f1);
 
             Console.WriteLine("******************* Test Unregister *******************");
 
             // unregister message f1 from SampleC handler
             Console.WriteLine("Removing " + c.GetType() + "'s OnFileChange()");
-            nc.Unregister(f1, c.OnFileChanged);
-            nc.Send(p, f1);
+            nc.Unregister<TMessage>(f1, c.OnFileChanged);
+            nc.Send<TMessage>(p, f1);
 
             // unregister message f1 from SampleD handler, any subsequent calls to Send should fail
             // because there are no more methods registered for that delegate
-            nc.Unregister(f1, d.OnFileChanged);
+            nc.Unregister<TMessage>(f1, d.OnFileChanged);
             Console.WriteLine("Removing " + d.GetType() + "'s OnFileChange()");
 
             // sending to f1 now will emit an exception since there are no handlers registered
             try {
-                nc.Send(p, f1);
+                nc.Send<TMessage>(p, f1);
             }
             catch(ArgumentNullException e) {
                 Console.WriteLine(e.ToString());
             }
 
-            nc.Unregister(m1);
+            nc.Unregister<TMessage>(m1);
 
              try {
-                nc.Send(p, m1);
+                 nc.Send<TMessage>(p, m1);
             }
             catch(ArgumentException e) {
                 Console.WriteLine(e.Message);
