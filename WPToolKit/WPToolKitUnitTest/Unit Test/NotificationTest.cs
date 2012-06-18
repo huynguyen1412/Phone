@@ -26,13 +26,12 @@ namespace WPToolKitUnitTest
 
         [TestMethod]
         public void TestNotificationSetup() {
-            nc.Register(this, MessageSink);
+           // nc.Register(this, MessageSink);
 
-            MessageSink();
+            
         }
 
 
-        public void MessageSink(ITMessage message) {
-        }
+        
     }
 }

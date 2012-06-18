@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.ComponentModel;
+using System.Collections.Generic;
+
 
 namespace WPToolKit
 {
-    public interface ITMessage
+   
+    public class TMessage : EventArgs
     {
     }
 
@@ -19,22 +14,36 @@ namespace WPToolKit
     public interface INotificationCenter
     {
         // The Action<T> method is the message sink
-        void Send(object sendTo, Action<ITMessage> messageHandler);
-        void Register(object receiver, Action<ITMessage> messageHandler);
+        void Send(TMessage message);
+        void Register(Type messageType, Action<TMessage> messageHandler);
     }
 
     public sealed class NotificationCenter : INotificationCenter {
 
-        private delegate void GenericMessage(object sender, ITMessage t);
+        private Dictionary<TMessage, Action<TMessage>> messageMaps;
 
+        public void Register<T>(Action<T> action) {
+           // map.AddHandler(typeof(T), action);
+        }
+        public void SendEvent<T>(T args) {
+            try {
+               // Delegate del = map[typeof(T)];
+               // ((Action<T>)del)(args);
+            }
+            catch { }
+        }
+        private delegate void GenericMessage(object sender, TMessage t);
+        Action<TMessage>[] delegates;
+          
         public NotificationCenter() {
+            delegates = new Action<TMessage>[] { };       
         }
 
-        public void Send(object sendTo, Action<ITMessage> messageHandler) {
+        public void Send<TMessage>(TMessage message) {
         }
 
-        public void Register(object receiver, Action<ITMessage> messageHandler) {
-
+        public void Register<TMessage>(Action<TMessage> messageHandler) {
+            messageMaps.Add
         }
     }
 }
