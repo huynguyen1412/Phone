@@ -67,7 +67,8 @@ namespace IsolatedStorageDemo {
             this.getImage = new DelegateCommand(GetImageFromUrl);
 
             // Listen for changes in the model 
-            dataModel.ImageChanged += ImageFromUrl;
+            Model.nc.Register<StorageStream>(this.ImageFromUrl);
+
         }
 
         /// <summary>
@@ -75,10 +76,10 @@ namespace IsolatedStorageDemo {
         /// It also attempts to save the image to Isolated Storage
         /// </summary>
         /// <param name="stream">The stream.</param>
-        public void ImageFromUrl(object o, StreamEventArgs e) {
+        public void ImageFromUrl(object o, StorageStream e) {
          
             // Extract the stream from the event args update Image control
-            StorageStream s = e.stream;
+            StorageStream s = e;
             
 
             BitmapImage image = new BitmapImage();

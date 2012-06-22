@@ -5,8 +5,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsolatedStorageDemo", "Isol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsolatedStorageUnitTest", "IsolatedStorageUnitTest\IsolatedStorageUnitTest.csproj", "{955698A4-4369-4A0F-A351-E468EE0353DA}"
 EndProject
-Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject1", "ModelingProject1\ModelingProject1.modelproj", "{D5D9D7B1-48DE-47B6-ADA5-EF66343CC43F}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = IsolatedStorageDemo.vsmdi
@@ -28,10 +26,6 @@ Global
 		{955698A4-4369-4A0F-A351-E468EE0353DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{955698A4-4369-4A0F-A351-E468EE0353DA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{955698A4-4369-4A0F-A351-E468EE0353DA}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{D5D9D7B1-48DE-47B6-ADA5-EF66343CC43F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5D9D7B1-48DE-47B6-ADA5-EF66343CC43F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5D9D7B1-48DE-47B6-ADA5-EF66343CC43F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5D9D7B1-48DE-47B6-ADA5-EF66343CC43F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

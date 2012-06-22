@@ -3,19 +3,21 @@ using System.IO;
 using System.Net;
 using System.Windows;
 using System.Diagnostics;
+using WPToolKit;
 
 
 namespace IsolatedStorageDemo {
-    public delegate void webResponseHandler(StorageStream stream);
- 
-    public class Model {
+    public delegate void webResponseHandler(object o, StorageStream stream);
+   
 
-        
+    public class Model {
         IOStorage phoneStorage;
         private webResponseHandler webHandlerMethod { get; set; }
-  
+        public static Notification nc;
+
         public Model() {
             phoneStorage = new IOStorage();
+            nc = new Notification();
 
             // create a new delegate (OnImageChanged) and assign it.
             webHandlerMethod = new webResponseHandler(this.OnImageChanged);
@@ -52,12 +54,9 @@ namespace IsolatedStorageDemo {
         /// receive the Image stream when is arrives.
         /// </summary>
         public event ImageFromUrl ImageChanged;
-        protected virtual void OnImageChanged(StorageStream stream) {
+        protected void OnImageChanged(object o, StorageStream stream) {
             StreamEventArgs e = new StreamEventArgs(stream);
-            using (e.stream) {
-                if (ImageChanged != null)
-                    ImageChanged(this, e);
-            }
+            nc.Send<StorageStream>(this, stream);
         }
 
         /// <summary>
@@ -72,10 +71,11 @@ namespace IsolatedStorageDemo {
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.EndGetResponse(results);
 
                 StorageStream streamCopy;
+                
                 using (Stream stream = webResponse.GetResponseStream()) {
                     streamCopy = new StorageStream(stream);
                     using (stream) {
-                        Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { streamCopy });
+                        Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { null, streamCopy });
                     };
                 }
                 webResponse.Close();
