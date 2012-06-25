@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
+using System.Threading;
 
 namespace WPToolKitUnitTest
 {
@@ -30,10 +31,17 @@ namespace WPToolKitUnitTest
                 msgReceived2 = (s == msg2);
             }
         }
-
         public class TestMessage  {
             public string msg = "TestProperty";
         }
+        public class MTTestMessage {
+            static private volatile int numMessages;
+
+            public void OnMTTestMessage(object from, TestMessage e) {
+                Interlocked.Increment(ref numMessages);
+            }
+        }
+
 
         Notification nc;
 
@@ -95,6 +103,25 @@ namespace WPToolKitUnitTest
             Assert.IsTrue(nc.RegisteredCount() == 0);
             nc.Send<TestMessage>(this, m);
 
+        }
+
+        [TestMethod]
+        public void TestSyncMessage() {
+
+            Notification n = new Notification();
+            MTTestMessage mt = new MTTestMessage();
+
+            for(int i = 0; i < 10; i++) {
+                n.Register<TestMessage>(mt.OnMTTestMessage);
+            }
+
+            // not supported yet.
+#if WINDOWS_PHONE
+            mt.OnMTTestMessage(null, null);
+#else
+            n.SendSync<TestMessage>(this, null);
+#endif
+            n.Unregister<TestMessage>();
         }
     }
 }
