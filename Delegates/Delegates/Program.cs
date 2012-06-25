@@ -214,7 +214,7 @@ namespace Delegates {
         private static uint sum;
         private static int slot;
         private static object lockThis = new object();
-
+        private static object lockThis1 = new object();
         public static int Slot { 
             get {
                 lock (lockThis) {
@@ -229,7 +229,7 @@ namespace Delegates {
         }
         public static uint Sum { 
             get {
-                lock (lockThis) {
+                lock (lockThis1) {
                     if (sum == 0) {
                         sum = 1;
                         return sum;
@@ -239,7 +239,7 @@ namespace Delegates {
                 }
             }
             set {
-                lock (lockThis) {
+                lock (lockThis1) {
                     sum = value;
                 }
             }
