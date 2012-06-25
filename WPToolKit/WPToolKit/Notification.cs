@@ -26,6 +26,9 @@ namespace WPToolKit
                  messageMap.Add(typeof(T), handler);
              }
          }
+         public int RegisteredCount() {
+             return messageMap.Count;
+         }
          public void Unregister<T>(Action<object, T> handler) {
 
              Delegate action;
@@ -80,19 +83,20 @@ namespace WPToolKit
 
              Delegate[] invocationList = action.GetInvocationList();
 
-             // not availble on WP
-             //Parallel.ForEach(invocationList, (item) => {
-             //    Action<object, T> a = item as Action<object, T>;
-             //    a(from, message);
-             //});
-
-             foreach (Action<object, T> d in invocationList) {
+#if WINDOWS_PHONE    
+             
+             foreach(Action<object, T> d in invocationList) {
                  IAsyncResult r = d.BeginInvoke(from, message, null, null);
              }
-
+#else        
+             // not availble on WP
+             parallel.foreach(invocationlist, (item) => {
+                 action<object, t> a = item as action<object, t>;
+                 a(from, message);
+             });
+#endif
              return;
          }
-
          public void SendSync<T>(object from, T message) {
              Delegate action;
              const int NumberOfWaitsAllowed = 32;
@@ -115,10 +119,6 @@ namespace WPToolKit
 
              WaitHandle.WaitAll(asyncResult.ToArray());
              return;
-         }
-
-         public int RegisteredCount() {
-             return messageMap.Count;
          }
      }
 }
