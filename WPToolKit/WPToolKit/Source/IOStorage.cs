@@ -7,7 +7,6 @@ namespace WPToolKit {
     /// <summary>
     /// 
     /// </summary>
-    /// <remarks></remarks>
     public class StorageStream : MemoryStream {
 
         /// <summary>
@@ -31,13 +30,12 @@ namespace WPToolKit {
         /// </summary>
         /// <param name="s">The s.</param>
         /// <remarks></remarks>
-        public StorageStream(Stream s) {
+        public StorageStream(StorageStream s) {
 
             if(s == null) {
                 throw new ArgumentNullException();
             }
 
-            Position = 0;
             s.CopyTo(this);
         }
         /// <summary>
@@ -56,7 +54,7 @@ namespace WPToolKit {
         new public void CopyTo(Stream destination) {
 
             if(destination == null) {
-                throw new ArgumentNullException();
+                return;
             }
 
             base.CopyTo(destination);
@@ -70,6 +68,13 @@ namespace WPToolKit {
     public class IOStorage {
 
         private Uri iOFilenameUri;
+        private String iOFilenameString;
+
+        /// <summary>
+        /// Gets or sets the IO filename URI.
+        /// </summary>
+        /// <value>The IO filename URI.</value>
+        /// <remarks></remarks>
         public Uri IOFilenameUri {
             get {
                 return iOFilenameUri;
@@ -78,7 +83,11 @@ namespace WPToolKit {
                 SetUriAndFilename(value);
             }
         }
-        private String iOFilenameString;
+        /// <summary>
+        /// Gets or sets the IO filename string.
+        /// </summary>
+        /// <value>The IO filename string.</value>
+        /// <remarks></remarks>
         public String IOFilenameString {
             get {
                 return iOFilenameString;
@@ -87,8 +96,6 @@ namespace WPToolKit {
                 iOFilenameString = value;
             }
         }
-
-
         /// <summary>
         /// Sets the URI and filename.
         /// </summary>
@@ -158,6 +165,16 @@ namespace WPToolKit {
             return stream;
         }
         /// <summary>
+        /// Saves the specified filename.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="bufferLength">Length of the buffer.</param>
+        public void Save(Uri filename, Byte[] buffer, int bufferLength) {
+            this.IOFilenameUri = filename;
+            this.Save(buffer, bufferLength);
+        }
+        /// <summary>
         /// Saves the specified buffer in filename IOFilenameUri
         /// </summary>
         /// <exceptions>
@@ -187,15 +204,10 @@ namespace WPToolKit {
             }
         }
         /// <summary>
-        /// Saves the specified filename.
+        /// Saves the specified stream.
         /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <param name="buffer">The buffer.</param>
-        /// <param name="bufferLength">Length of the buffer.</param>
-        public void Save(Uri filename, Byte[] buffer, int bufferLength) {
-            this.IOFilenameUri = filename;
-            this.Save(buffer, bufferLength);
-        }
+        /// <param name="stream">The stream.</param>
+        /// <remarks></remarks>
         public void Save(StorageStream stream) {
 
             // Make sure the stream is at the beginning of the file
