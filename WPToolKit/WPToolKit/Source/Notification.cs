@@ -11,9 +11,19 @@ namespace WPToolKit
      {
          private Dictionary<Type, Delegate> messageMap;
 
+         /// <summary>
+         /// Initializes a new instance of the <see cref="Notification"/> class.
+         /// </summary>
+         /// <remarks></remarks>
          public Notification() {
              messageMap = new Dictionary<Type, Delegate>();
          }
+         /// <summary>
+         /// Registers the specified handler.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <param name="handler">The handler.</param>
+         /// <remarks></remarks>
          public void Register<T>(Action<object, T> handler) {
 
              Delegate action;
@@ -26,9 +36,20 @@ namespace WPToolKit
                  messageMap.Add(typeof(T), handler);
              }
          }
+         /// <summary>
+         /// Returns then number of messages registerd
+         /// </summary>
+         /// <returns></returns>
+         /// <remarks></remarks>
          public int RegisteredCount() {
              return messageMap.Count;
          }
+         /// <summary>
+         /// Unregisters the specified handler for the message of type T.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <param name="handler">The handler.</param>
+         /// <remarks></remarks>
          public void Unregister<T>(Action<object, T> handler) {
 
              Delegate action;
@@ -45,6 +66,11 @@ namespace WPToolKit
                  }
              }
          }
+         /// <summary>
+         /// Unregisters all specified handlers for the message of type T.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <remarks></remarks>
          public void Unregister<T>() {
 
              Delegate action;
@@ -58,6 +84,13 @@ namespace WPToolKit
                  messageMap.Remove(typeof(T));
              }
          }
+         /// <summary>
+         /// Sends a message type T to all the registered handlers.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <param name="from">From.</param>
+         /// <param name="message">The message.</param>
+         /// <remarks></remarks>
          public void Send<T>(object from, T message) {
              Delegate action;
              if (messageMap.TryGetValue(typeof(T), out action) != false) {
@@ -74,6 +107,13 @@ namespace WPToolKit
                  throw new ArgumentException("Key: " + typeof(T) + " Not Found");
              }
          }
+         /// <summary>
+         /// Sends a message type T to all the registered handlers asynchronously.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <param name="from">From.</param>
+         /// <param name="message">The message.</param>
+         /// <remarks>This method return immediately</remarks>
          public void SendAsync<T>(object from, T message) {
              Delegate action;
 
@@ -97,6 +137,13 @@ namespace WPToolKit
 #endif
              return;
          }
+         /// <summary>
+         /// Sends a message type T to all the registered handlers asynchronously. Blocks until all are completed.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <param name="from">From.</param>
+         /// <param name="message">The message.</param>
+         /// <remarks>Limit of 32 handlers imposed</remarks>
          public void SendSync<T>(object from, T message) {
              Delegate action;
              const int NumberOfWaitsAllowed = 32;
