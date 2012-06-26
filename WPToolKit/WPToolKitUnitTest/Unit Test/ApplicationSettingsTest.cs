@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
+using System.Collections.Generic;
 
 namespace WPToolKit
 {
@@ -78,6 +79,27 @@ namespace WPToolKit
 
             result = appSettings.Remove(bogusKey);
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Description("Initializes the setting to the default values")]
+        public void TestInitializeSettings() {
+
+            // Create a default dictionary with some random key/value pairs
+            EqualityComparer<string> comparer = new ApplicationSettings.ApplicationSettingsComparator();
+            Dictionary<string, string> defaults = new Dictionary<string, string>() { {"Key1", "10"}, {"Key2","Hello"} , {"Key3","world"} , {"Key4","this"} , 
+                 {"Key5","is"}, {"Key6","a"}, {"Key7","test."}, {"Key8","42"} };
+
+            appSettings.Reset();
+            Assert.IsTrue(appSettings.Count == 0);
+
+            appSettings.InitializeSettings<string, string>(defaults);
+            Assert.IsTrue(appSettings.Count == defaults.Count);
+
+            foreach (KeyValuePair<string, string> defaultKV in defaults) {
+                string v = appSettings[defaultKV.Key] as string;
+                Assert.IsTrue(v.CompareTo(defaultKV.Value) == 0);
+            }
         }
     }
 }

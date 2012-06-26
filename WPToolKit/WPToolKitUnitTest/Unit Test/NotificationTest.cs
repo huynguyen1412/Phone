@@ -10,6 +10,7 @@ namespace WPToolKitUnitTest
     [TestClass]
     public class NotificationTest
     {
+        Notification nc;
         public class TestObject
         {
             public bool msgReceived1;
@@ -22,7 +23,6 @@ namespace WPToolKitUnitTest
                 msgReceived1 = false;
                 msgReceived2 = false;
             }
-
             public void OnMessageReceived(object from, TestMessage e) {
                 msgReceived1 = (e.msg == msg1);
                 
@@ -41,16 +41,11 @@ namespace WPToolKitUnitTest
                 Interlocked.Increment(ref numMessages);
             }
         }
-
-
-        Notification nc;
-
         [TestInitialize]
         public void SetUp() {
 
             nc = new Notification();
         }
-
         [TestMethod]
         public void TestNotificationBasicMessage() {
 
@@ -69,7 +64,6 @@ namespace WPToolKitUnitTest
             nc.Send<string>(this, TestProperty1);
             Assert.IsTrue(msg.msgReceived2);
         }
-
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestNotificationUnRegister() {
             TestObject msg = new TestObject();
@@ -82,7 +76,6 @@ namespace WPToolKitUnitTest
             nc.Unregister<TestMessage>(msg.OnMessageReceived);
             nc.Send<TestMessage>(this, m);
         }
-
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestNotificationUnRegisterAll() {
             TestObject msg = new TestObject();
@@ -104,7 +97,6 @@ namespace WPToolKitUnitTest
             nc.Send<TestMessage>(this, m);
 
         }
-
         [TestMethod]
         public void TestSyncMessage() {
 
