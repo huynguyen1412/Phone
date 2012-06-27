@@ -39,6 +39,19 @@ namespace WPToolKit {
             s.CopyTo(this);
         }
         /// <summary>
+        /// Initializes a new instance of the <see cref="StorageStream"/> class.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <remarks></remarks>
+        public StorageStream(Stream s) {
+
+            if (s == null) {
+                throw new ArgumentNullException();
+            }
+
+            s.CopyTo(this);
+        }
+        /// <summary>
         /// Reads all the bytes from the current stream and writes them to the destination stream.
         /// </summary>
         /// <param name="destination">The stream that will contain the contents of the current stream.</param>
@@ -57,8 +70,13 @@ namespace WPToolKit {
                 return;
             }
 
-            base.CopyTo(destination);
-            destination.Position = 0;
+            try {
+                base.CopyTo(destination);
+                destination.Position = 0;
+            }
+            catch (Exception e) {
+                throw e;
+            }
             return;
         }
     }
@@ -96,11 +114,22 @@ namespace WPToolKit {
                 iOFilenameString = value;
             }
         }
+
+        public String IOFilenamePath {
+            get {
+                if (iOFilenameUri == null) {
+                    return null;
+                }
+                return (iOFilenameUri.IsAbsoluteUri == true) ? 
+                    iOFilenameUri.AbsolutePath : iOFilenameUri.OriginalString;
+            }
+            private set { }
+        }
         /// <summary>
-        /// Sets the URI and filename.
+        /// Sets the URI and filename. The filename is based on the Uri trailing '/'
         /// </summary>
         /// <param name="url">The URL.</param>
-        /// <remarks></remarks>
+        /// <remarks>If the Uri doesn't contain a filename, the IOFilename is set to null</remarks>
         private void SetUriAndFilename(Uri url) {
 
             // At this point the url is null or a valid Uri.
@@ -108,7 +137,17 @@ namespace WPToolKit {
             if(url == null) {
                 iOFilenameString = null;
             } else {
-                iOFilenameString = IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
+
+                if (url.IsAbsoluteUri) {
+                    iOFilenameString = IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
+                }
+                else {
+                    iOFilenameString = url.OriginalString;
+                }
+ 
+                if (String.IsNullOrEmpty(iOFilenameString)) {
+                    iOFilenameString = null;
+                }
             }
         }
         /// <summary>

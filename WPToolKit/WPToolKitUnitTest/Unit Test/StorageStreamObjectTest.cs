@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
+using System.IO;
 
 namespace WPToolKitUnitTest.Unit_Test
 {
@@ -29,7 +30,20 @@ namespace WPToolKitUnitTest.Unit_Test
             Assert.IsTrue(srcStream.Position == 10);
 
             // this should throw ArgumentNullException
-            s = new StorageStream(null);
+            s = new StorageStream((StorageStream)null);
+        }
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void TestStorageStreamCopyConstructor1() {
+
+            Stream s = new MemoryStream();
+            StorageStream srcStream = new StorageStream(s);
+            srcStream.Position = 10;
+
+            Assert.IsTrue(s.Position == 0);
+            Assert.IsTrue(srcStream.Position == 10);
+
+            // this should throw ArgumentNullException
+            s = new StorageStream((Stream)null);
         }
     }
 }
