@@ -49,7 +49,13 @@ namespace WPToolKit {
                 throw new ArgumentNullException();
             }
 
+            long pos = s.Position;
+            s.Position = 0;
+
             s.CopyTo(this);
+
+            s.Position = pos;
+            this.Position = 0;
         }
         /// <summary>
         /// Reads all the bytes from the current stream and writes them to the destination stream.
@@ -88,6 +94,16 @@ namespace WPToolKit {
         private Uri iOFilenameUri;
         private String iOFilenameString;
 
+        /// <summary>
+        /// Gets the get user store file area for the application.
+        /// </summary>
+        /// <remarks></remarks>
+        static public IsolatedStorageFile GetUserFileArea {
+        get {
+            return IsolatedStorageFile.GetUserStoreForApplication();
+            }
+            private set { }
+        }
         /// <summary>
         /// Gets or sets the IO filename URI.
         /// </summary>
