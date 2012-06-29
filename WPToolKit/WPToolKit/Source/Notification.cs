@@ -2,24 +2,31 @@
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Threading;
+using System.Windows;
 
 
 
 namespace WPToolKit
 {
-     public class Notification
+
+    /// <summary>
+    /// Extension to Application to expose the Notification singleton
+    /// </summary>
+    /// <remarks></remarks>
+    public static class WPTKApplicationExtension {
+        static private Notification _ApplicationNotificationObject;
+
+        public static Notification GetApplicationNotificationObject(this Application a) {
+            if (_ApplicationNotificationObject == null) {
+                _ApplicationNotificationObject = new Notification();
+            }
+            return _ApplicationNotificationObject;
+        }
+    }
+
+    public class Notification
      {
          private Dictionary<Type, Delegate> messageMap;
-         static private Notification _ApplicationNotificationObject;
-
-         static public Notification ApplicationNotificationObject {
-             get {
-                 if (_ApplicationNotificationObject == null) {
-                     _ApplicationNotificationObject = new Notification();
-                 }
-                return _ApplicationNotificationObject;
-             }
-         }
          /// <summary>
          /// Initializes a new instance of the <see cref="Notification"/> class.
          /// </summary>

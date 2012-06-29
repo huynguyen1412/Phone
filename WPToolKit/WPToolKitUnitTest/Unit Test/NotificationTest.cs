@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
 using System.Threading;
+using System.Windows;
 
 namespace WPToolKitUnitTest
 {
@@ -43,8 +44,7 @@ namespace WPToolKitUnitTest
         }
         [TestInitialize]
         public void SetUp() {
-
-            nc = Notification.ApplicationNotificationObject;
+            nc = Application.Current.GetApplicationNotificationObject();
         }
         [TestMethod]
         public void TestNotificationBasicMessage() {
