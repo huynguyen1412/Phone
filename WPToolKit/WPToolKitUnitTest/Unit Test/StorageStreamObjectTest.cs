@@ -50,10 +50,6 @@ namespace WPToolKitUnitTest.Unit_Test
             StorageStream srcStream = new StorageStream();
             StorageStream destStream = null;
             srcStream.CopyTo(destStream);
- 
         }
-
-
-
     }
 }

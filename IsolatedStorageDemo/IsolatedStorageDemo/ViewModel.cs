@@ -10,17 +10,7 @@ using WPToolKit;
 
 namespace IsolatedStorageDemo {
 
-    public delegate void ImageFromUrl(object s, StreamEventArgs e);
-
-    /// <summary>
-    /// Defines an event type for Stream event
-    /// </summary>
-    public class StreamEventArgs : EventArgs {
-        public StreamEventArgs(StorageStream stream) {
-            this.stream = stream;
-        }
-        public StorageStream stream { get; set; }
-    }
+    public delegate void ImageFromUrl(object s, StorageStream e);
 
     public class ViewModel : ViewModelBase {
 
@@ -38,7 +28,6 @@ namespace IsolatedStorageDemo {
                 OnPropertyChanged("ImageUrl");
             }
         }
-
         private BitmapImage imageSource;
         public BitmapImage ImageSource {
             get { 
@@ -69,7 +58,6 @@ namespace IsolatedStorageDemo {
             // Listen for changes in the model 
             App.Current.GetApplicationNotificationObject().Register<StorageStream>(this.ImageFromUrl);
         }
-
         /// <summary>
         /// Images from URL. This is the event handler the model sends when a new image is ready.
         /// It also attempts to save the image to Isolated Storage
@@ -79,7 +67,6 @@ namespace IsolatedStorageDemo {
          
             // Extract the stream from the event args update Image control
             StorageStream s = e;
-            
 
             BitmapImage image = new BitmapImage();
             image.SetSource(s);
@@ -89,7 +76,6 @@ namespace IsolatedStorageDemo {
             dataModel.Save(s);
             s.Close();
         }
-
         /// <summary>
         /// Loads the image from the Url if the image is not in the Isolated Storage and assigns
         /// it to the binding ImageSource.

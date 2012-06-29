@@ -7,7 +7,7 @@ using WPToolKit;
 
 
 namespace IsolatedStorageDemo {
-    public delegate void webResponseHandler(object o, StorageStream stream);
+    public delegate void webResponseHandler(StorageStream stream);
    
 
     public class Model {
@@ -22,7 +22,6 @@ namespace IsolatedStorageDemo {
             // create a new delegate (OnImageChanged) and assign it.
             webHandlerMethod = new webResponseHandler(this.OnImageChanged);
         }
-
         /// <summary>
         /// Loads from web asynchronously and installs the async ReadWebRequestHandler
         /// </summary>
@@ -31,7 +30,6 @@ namespace IsolatedStorageDemo {
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
             request.BeginGetResponse(new AsyncCallback(ReadWebRequestHandler), request); 
         }
-
         /// <summary>
         /// Loads the specified filename from Isolated Storage.
         /// </summary>
@@ -40,7 +38,6 @@ namespace IsolatedStorageDemo {
         public virtual Stream Load(Uri filename) {
             return phoneStorage.Load(filename);
         }
-
         /// <summary>
         /// Saves the specified stream to Isolated Storage
         /// </summary>
@@ -48,17 +45,13 @@ namespace IsolatedStorageDemo {
         public virtual void Save(StorageStream stream) {
             phoneStorage.Save(stream);
         }
-
         /// <summary>
         /// Occurs when [image changed].  Subscribe to this event to 
         /// receive the Image stream when is arrives.
         /// </summary>
-        public event ImageFromUrl ImageChanged;
-        protected void OnImageChanged(object o, StorageStream stream) {
-            StreamEventArgs e = new StreamEventArgs(stream);
+        protected void OnImageChanged(StorageStream stream) {
             nc.Send<StorageStream>(this, stream);
         }
-
         /// <summary>
         /// Handler to process the web request to read an image.  It will also
         /// dispatch a newly created Stream object to the UI thread.
@@ -75,7 +68,7 @@ namespace IsolatedStorageDemo {
                 using (Stream stream = webResponse.GetResponseStream()) {
                     streamCopy = new StorageStream(stream);
                     using (stream) {
-                        Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { null, streamCopy });
+                        Deployment.Current.Dispatcher.BeginInvoke(webHandlerMethod, new Object[] { streamCopy });
                     };
                 }
                 webResponse.Close();
