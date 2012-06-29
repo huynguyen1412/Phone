@@ -13,6 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics;
 using IsolatedStorageDemo;
 using System.IO;
+using WPToolKit;
 
 namespace IsolatedStorageUnitTest
 {

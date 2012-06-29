@@ -45,5 +45,15 @@ namespace WPToolKitUnitTest.Unit_Test
             // this should throw ArgumentNullException
             s = new StorageStream((Stream)null);
         }
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void TestStorageStreamCopyTo() {
+            StorageStream srcStream = new StorageStream();
+            StorageStream destStream = null;
+            srcStream.CopyTo(destStream);
+ 
+        }
+
+
+
     }
 }

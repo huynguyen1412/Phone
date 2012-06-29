@@ -13,11 +13,11 @@ namespace IsolatedStorageDemo {
     public class Model {
         IOStorage phoneStorage;
         private webResponseHandler webHandlerMethod { get; set; }
-        public static Notification nc;
+        public Notification nc;
 
         public Model() {
             phoneStorage = new IOStorage();
-            nc = new Notification();
+            nc = App.Current.GetApplicationNotificationObject();
 
             // create a new delegate (OnImageChanged) and assign it.
             webHandlerMethod = new webResponseHandler(this.OnImageChanged);

@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WPToolKit;
 
 namespace IsolatedStorageDemo {
     [TestClass]
@@ -50,7 +51,7 @@ namespace IsolatedStorageDemo {
             // add trailing slash, which means no filename
             const string sampleUrl1 = "https://www.msn.com/foo.jpeg/";
             s.IOFilenameUri = new Uri(sampleUrl1);
-            Assert.AreEqual("", s.IOFilenameString, "IOStorage: IOFilenameString initialize incorrectly to: " + s.IOFilenameString.ToString());
+            Assert.IsNull(s.IOFilenameString);
 
             // add trailing +, which means foo.jpeg+
             const string sampleUrl2 = "https://www.msn.com/foo.jpeg+";

@@ -67,8 +67,7 @@ namespace IsolatedStorageDemo {
             this.getImage = new DelegateCommand(GetImageFromUrl);
 
             // Listen for changes in the model 
-            Model.nc.Register<StorageStream>(this.ImageFromUrl);
-
+            App.Current.GetApplicationNotificationObject().Register<StorageStream>(this.ImageFromUrl);
         }
 
         /// <summary>

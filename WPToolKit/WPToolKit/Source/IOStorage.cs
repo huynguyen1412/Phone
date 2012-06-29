@@ -70,10 +70,10 @@ namespace WPToolKit {
         ///   
         /// <exception cref="T:System.IO.IOException">An I/O error occurred.</exception>
         /// <remarks></remarks>
-        new public void CopyTo(Stream destination) {
+        public void CopyTo(Stream destination) {
 
             if(destination == null) {
-                return;
+                throw new ArgumentNullException();
             }
 
             try {
@@ -85,6 +85,27 @@ namespace WPToolKit {
             }
             return;
         }
+        /// <summary>
+        /// eads all the bytes from the current stream and writes them to the destination stream.
+        /// </summary>
+        /// <param name="destination">The destination.</param>
+        /// <remarks></remarks>
+        public void CopyTo(StorageStream destination) {
+
+            if (destination == null) {
+                throw new ArgumentNullException();
+            }
+
+            try {
+                base.CopyTo(destination);
+                destination.Position = 0;
+            }
+            catch (Exception e) {
+                throw e;
+            }
+            return;
+        }
+
     }
     /// <summary>
     /// 
