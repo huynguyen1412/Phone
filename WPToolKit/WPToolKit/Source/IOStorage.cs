@@ -225,7 +225,7 @@ namespace WPToolKit {
         /// <param name="filename">The filename.</param>
         /// <param name="buffer">The buffer.</param>
         /// <param name="bufferLength">Length of the buffer.</param>
-        public void Save(Uri filename, Byte[] buffer, int bufferLength) {
+        public void Save(Uri filename, Byte[] buffer, long bufferLength) {
             this.IOFilenameUri = filename;
             this.Save(buffer, bufferLength);
         }
@@ -237,7 +237,7 @@ namespace WPToolKit {
         /// </exceptions>
         /// <param name="buffer">The buffer.</param>
         /// <param name="bufferLength">Length of the buffer.</param>
-        public void Save(Byte[] buffer, int bufferLength) {
+        public void Save(Byte[] buffer, long bufferLength) {
 
             if(String.IsNullOrEmpty(IOFilenameString)) {
                 throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
@@ -258,12 +258,17 @@ namespace WPToolKit {
             finally {
             }
         }
+
         /// <summary>
         /// Saves the specified stream.
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <remarks></remarks>
         public void Save(StorageStream stream) {
+
+            if (stream == null) {
+                throw new ArgumentNullException();
+            }
 
             // Make sure the stream is at the beginning of the file
             stream.Position = 0;
@@ -279,7 +284,7 @@ namespace WPToolKit {
         /// <returns>
         ///   <c>true</c> if space is availble, otherwise, <c>false</c>.
         /// </returns>
-        public bool IsSpaceAvailble(int size) {
+        public bool IsSpaceAvailble(long size) {
             using(IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
                 if(size > store.AvailableFreeSpace)
                     return false;

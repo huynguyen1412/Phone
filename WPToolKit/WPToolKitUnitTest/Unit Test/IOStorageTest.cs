@@ -125,11 +125,21 @@ namespace WPToolKitUnitTest.Unit_Test
         }
         [TestMethod]
         public void TestSaveRaw() {
+
             // Make sure the stream is at the beginning of the file
             commonStream.Position = 0;
+            Uri uri = new Uri("TestFile.jpg", UriKind.Relative);
+            IOStorage s = new IOStorage(uri);
 
-            byte[] buffer = new byte[stream.Length];
-            stream.Read(buffer, 0, (int)stream.Length);
+            // Create a stream with image data
+            byte[] buffer = new byte[commonStream.Length];
+            commonStream.Read(buffer, 0, (int)commonStream.Length);
+
+            s.Save(buffer, commonStream.Length);
+            StorageStream strm = new StorageStream(s.Load());
+            Assert.IsTrue(commonStream.Length == strm.Length);
+
+            IOStorage.GetUserFileArea.DeleteFile(uri.OriginalString);
         }
     }
 }
