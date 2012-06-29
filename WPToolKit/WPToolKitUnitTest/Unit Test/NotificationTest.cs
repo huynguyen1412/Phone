@@ -44,7 +44,7 @@ namespace WPToolKitUnitTest
         [TestInitialize]
         public void SetUp() {
 
-            nc = new Notification();
+            nc = Notification.ApplicationNotificationObject;
         }
         [TestMethod]
         public void TestNotificationBasicMessage() {
@@ -63,6 +63,10 @@ namespace WPToolKitUnitTest
             nc.Register<string>(msg.OnMessageReceived);
             nc.Send<string>(this, TestProperty1);
             Assert.IsTrue(msg.msgReceived2);
+
+            nc.Unregister<TestMessage>();
+            nc.Unregister<string>();
+            Assert.IsTrue(nc.RegisteredCount == 0);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestNotificationUnRegister() {
@@ -74,6 +78,8 @@ namespace WPToolKitUnitTest
 
             Assert.IsTrue(msg.msgReceived1);
             nc.Unregister<TestMessage>(msg.OnMessageReceived);
+            Assert.IsTrue(nc.RegisteredCount == 0);
+
             nc.Send<TestMessage>(this, m);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
@@ -93,7 +99,7 @@ namespace WPToolKitUnitTest
 
             // Unregister them all and the Send should throw
             nc.Unregister<TestMessage>();
-            Assert.IsTrue(nc.RegisteredCount() == 0);
+            Assert.IsTrue(nc.RegisteredCount == 0);
             nc.Send<TestMessage>(this, m);
 
         }

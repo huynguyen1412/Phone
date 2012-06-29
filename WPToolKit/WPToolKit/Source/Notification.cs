@@ -10,13 +10,31 @@ namespace WPToolKit
      public class Notification
      {
          private Dictionary<Type, Delegate> messageMap;
+         static private Notification _ApplicationNotificationObject;
 
+         static public Notification ApplicationNotificationObject {
+             get {
+                 if (_ApplicationNotificationObject == null) {
+                     _ApplicationNotificationObject = new Notification();
+                 }
+                return _ApplicationNotificationObject;
+             }
+         }
          /// <summary>
          /// Initializes a new instance of the <see cref="Notification"/> class.
          /// </summary>
          /// <remarks></remarks>
          public Notification() {
              messageMap = new Dictionary<Type, Delegate>();
+         }
+         /// <summary>
+         /// Gets the register count.
+         /// </summary>
+         /// <remarks></remarks>
+         public int RegisteredCount {
+            get {
+                return messageMap.Count;
+            }
          }
          /// <summary>
          /// Registers the specified handler.
@@ -35,14 +53,6 @@ namespace WPToolKit
              else {
                  messageMap.Add(typeof(T), handler);
              }
-         }
-         /// <summary>
-         /// Returns then number of messages registerd
-         /// </summary>
-         /// <returns></returns>
-         /// <remarks></remarks>
-         public int RegisteredCount() {
-             return messageMap.Count;
          }
          /// <summary>
          /// Unregisters the specified handler for the message of type T.
