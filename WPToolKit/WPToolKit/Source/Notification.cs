@@ -13,9 +13,8 @@ namespace WPToolKit
     /// Extension to Application to expose the Notification singleton
     /// </summary>
     /// <remarks></remarks>
-    public static class WPTKApplicationExtension {
+    public static partial class WPTKApplicationExtension {
         static private Notification _ApplicationNotificationObject;
-
         public static Notification GetApplicationNotificationObject(this Application a) {
             if (_ApplicationNotificationObject == null) {
                 _ApplicationNotificationObject = new Notification();
