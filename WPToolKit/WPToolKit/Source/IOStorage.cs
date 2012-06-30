@@ -70,7 +70,7 @@ namespace WPToolKit {
         ///   
         /// <exception cref="T:System.IO.IOException">An I/O error occurred.</exception>
         /// <remarks></remarks>
-        public void CopyTo(Stream destination) {
+        new public void CopyTo(Stream destination) {
 
             if(destination == null) {
                 throw new ArgumentNullException();
@@ -86,7 +86,7 @@ namespace WPToolKit {
             return;
         }
         /// <summary>
-        /// eads all the bytes from the current stream and writes them to the destination stream.
+        /// Reads all the bytes from the current stream and writes them to the destination stream.
         /// </summary>
         /// <param name="destination">The destination.</param>
         /// <remarks></remarks>

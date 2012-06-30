@@ -62,7 +62,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Q /Y "$(TargetDir)$(TargetName).*" "C:\Program Files (x86)\WPToolKit"</PostBuildEvent>
+    <PostBuildEvent>xcopy /I /Q /Y "$(TargetDir)$(TargetName).*" "C:\Program Files (x86)\WPToolKit"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
