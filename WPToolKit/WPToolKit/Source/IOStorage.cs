@@ -116,7 +116,7 @@ namespace WPToolKit {
         private String iOFilenameString;
 
         /// <summary>
-        /// Gets the get user store file area for the application.
+        /// Gets the Application IO Storage Area.
         /// </summary>
         /// <remarks></remarks>
         static public IsolatedStorageFile GetUserFileArea {
@@ -126,7 +126,7 @@ namespace WPToolKit {
             private set { }
         }
         /// <summary>
-        /// Gets or sets the IO filename URI.
+        /// Gets or sets the IO filename Uri.
         /// </summary>
         /// <value>The IO filename URI.</value>
         /// <remarks></remarks>
@@ -152,6 +152,9 @@ namespace WPToolKit {
             }
         }
 
+        /// <summary>
+        /// Gets the full file path
+        /// </summary>
         public String IOFilenamePath {
             get {
                 if (iOFilenameUri == null) {
@@ -163,7 +166,7 @@ namespace WPToolKit {
             private set { }
         }
         /// <summary>
-        /// Sets the URI and filename. The filename is based on the Uri trailing '/'
+        /// Sets the Uri and filename. The filename is based on the Uri trailing '/'
         /// </summary>
         /// <param name="url">The URL.</param>
         /// <remarks>If the Uri doesn't contain a filename, the IOFilename is set to null</remarks>
@@ -201,7 +204,7 @@ namespace WPToolKit {
             SetUriAndFilename(url);
         }
         /// <summary>
-        /// Loads the specified new URL.
+        /// Loads the specified new Uri.
         /// </summary>
         /// <param name="newUrl">The new URL.</param>
         /// <returns></returns>
@@ -211,7 +214,7 @@ namespace WPToolKit {
             return this.Load();
         }
         /// <summary>
-        /// Loads the Url designated by the IOFilenameUri.
+        /// Loads the Uri designated by the IOFilenameUri.
         /// </summary>
         /// <exceptions>
         /// ArgumentNullException - IOFilenameUri not set
