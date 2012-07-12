@@ -38,11 +38,7 @@ namespace IsolatedStorageDemo {
                 OnPropertyChanged("ImageSource");
             }
         }
-        private void GetImageFromUrl(object p) {
-            LoadImage();
-        }
-
-        public ICommand LoadImageFromUrl {
+         public ICommand LoadImageFromUrl {
             get {
                 return this.getImage;
             }
@@ -53,7 +49,7 @@ namespace IsolatedStorageDemo {
             ImageUrl = new Uri("http://8020.photos.jpgmag.com/3106321_283814_9433b77615_m.jpg");
             
             // Button ICommand handler
-            this.getImage = new DelegateCommand(GetImageFromUrl);
+            this.getImage = new DelegateCommand(m => LoadImage());
 
             // Listen for changes in the model 
             App.Current.GetApplicationNotificationObject().Register<StorageStream>(this.ImageFromUrl);

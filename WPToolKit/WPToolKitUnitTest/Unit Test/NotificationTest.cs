@@ -20,9 +20,13 @@ namespace WPToolKitUnitTest
             public bool msgReceived2;
             string msg2 = "ImageProperty";
 
+            public bool msgReceived3;
+            int results=10;
+
             public TestObject() {
                 msgReceived1 = false;
                 msgReceived2 = false;
+                msgReceived3 = false;
             }
             public void OnMessageReceived(object from, TestMessage e) {
                 msgReceived1 = (e.msg == msg1);
@@ -31,10 +35,27 @@ namespace WPToolKitUnitTest
             public void OnMessageReceived(object from, string s) {
                 msgReceived2 = (s == msg2);
             }
+
+            public int OnMessageReceived(object from, TestMessageFuncDelegate x) {
+                msgReceived3 = (x.value == results);
+                return -1;
+            }
+
+            public string OnMessageReceivedWithReturn(object from, string x) {
+                msgReceived3 = (x == msg2);
+                return "OnMessageReceivedWithReturn";
+            }
+
         }
+
         public class TestMessage  {
             public string msg = "TestProperty";
         }
+
+        public class TestMessageFuncDelegate {
+            public int value = 10;
+        }
+
         public class MTTestMessage {
             static private volatile int numMessages;
 
@@ -121,5 +142,51 @@ namespace WPToolKitUnitTest
 #endif
             n.Unregister<TestMessage>();
         }
+
+        // Test for Func<T>
+        [TestMethod]
+        public void TestRegisterFunc() {
+            TestObject msg = new TestObject();
+            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            nc.Register<TestMessageFuncDelegate,int>(msg.OnMessageReceived);
+            Assert.IsTrue(nc.RegisteredCount == 1);
+            nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            Assert.IsTrue(nc.RegisteredCount == 0);
+        }
+
+        [TestMethod]
+        public void TestSendFunc() {
+            TestObject msg = new TestObject();
+            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+            Assert.IsTrue(x == -1);
+            Assert.IsTrue(msg.msgReceived3);
+        }
+
+        [TestMethod]
+        public void TestUnRegisterAllFunc() {
+            TestObject msg = new TestObject();
+            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+ 
+            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            nc.Register<string, string>(msg.OnMessageReceivedWithReturn);
+  
+            Assert.IsTrue(nc.RegisteredCount == 2);
+            for (int i = 0; i < 2; i++) {
+                int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+                Assert.IsTrue(x == -1);
+            }
+            // Unregister all of one type and make sure the other type is still there
+            nc.Unregister<TestMessageFuncDelegate, int>();
+            Assert.IsTrue(nc.RegisteredCount == 1);
+
+            string res = nc.Send<string, string>(this, "This should make the bool set to false");
+            Assert.IsTrue(res.CompareTo("OnMessageReceivedWithReturn") == 0);
+            Assert.IsTrue(msg.msgReceived3 == false);
+        }
+
     }
+
+
 }

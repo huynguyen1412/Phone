@@ -61,6 +61,25 @@ namespace WPToolKit
              }
          }
          /// <summary>
+         /// Registers the specified handler.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <typeparam name="TResult">The type of the result.</typeparam>
+         /// <param name="handler">The handler.</param>
+         /// <remarks></remarks>
+         public void Register<T, TResult>(Func<object, T, TResult> handler) {
+
+             Delegate func;
+
+             if (messageMap.TryGetValue(typeof(T), out func) == true) {
+                 func = Delegate.Combine(func, handler);
+                 messageMap[typeof(T)] = func;
+             }
+             else {
+                 messageMap.Add(typeof(T), handler);
+             }
+         }
+         /// <summary>
          /// Unregisters the specified handler for the message of type T.
          /// </summary>
          /// <typeparam name="T"></typeparam>
@@ -83,6 +102,29 @@ namespace WPToolKit
              }
          }
          /// <summary>
+         /// Unregisters the specified handler.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <typeparam name="TResult">The type of the result.</typeparam>
+         /// <param name="handler">The handler.</param>
+         /// <remarks></remarks>
+         public void Unregister<T, TResult>(Func<object, T, TResult> handler) {
+
+             Delegate func;
+             if (messageMap.TryGetValue(typeof(T), out func) == true) {
+                 func = MulticastDelegate.Remove((MulticastDelegate)func, handler);
+
+                 // if the delegate list is empty, remove the key
+                 // otherwise, set it to the new delegate list
+                 if (func == null) {
+                     messageMap.Remove(typeof(T));
+                 }
+                 else {
+                     messageMap[typeof(T)] = func;
+                 }
+             }
+         }
+         /// <summary>
          /// Unregisters all specified handlers for the message of type T.
          /// </summary>
          /// <typeparam name="T"></typeparam>
@@ -95,6 +137,24 @@ namespace WPToolKit
                  Delegate[] dl = ((Action<object, T>)(action)).GetInvocationList();
 
                  foreach (Action<object, T> d in dl) {
+                     Delegate.Remove(d, d);
+                 }
+                 messageMap.Remove(typeof(T));
+             }
+         }
+         /// <summary>
+         /// Unregisters this instance.
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <typeparam name="TResult">The type of the result.</typeparam>
+         /// <remarks></remarks>
+         public void Unregister<T, TResult>() {
+             Delegate func;
+             if (messageMap.TryGetValue(typeof(T), out func) == true) {
+                 // Remove all the delegates first then remove the key from the map
+                 Delegate[] dl = ((Func<object, T, TResult>)(func)).GetInvocationList();
+
+                 foreach (Func<object, T, TResult> d in dl) {
                      Delegate.Remove(d, d);
                  }
                  messageMap.Remove(typeof(T));
@@ -116,12 +176,34 @@ namespace WPToolKit
                  }
 
                  catch (Exception e) {
-                     throw new ArgumentNullException("InvalidHanlderMethod", e);
+                     throw new ArgumentNullException("InvalidHandlerMethod", e);
                  }
              }
              else {
                  throw new ArgumentException("Key: " + typeof(T) + " Not Found");
              }
+         }
+
+         public TResult Send<T, TResult>(object from, T message) {
+             
+             Delegate func;
+             TResult result;
+
+             if (messageMap.TryGetValue(typeof(T), out func) != false) {
+
+                 try {
+                     result = ((Func<object, T, TResult>)func)(from, message);
+                 }
+
+                 catch (Exception e) {
+                     throw new ArgumentNullException("InvalidHandlerMethod", e);
+                 }
+             }
+             else {
+                 throw new ArgumentException("Key: " + typeof(T) + " Not Found");
+             }
+
+             return result;
          }
          /// <summary>
          /// Sends a message type T to all the registered handlers asynchronously.
