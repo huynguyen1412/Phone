@@ -282,7 +282,6 @@ namespace WPToolKit {
             finally {
             }
         }
-
         /// <summary>
         /// Saves the specified stream.
         /// </summary>
@@ -300,6 +299,33 @@ namespace WPToolKit {
             byte[] buffer = new byte[stream.Length];
             stream.Read(buffer, 0, (int)stream.Length);
             this.Save(buffer, (int)stream.Length);
+        }
+        /// <summary>
+        /// Removes the specified filename.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <remarks></remarks>
+        public void Remove(Uri filename) {
+            if (String.IsNullOrEmpty(IOFilenameString)) {
+                throw new ArgumentNullException();
+            }
+
+            SetUriAndFilename(filename);
+            this.Remove();
+        }
+        /// <summary>
+        /// Removes the file referenced by IOFilenameString.
+        /// </summary>
+        /// <remarks></remarks>
+        public void Remove() {
+
+            if (String.IsNullOrEmpty(IOFilenameString)) {
+                throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
+            }
+
+            using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
+                store.DeleteFile(IOFilenameString);
+            }
         }
         /// <summary>
         /// Determines whether the application has the space indicated by size.

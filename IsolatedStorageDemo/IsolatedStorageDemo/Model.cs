@@ -45,6 +45,10 @@ namespace IsolatedStorageDemo {
         public virtual void Save(StorageStream stream) {
             phoneStorage.Save(stream);
         }
+
+        public virtual void Remove(Uri filename) {
+            phoneStorage.Remove(filename);
+        }
         /// <summary>
         /// Occurs when [image changed].  Subscribe to this event to 
         /// receive the Image stream when is arrives.

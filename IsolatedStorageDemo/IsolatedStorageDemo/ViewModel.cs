@@ -17,6 +17,7 @@ namespace IsolatedStorageDemo {
         Model dataModel = new Model();
         
         private ICommand getImage;
+        private ICommand removeImage;
         private Uri imageUrl;
         public Uri ImageUrl {
             get { 
@@ -38,9 +39,14 @@ namespace IsolatedStorageDemo {
                 OnPropertyChanged("ImageSource");
             }
         }
-         public ICommand LoadImageFromUrl {
+        public ICommand LoadImageFromUrl {
             get {
                 return this.getImage;
+            }
+        }
+        public ICommand DeleteImageFromStorage {
+            get {
+                return this.removeImage;
             }
         }
         public ViewModel() {
@@ -50,6 +56,7 @@ namespace IsolatedStorageDemo {
             
             // Button ICommand handler
             this.getImage = new DelegateCommand(m => LoadImage());
+            this.removeImage = new DelegateCommand(m => DeleteImage());
 
             // Listen for changes in the model 
             App.Current.GetApplicationNotificationObject().Register<StorageStream>(this.ImageFromUrl);
@@ -99,6 +106,12 @@ namespace IsolatedStorageDemo {
             finally {
                 ImageSource = image;
             }
+        }
+
+        private void DeleteImage() {
+            ApplicationSettings s = new ApplicationSettings();
+            dataModel.Remove(ImageUrl);
+            ImageSource = null;
         }
     }
 }

@@ -141,5 +141,22 @@ namespace WPToolKitUnitTest.Unit_Test
 
             IOStorage.GetUserFileArea.DeleteFile(uri.OriginalString);
         }
+        [TestMethod, ExpectedException(typeof(IsolatedStorageException))]
+        public void TestRemove() {
+
+            // Make sure the stream is at the beginning of the file
+            commonStream.Position = 0;
+            Uri uri = new Uri("TestFile.jpg", UriKind.Relative);
+            IOStorage s = new IOStorage(uri);
+
+            // Create a stream with image data
+            byte[] buffer = new byte[commonStream.Length];
+            commonStream.Read(buffer, 0, (int)commonStream.Length);
+
+            // save it then remove it.
+            s.Save(buffer, commonStream.Length);
+            s.Remove();
+            StorageStream strm = new StorageStream(s.Load());
+        }
     }
 }

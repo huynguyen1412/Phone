@@ -183,7 +183,15 @@ namespace WPToolKit
                  throw new ArgumentException("Key: " + typeof(T) + " Not Found");
              }
          }
-
+         /// <summary>
+         /// Sends the specified message and returns a result
+         /// </summary>
+         /// <typeparam name="T"></typeparam>
+         /// <typeparam name="TResult">The type of the result.</typeparam>
+         /// <param name="from">From.</param>
+         /// <param name="message">The message.</param>
+         /// <returns></returns>
+         /// <remarks></remarks>
          public TResult Send<T, TResult>(object from, T message) {
              
              Delegate func;

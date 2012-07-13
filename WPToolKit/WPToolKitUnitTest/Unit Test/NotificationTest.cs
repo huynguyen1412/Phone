@@ -90,7 +90,7 @@ namespace WPToolKitUnitTest
             Assert.IsTrue(nc.RegisteredCount == 0);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void TestNotificationUnRegister() {
+        public void TestNotificationUnregister() {
             TestObject msg = new TestObject();
             TestMessage m = new TestMessage();
 
@@ -104,7 +104,7 @@ namespace WPToolKitUnitTest
             nc.Send<TestMessage>(this, m);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void TestNotificationUnRegisterAll() {
+        public void TestNotificationUnregisterAll() {
             TestObject msg = new TestObject();
             TestObject msg1 = new TestObject();
 
@@ -165,7 +165,7 @@ namespace WPToolKitUnitTest
         }
 
         [TestMethod]
-        public void TestUnRegisterAllFunc() {
+        public void TestUnregisterAllFunc() {
             TestObject msg = new TestObject();
             TestMessageFuncDelegate m = new TestMessageFuncDelegate();
  
