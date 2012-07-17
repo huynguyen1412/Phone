@@ -57,7 +57,7 @@ namespace WPToolKitUnitTest
         }
 
         public class MTTestMessage {
-            static private volatile int numMessages;
+            static private int numMessages;
 
             public void OnMTTestMessage(object from, TestMessage e) {
                 Interlocked.Increment(ref numMessages);

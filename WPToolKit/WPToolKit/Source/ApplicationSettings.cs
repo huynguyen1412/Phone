@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace WPToolKit
 {
-   
     public sealed class ApplicationSettings
     {
         private IsolatedStorageSettings appSettings;

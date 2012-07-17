@@ -55,6 +55,7 @@
     <Compile Include="Source\DelegateCommand.cs" />
     <Compile Include="Source\IOStorage.cs" />
     <Compile Include="Source\Notification.cs" />
+    <Compile Include="Source\StorageStream.cs" />
     <Compile Include="Source\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
