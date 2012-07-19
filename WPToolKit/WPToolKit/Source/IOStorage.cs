@@ -200,7 +200,7 @@ namespace WPToolKit {
         /// <param name="filename">The filename.</param>
         /// <remarks></remarks>
         public void Remove(Uri filename) {
-            if (String.IsNullOrEmpty(IOFilenameString)) {
+            if (String.IsNullOrEmpty(filename.OriginalString)) {
                 throw new ArgumentNullException();
             }
 
@@ -213,7 +213,7 @@ namespace WPToolKit {
         /// <remarks></remarks>
         public void Remove() {
 
-            if (String.IsNullOrEmpty(IOFilenameString)) {
+            if (String.IsNullOrEmpty(IOFilenameUri.OriginalString)) {
                 throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
             }
 

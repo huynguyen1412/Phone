@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="Source\ApplicationSettings.cs" />
     <Compile Include="Source\DelegateCommand.cs" />
+    <Compile Include="Source\IOUrl.cs" />
     <Compile Include="Source\IOStorage.cs" />
     <Compile Include="Source\Notification.cs" />
     <Compile Include="Source\StorageStream.cs" />

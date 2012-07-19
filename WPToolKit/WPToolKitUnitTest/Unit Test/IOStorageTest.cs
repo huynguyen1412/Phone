@@ -158,5 +158,11 @@ namespace WPToolKitUnitTest.Unit_Test
             s.Remove();
             StorageStream strm = new StorageStream(s.Load());
         }
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void TestRemoveBadParam() {
+            IOStorage s = new IOStorage();
+            s.Remove();
+        }
+
     }
 }
