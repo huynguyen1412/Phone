@@ -67,14 +67,16 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <None Include="Unit Test\ApplicationSettingsTest.cs" />
+    <Compile Include="Unit Test\ApplicationSettingsTest.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Unit Test\IOStorageTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Unit Test\IOUrlTest.cs" />
-    <None Include="Unit Test\IOStorageTest.cs" />
-    <None Include="Unit Test\StorageStreamObjectTest.cs" />
-    <None Include="Unit Test\NotificationTest.cs" />
+    <Compile Include="Unit Test\StorageStreamObjectTest.cs" />
+    <Compile Include="Unit Test\NotificationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

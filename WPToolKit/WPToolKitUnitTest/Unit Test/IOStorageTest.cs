@@ -12,6 +12,9 @@ namespace WPToolKitUnitTest.Unit_Test
     [TestClass]
     public class IOStorageTest
     {
+        private String filename;
+        private String file;
+
         IOStorage commonIOStore;
         Uri commonUri;
         StorageStream commonStream;
@@ -29,11 +32,53 @@ namespace WPToolKitUnitTest.Unit_Test
             commonIOStore.Save(commonStream);
         }
 
+        public IOStorageTest() {
+            filename = "c:/test.c";
+            file = "test.c";
+        }
+  
         [TestMethod]
-        public void TestDefaultConstructor() {
+        public void TestBasicConstruction() {
+            IOStorage s = new IOStorage(new Uri(filename));
+            String f = s;
+            Assert.IsTrue(file.CompareTo(f) == 0);
+        }
+
+        [TestMethod]
+        public void TestBasicSetUrl() {
             IOStorage s = new IOStorage();
-            Assert.IsTrue(s.IOFilenameUri == null);
-            Assert.IsTrue(s.IOFilenameString == null);
+            s.Url = new IOUrl("c:/test.c");
+            Assert.IsTrue("test.c".CompareTo(s) == 0);
+        }
+
+// Test all the methods that with no Uri parameter to see if they throw correctly
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+        public void TestStringCoversionWithoutUrl() {
+            IOStorage s = new IOStorage();
+            String f = s;
+        }
+
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+        public void TestUriCoversionWithoutUrl() {
+            IOStorage s = new IOStorage();
+            Uri u = s;
+        }
+
+        public void TestBaseConstructor() {
+            IOStorage s = new IOStorage();
+            String f = s;
+        }
+
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+        public void TestLoadWithoutUrl() {
+            IOStorage s = new IOStorage();
+            s.Load();
+        }
+
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
+        public void TestRemoveWithoutUrl() {
+            IOStorage s = new IOStorage();
+            s.Remove();
         }
         [TestMethod]
         public void TestConstructorWithUrl() {
@@ -41,50 +86,49 @@ namespace WPToolKitUnitTest.Unit_Test
             string fn = "test.jpg";
 
             IOStorage s = new IOStorage(uri2);
-            Assert.IsTrue(s.IOFilenameUri.Equals(uri2));
-            Assert.IsTrue(s.IOFilenameString == fn);
+            String f = s;
+            Uri u = s;
+
+            Assert.IsTrue(u.Equals(uri2));
+            Assert.IsTrue(f == fn);
         }
+
         [TestMethod]
         public void TestPropertyFilename() {
 
             Uri uri = new Uri("http://www.foomanchu.com");
             Uri uri1 = new Uri("http://www.foomanchu.edu");
             Uri uri2 = new Uri("http://www.foomanchu.com/test.jpg");
-            string fn = "test.jpg";
+            String fn = "test.jpg";
 
             // verify there isn't a filename within uri
             IOStorage s = new IOStorage(uri);
-            Assert.IsTrue(s.IOFilenameUri.Equals(uri));
-            Assert.IsTrue(s.IOFilenameString == null);
+            Assert.IsTrue(((Uri)s).Equals(uri));
 
             // verify there is a filename within the uri
             s = new IOStorage(uri2);
-            Assert.IsTrue(s.IOFilenameUri.Equals(uri2));
+            Assert.IsTrue(((Uri)s).Equals(uri2));
             s = new IOStorage(uri2);
-            Assert.IsTrue(s.IOFilenameString == fn);
+            Assert.IsTrue(s == fn);
 
             // create a uri with a relative path
-            TestPropertyFilenameHelper("SplashScreenImage.jpg");
-            TestPropertyFilenameHelper("/SplashScreenImage.jpg");
+            TestPropertyFilenameHelper("SplashScreenImage.jpg", "", "SplashScreenImage.jpg", UriKind.Relative);
+            TestPropertyFilenameHelper("/SplashScreenImage.jpg", "/", "SplashScreenImage.jpg", UriKind.Relative);
 
             // verify non-relative path
-            TestPropertyFilenameHelper("c:/SplashScreenImage.jpg", "c:/SplashScreenImage.jpg", "SplashScreenImage.jpg");
-            TestPropertyFilenameHelper("file://c:/SplashScreenImage.jpg", "c:/SplashScreenImage.jpg", "SplashScreenImage.jpg");
+            TestPropertyFilenameHelper("c:/SplashScreenImage.jpg", "c:/", "SplashScreenImage.jpg", UriKind.Absolute);
+            TestPropertyFilenameHelper("file://c:/SplashScreenImage.jpg", "c:/", "SplashScreenImage.jpg", UriKind.Absolute);
         }
 
-        private void TestPropertyFilenameHelper(string u, string path, string filename) {
-            Uri uri = new Uri(u);
+        
+        private void TestPropertyFilenameHelper(string u, string path, string filename, UriKind k) {
+            Uri uri = new Uri(u,k);
             IOStorage s = new IOStorage(uri);
-            Assert.IsTrue(s.IOFilenamePath.CompareTo(path) == 0);
-            Assert.IsTrue(s.IOFilenameString.CompareTo(filename) == 0);
-            Assert.IsTrue(s.IOFilenameUri.Equals(u));
-        }
-        private void TestPropertyFilenameHelper(string path) {
-            Uri uri = new Uri(path, UriKind.Relative);
-            IOStorage s = new IOStorage(uri);
-            Assert.IsTrue(s.IOFilenamePath.CompareTo(path) == 0);
-            Assert.IsTrue(s.IOFilenameString.CompareTo(path) == 0);
-            Assert.IsTrue(s.IOFilenameUri.Equals(uri));
+
+            if (k == UriKind.Absolute) {
+                Assert.IsTrue(s.GetPath().CompareTo(path) == 0);
+            }
+            Assert.IsTrue(((String)s).CompareTo(filename) == 0);
         }
 
         [TestMethod, ExpectedException(typeof(IsolatedStorageException))]
@@ -97,7 +141,7 @@ namespace WPToolKitUnitTest.Unit_Test
             IOStorage s = new IOStorage(uri);
             s.Load();
         }
-
+     
         [TestMethod]
         public void TestDefaultLoad() {
 
@@ -109,20 +153,20 @@ namespace WPToolKitUnitTest.Unit_Test
             // delete the file 
             IOStorage.GetUserFileArea.DeleteFile(commonUri.OriginalString);
         }
-
+     
         [TestMethod]
         public void TestLoadWithUrl() {
 
             // test load with Uri argument
-            IOStorage ss = new IOStorage();
             StorageStream result = new StorageStream(commonIOStore.Load(commonUri));
             Assert.IsTrue(result.Length == commonStream.Length);
         }
-
+        
         [TestMethod]
         public void TestSaveWithStorageStream() {
             TestLoadWithUrl();
         }
+        
         [TestMethod]
         public void TestSaveRaw() {
 
@@ -141,6 +185,7 @@ namespace WPToolKitUnitTest.Unit_Test
 
             IOStorage.GetUserFileArea.DeleteFile(uri.OriginalString);
         }
+       
         [TestMethod, ExpectedException(typeof(IsolatedStorageException))]
         public void TestRemove() {
 
@@ -158,11 +203,5 @@ namespace WPToolKitUnitTest.Unit_Test
             s.Remove();
             StorageStream strm = new StorageStream(s.Load());
         }
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestRemoveBadParam() {
-            IOStorage s = new IOStorage();
-            s.Remove();
-        }
-
     }
 }

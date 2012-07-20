@@ -110,7 +110,13 @@ namespace IsolatedStorageDemo {
 
         private void DeleteImage() {
             ApplicationSettings s = new ApplicationSettings();
-            dataModel.Remove(ImageUrl);
+
+            try {
+                dataModel.Remove(ImageUrl);
+            } 
+            catch (ArgumentNullException) {
+            }
+
             ImageSource = null;
         }
     }

@@ -15,8 +15,16 @@ namespace WPToolKit {
                 return baseUriName;
             }
             set {
+                if (baseUriName.Equals(value) == false) {
+                    baseUriName = value;
+                }
             }
         }
+        /// <summary>
+        /// Gets the path.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public String GetPath() {
             if (!IsFile()) {
                 throw new ArgumentOutOfRangeException("Url is not a filename");
@@ -31,21 +39,28 @@ namespace WPToolKit {
         public IOUrl(String url) {
             baseUriName = new Uri(url);
         }
+        public IOUrl(Uri uri) {
+            baseUriName = uri;
+        }
         private IOUrl() {
             // must create this class with a Uri, hence this construction is private
         }
-
         /// <summary>
         /// Determines whether this instance is file.
         /// </summary>
         /// <returns><c>true</c> if this instance is file; otherwise, <c>false</c>.</returns>
         /// <remarks></remarks>
         public bool IsFile() {
-            if (baseUriName.Scheme.CompareTo("file") == 0) {
-                return true;
-            }
+            bool result = false;
 
-            return false;
+            try {
+                if (baseUriName.Scheme == Uri.UriSchemeFile) {
+                    result = true;
+                }
+            } catch (InvalidOperationException) {
+                result = true;
+            }
+            return result;
         }
         /// <summary>
         /// Determines whether this instance is HTTP.
@@ -53,13 +68,12 @@ namespace WPToolKit {
         /// <returns><c>true</c> if this instance is HTTP; otherwise, <c>false</c>.</returns>
         /// <remarks></remarks>
         public bool IsHttp() {
-            if (baseUriName.Scheme.CompareTo("http") == 0) {
+            if (baseUriName.Scheme == Uri.UriSchemeHttp || baseUriName.Scheme == Uri.UriSchemeHttps) {
                 return true;
             }
 
             return false;
         }
-
         // conversions
         /// <summary>
         /// Performs an implicit conversion from <see cref="WPToolKit.IOUrl"/> to <see cref="System.String"/>.

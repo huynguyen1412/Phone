@@ -6,8 +6,15 @@ using System.ComponentModel;
 namespace WPToolKit {
     public class IOStorage {
 
-        private Uri iOFilenameUri;
-        private String iOFilenameString;
+        private IOUrl url;
+        public IOUrl Url {
+            get {
+                return url;
+            }
+            set {
+                url = value;
+            }
+        }
 
         /// <summary>
         /// Gets the Application IO Storage Area.
@@ -20,119 +27,81 @@ namespace WPToolKit {
             private set { }
         }
         /// <summary>
-        /// Gets or sets the IO filename Uri.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOStorage"/> to <see cref="System.Uri"/>.
         /// </summary>
-        /// <value>The IO filename URI.</value>
+        /// <param name="s">The s.</param>
+        /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public Uri IOFilenameUri {
-            get {
-                return iOFilenameUri;
-            }
-            set {
-                SetUriAndFilename(value);
-            }
+        public static implicit operator Uri(IOStorage s) {
+            s.HasValidIOUrl();
+            return s.url;
         }
         /// <summary>
-        /// Gets or sets the IO filename string.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOStorage"/> to <see cref="System.String"/>.
         /// </summary>
-        /// <value>The IO filename string.</value>
+        /// <param name="s">The s.</param>
+        /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public String IOFilenameString {
-            get {
-                return iOFilenameString;
-            }
-            set {
-                iOFilenameString = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the full file path
-        /// </summary>
-        public String IOFilenamePath {
-            get {
-                if (iOFilenameUri == null) {
-                    return null;
-                }
-                return (iOFilenameUri.IsAbsoluteUri == true) ? 
-                    iOFilenameUri.AbsolutePath : iOFilenameUri.OriginalString;
-            }
-            private set { }
+        public static implicit operator String(IOStorage s) {
+            s.HasValidIOUrl();
+            return s.url;
         }
         /// <summary>
-        /// Sets the Uri and filename. The filename is based on the Uri trailing '/'
+        /// Gets the path for the underlying filename.
         /// </summary>
-        /// <param name="url">The URL.</param>
-        /// <remarks>If the Uri doesn't contain a filename, the IOFilename is set to null</remarks>
-        private void SetUriAndFilename(Uri url) {
-
-            // At this point the url is null or a valid Uri.
-            iOFilenameUri = url;
-            if(url == null) {
-                iOFilenameString = null;
-            } else {
-
-                if (url.IsAbsoluteUri) {
-                    iOFilenameString = IOFilenameUri.AbsolutePath.Substring(IOFilenameUri.AbsolutePath.LastIndexOf('/') + 1);
-                }
-                else {
-                    iOFilenameString = url.OriginalString;
-                }
- 
-                if (String.IsNullOrEmpty(iOFilenameString)) {
-                    iOFilenameString = null;
-                }
-            }
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public String GetPath() {
+            HasValidIOUrl();
+            return url.GetPath();
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
         public IOStorage() {
-            SetUriAndFilename(null);
+            url = null;
         }
         /// <summary>
         /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
         /// <param name="url">The URL.</param>
         public IOStorage(Uri url) {
-            SetUriAndFilename(url);
+            this.url = new IOUrl(url);
         }
         /// <summary>
         /// Loads the specified new Uri.
         /// </summary>
         /// <param name="newUrl">The new URL.</param>
         /// <returns></returns>
-        public Stream Load(Uri newUrl) {
-
-            SetUriAndFilename(newUrl);
+        public Stream Load(Uri url) {
+            this.url = new IOUrl(url);
             return this.Load();
         }
         /// <summary>
-        /// Loads the Uri designated by the IOFilenameUri.
+        /// Loads this instance of the stream.
         /// </summary>
-        /// <exceptions>
-        /// ArgumentNullException - IOFilenameUri not set
-        /// </exceptions>
         /// <returns></returns>
+        /// <remarks></remarks>
         public Stream Load() {
+            HasValidIOUrl();
 
             MemoryStream stream = null;
-            if(String.IsNullOrEmpty(IOFilenameString)) {
-                throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
+            if(String.IsNullOrEmpty(this)) {
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
             try {
 
                 stream = new MemoryStream();
                 using(IsolatedStorageFile file = IsolatedStorageFile.GetUserStoreForApplication()) {
-                    using(IsolatedStorageFileStream ioStream = file.OpenFile(IOFilenameString, FileMode.Open)) {
+                    using(IsolatedStorageFileStream ioStream = file.OpenFile(this, FileMode.Open)) {
                         ioStream.CopyTo(stream);
                         ioStream.Close();
                     }
                 }
             }
             catch(IsolatedStorageException) {
-                throw new IsolatedStorageException("Url " + IOFilenameString + " not found in Isolated Storage");
+                throw new IsolatedStorageException("Url " + (String)this + " not found in Isolated Storage");
             }
 
             return stream;
@@ -144,21 +113,20 @@ namespace WPToolKit {
         /// <param name="buffer">The buffer.</param>
         /// <param name="bufferLength">Length of the buffer.</param>
         public void Save(Uri filename, Byte[] buffer, long bufferLength) {
-            this.IOFilenameUri = filename;
+            this.url = new IOUrl(filename);
             this.Save(buffer, bufferLength);
         }
         /// <summary>
-        /// Saves the specified buffer in filename IOFilenameUri
+        /// Saves the specified buffer.
         /// </summary>
-        /// <exceptions>
-        /// ArgumentNullException - IOFilenameUri not set
-        /// </exceptions>
         /// <param name="buffer">The buffer.</param>
         /// <param name="bufferLength">Length of the buffer.</param>
+        /// <remarks></remarks>
         public void Save(Byte[] buffer, long bufferLength) {
 
-            if(String.IsNullOrEmpty(IOFilenameString)) {
-                throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
+            HasValidIOUrl();
+            if(String.IsNullOrEmpty(this)) {
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
             try {
@@ -166,7 +134,7 @@ namespace WPToolKit {
                     throw new ArgumentOutOfRangeException("Buffer length parameter too long for Save");
                 }
 
-                using(IsolatedStorageFileStream stream = new IsolatedStorageFileStream(IOFilenameString, System.IO.FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
+                using(IsolatedStorageFileStream stream = new IsolatedStorageFileStream(this, System.IO.FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
 
                     // Write it out to the file
                     stream.Write(buffer, 0, (int)bufferLength);
@@ -199,26 +167,27 @@ namespace WPToolKit {
         /// </summary>
         /// <param name="filename">The filename.</param>
         /// <remarks></remarks>
-        public void Remove(Uri filename) {
-            if (String.IsNullOrEmpty(filename.OriginalString)) {
+        public void Remove(Uri uri) {
+            if (String.IsNullOrEmpty(uri.OriginalString)) {
                 throw new ArgumentNullException();
             }
 
-            SetUriAndFilename(filename);
+            this.url = new IOUrl(uri);
             this.Remove();
         }
         /// <summary>
-        /// Removes the file referenced by IOFilenameString.
+        /// Removes this instance of the file
         /// </summary>
         /// <remarks></remarks>
         public void Remove() {
+            HasValidIOUrl();
 
-            if (String.IsNullOrEmpty(IOFilenameUri.OriginalString)) {
-                throw new ArgumentNullException("IOFilenameString", "IO Filename parameter not set");
+            if (String.IsNullOrEmpty(this)) {
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
-                store.DeleteFile(IOFilenameString);
+                store.DeleteFile(this);
             }
         }
         /// <summary>
@@ -234,6 +203,11 @@ namespace WPToolKit {
                     return false;
             }
             return true;
+        }
+        private void HasValidIOUrl() {
+            if (url == null) {
+                throw new InvalidOperationException("Uri not set");
+            }
         }
     }
 }
