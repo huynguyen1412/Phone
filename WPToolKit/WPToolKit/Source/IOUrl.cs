@@ -27,7 +27,7 @@ namespace WPToolKit {
         /// <remarks></remarks>
         public String GetPath() {
             if (!IsFile()) {
-                throw new ArgumentOutOfRangeException("Url is not a filename");
+                throw new InvalidOperationException("Url is not a filename");
             }
 
             int subIdx = baseUriName.AbsolutePath.LastIndexOf('/');
@@ -91,7 +91,7 @@ namespace WPToolKit {
 
                 // either no trailing '/' or nothing after the '/'(i.e. no file name)
                 if (subIdx == -1 || i.Url.AbsolutePath.Length == (subIdx+1)) {
-                    throw new ArgumentNullException("Url does not contain a filename");
+                    throw new InvalidOperationException("Url does not contain a filename");
                 }
 
 

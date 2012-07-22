@@ -37,7 +37,7 @@ namespace WPToolKitUnitTest.Unit_Test {
             Assert.IsTrue(res.CompareTo(filename) == 0);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void TestBasicHttpFilename() {
             String f = ioHttp;
             
@@ -62,12 +62,12 @@ namespace WPToolKitUnitTest.Unit_Test {
             Assert.IsTrue("c:/".CompareTo(path) == 0);
             Assert.IsTrue("".CompareTo(fn) == 0);
         }
-        [TestMethod, ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void TestGetPathInvalidArgument() {
             String p = ioHttp.GetPath();
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(InvalidOperationException))]
         public void TestGetFilenameInvalidArgument() {
             String f = ioHttp; // this is a http Uri, therefore not a valid file name
         }
