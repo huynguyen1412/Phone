@@ -39,6 +39,11 @@ namespace WPToolKitUnitTest
                 return -1;
             }
 
+            public int OnMessageReceived(object from, TestMessageFuncBadDelegate x) {
+                msgReceived3 = (x.value == results);
+                return -1;
+            }
+
             public string OnMessageReceivedWithReturn(object from, string x) {
                 msgReceived3 = (x == msg2);
                 return "OnMessageReceivedWithReturn";
@@ -52,6 +57,10 @@ namespace WPToolKitUnitTest
 
         public class TestMessageFuncDelegate {
             public int value = 10;
+        }
+
+        public class TestMessageFuncBadDelegate {
+            public int value = 22;
         }
 
         public class MTTestMessage {
@@ -164,6 +173,31 @@ namespace WPToolKitUnitTest
             int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
             Assert.IsTrue(x == -1);
             Assert.IsTrue(msg.msgReceived3);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void TestSendFuncInvalidDelegate() {
+            TestObject msg = new TestObject();
+            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            nc.Register<TestMessageFuncDelegate, int>(null);
+            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void TestSendFuncInvalidMessage() {
+            TestObject msg = new TestObject();
+            TestMessageFuncBadDelegate m = new TestMessageFuncBadDelegate();
+            // explicity register a bad message type
+            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        public void TestSendMessageInvalidDelegate() {
+            TestObject msg = new TestObject();
+            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            nc.Register<TestMessageFuncDelegate, int>(null);
+            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
         }
 
         [TestMethod]
