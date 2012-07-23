@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
 
@@ -49,6 +50,15 @@ namespace WPToolKitUnitTest
                 return "OnMessageReceivedWithReturn";
             }
 
+            public void OnMessageReceivedException(object from, int x) {
+                throw new Exception("Exception created in OnMessageReceivedException("+x+")");
+            }
+
+            public int OnMessageReceivedWithReturnException(object from, int x) {
+                throw new Exception("Exception created in OnMessageReceivedException(" + x + ")");
+            }
+
+
         }
 
         public class TestMessage  {
@@ -75,7 +85,7 @@ namespace WPToolKitUnitTest
 #if CODE_COVERAGE
             nc = new Notification();
 #else
-           // nc = Application.Current.GetApplicationNotificationObject();
+            nc = System.Windows.Application.Current.GetApplicationNotificationObject();
 #endif
         }
         [TestMethod]
@@ -174,11 +184,31 @@ namespace WPToolKitUnitTest
             Assert.IsTrue(x == -1);
             Assert.IsTrue(msg.msgReceived3);
         }
+#if wp7
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void TestSendWithDelegateThrowingException() {
+            TestObject msg = new TestObject();
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+            // explicitly register a bad delegate
+            nc.Register<int>(msg.OnMessageReceivedException);
+            nc.Send<int>(this, 5);
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void TestSendWithFuncDelegateThrowingException() {
+            TestObject msg = new TestObject();
+
+            // explicitly register a bad delegate
+            nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
+            int x = nc.Send<int,int>(this, 5);
+        }
+#endif
+
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestSendFuncInvalidDelegate() {
             TestObject msg = new TestObject();
             TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            // explicitly register a bad delegate
             nc.Register<TestMessageFuncDelegate, int>(null);
             int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
         }
@@ -192,12 +222,10 @@ namespace WPToolKitUnitTest
             int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestSendMessageInvalidDelegate() {
-            TestObject msg = new TestObject();
+        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        public void TestRegisterMessageInvalidDelegate() {
             TestMessageFuncDelegate m = new TestMessageFuncDelegate();
             nc.Register<TestMessageFuncDelegate, int>(null);
-            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
         }
 
         [TestMethod]

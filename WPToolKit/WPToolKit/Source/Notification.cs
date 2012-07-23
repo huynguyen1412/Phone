@@ -70,6 +70,10 @@ namespace WPToolKit
 
              Delegate func;
 
+             if(handler == null) {
+                 throw new ArgumentException("Handler can not be null");
+             }
+
              if (messageMap.TryGetValue(typeof(T), out func) == true) {
                  func = Delegate.Combine(func, handler);
                  messageMap[typeof(T)] = func;
@@ -173,9 +177,8 @@ namespace WPToolKit
                  try {
                      ((Action<object, T>)action)(from, message);
                  }
-
                  catch (Exception e) {
-                     throw new ArgumentNullException("InvalidHandlerMethod", e);
+                     throw new ArgumentException("InvalidHandlerMethod", e);
                  }
              }
              else {
@@ -201,9 +204,8 @@ namespace WPToolKit
                  try {
                      result = ((Func<object, T, TResult>)func)(from, message);
                  }
-
-                 catch (Exception e) {
-                     throw new ArgumentNullException("InvalidHandlerMethod", e);
+                 catch(Exception e) {
+                     throw new ArgumentException("InvalidHandlerMethod", e);
                  }
              }
              else {
