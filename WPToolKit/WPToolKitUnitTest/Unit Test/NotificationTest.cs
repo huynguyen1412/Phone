@@ -4,7 +4,9 @@ using System.Threading;
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
-using System.Windows;
+#if(!CODE_COVERAGE)
+    using System.Windows;
+#endif
 
 namespace WPToolKitUnitTest
 {
@@ -84,7 +86,13 @@ namespace WPToolKitUnitTest
         }
         [TestInitialize]
         public void SetUp() {
+
+#if CODE_COVERAGE
+            nc = new Notification();
+#else
             nc = Application.Current.GetApplicationNotificationObject();
+#endif
+
 
         }
         [TestMethod]
