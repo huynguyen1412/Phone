@@ -1,8 +1,10 @@
 ﻿using System;
+
 using System.Threading;
 using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WPToolKit;
+using System.Windows;
 
 namespace WPToolKitUnitTest
 {
@@ -82,11 +84,8 @@ namespace WPToolKitUnitTest
         }
         [TestInitialize]
         public void SetUp() {
-#if CODE_COVERAGE
-            nc = new Notification();
-#else
-            nc = System.Windows.Application.Current.GetApplicationNotificationObject();
-#endif
+            nc = Application.Current.GetApplicationNotificationObject();
+
         }
         [TestMethod]
         public void TestNotificationBasicMessage() {
@@ -184,7 +183,7 @@ namespace WPToolKitUnitTest
             Assert.IsTrue(x == -1);
             Assert.IsTrue(msg.msgReceived3);
         }
-#if wp7
+
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestSendWithDelegateThrowingException() {
             TestObject msg = new TestObject();
@@ -202,7 +201,7 @@ namespace WPToolKitUnitTest
             nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
             int x = nc.Send<int,int>(this, 5);
         }
-#endif
+
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestSendFuncInvalidDelegate() {
