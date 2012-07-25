@@ -200,32 +200,57 @@ namespace WPToolKitUnitTest
 
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void TestSendWithDelegateThrowingException() {
             TestObject msg = new TestObject();
 
             // explicitly register a bad delegate
-            nc.Register<int>(msg.OnMessageReceivedException);
-            nc.Send<int>(this, 5);
+            try {
+                nc.Register<int>(msg.OnMessageReceivedException);
+                nc.Send<int>(this, 5);
+            }
+            catch (ArgumentException e) {
+                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+            }
+            finally {
+                nc.Unregister<int>();
+            }
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void TestSendWithFuncDelegateThrowingException() {
             TestObject msg = new TestObject();
 
-            // explicitly register a bad delegate
-            nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
-            int x = nc.Send<int,int>(this, 5);
+            try {
+                // explicitly register a bad delegate
+                nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
+                int x = nc.Send<int, int>(this, 5);
+            }
+            catch (ArgumentException e) {
+                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+            }
+            finally {
+                nc.Unregister<int, int>();
+            }
         }
 
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void TestSendFuncInvalidDelegate() {
             TestObject msg = new TestObject();
             TestMessageFuncDelegate m = new TestMessageFuncDelegate();
             // explicitly register a bad delegate
-            nc.Register<TestMessageFuncDelegate, int>(null);
-            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+
+            try {
+                nc.Register<TestMessageFuncDelegate, int>(null);
+                int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+            } 
+            catch (ArgumentException e) {
+                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+            } 
+            finally {
+                nc.Unregister<TestMessageFuncDelegate, int>();
+            }
         }
 
         [TestMethod]
@@ -237,10 +262,11 @@ namespace WPToolKitUnitTest
                 // explicity register a bad message type
                 nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
                 int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
-            } catch (ArgumentException e) {
+            } 
+            catch (ArgumentException e) {
                 Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
-
-            } finally {
+            } 
+            finally {
                 nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
             }
         }
