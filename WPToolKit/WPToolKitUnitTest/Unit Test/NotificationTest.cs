@@ -95,6 +95,12 @@ namespace WPToolKitUnitTest
 
 
         }
+
+        [TestCleanup]
+        public void CleanUp() {
+            nc = null;
+        }
+
         [TestMethod]
         public void TestNotificationBasicMessage() {
 
@@ -190,6 +196,8 @@ namespace WPToolKitUnitTest
             int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
             Assert.IsTrue(x == -1);
             Assert.IsTrue(msg.msgReceived3);
+            nc.Unregister<TestMessageFuncDelegate, int>();
+
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
@@ -220,13 +228,21 @@ namespace WPToolKitUnitTest
             int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
         }
 
-        [TestMethod, ExpectedException(typeof(ArgumentException))]
+        [TestMethod]
         public void TestSendFuncInvalidMessage() {
             TestObject msg = new TestObject();
             TestMessageFuncBadDelegate m = new TestMessageFuncBadDelegate();
-            // explicity register a bad message type
-            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
-            int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
+
+            try {
+                // explicity register a bad message type
+                nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+                int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
+            } catch (ArgumentException e) {
+                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+
+            } finally {
+                nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            }
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]

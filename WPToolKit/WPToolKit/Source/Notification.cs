@@ -209,7 +209,8 @@ namespace WPToolKit
                  }
              }
              else {
-                 throw new ArgumentException("Key: " + typeof(T) + " Not Found");
+                 String s = "Key(" + typeof(T) + ") Not Found";
+                 throw new ArgumentException(s);
              }
 
              return result;
