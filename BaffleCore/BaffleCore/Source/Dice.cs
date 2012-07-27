@@ -16,12 +16,15 @@ namespace BaffleCore.Source
         public Die[] ArrayOfDie { get; set; }
 
         // Construction
-        Dice(Die[] arrayOfDie) {
+        public Dice(Die[] arrayOfDie) {
             ArrayOfDie = arrayOfDie;
         }
 
         // Methods
-        void Roll() {
+        public void Roll() {
+            foreach (Die d in ArrayOfDie) {
+                d.Roll();
+            }
         }
     }
 }

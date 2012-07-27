@@ -22,7 +22,6 @@ namespace BaffleCore.Source
 
         // Construction
         public DieFace(String faceCharacter) {
-            
             FaceCharacter = faceCharacter;
         }
     }

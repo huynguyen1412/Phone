@@ -22,6 +22,13 @@ namespace BaffleCore.Source
 
         // Methods
         public void Roll() {
+            Random rand = new Random();
+            for (int i = 0; i < ArrayOfFaces.Length; i++) {
+                DieFace tmp = ArrayOfFaces[i];
+                int r = rand.Next(ArrayOfFaces.Length - 1);
+                ArrayOfFaces[i] = ArrayOfFaces[r];
+                ArrayOfFaces[r] = tmp;
+            }
         }
     }
 }
