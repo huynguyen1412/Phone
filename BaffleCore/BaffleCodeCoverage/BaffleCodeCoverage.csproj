@@ -38,6 +38,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="WPToolKit">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\WPToolKit\WPToolKit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -60,10 +63,6 @@
     <ProjectReference Include="..\BaffleCore\BaffleCore.csproj">
       <Project>{1F95C118-66B0-4F43-BCFB-07C65C0ECB22}</Project>
       <Name>BaffleCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BaffleUnitTest\BaffleUnitTest.csproj">
-      <Project>{D7959CC7-9626-44DA-BDFE-92837A757785}</Project>
-      <Name>BaffleUnitTest</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

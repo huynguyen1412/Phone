@@ -44,5 +44,15 @@ namespace BaffleCoreTest.Unit_Test {
                 Assert.IsTrue(sum.CompareTo(names_concat) != 0);
             }
         }
+
+        [TestMethod]
+        public void GameBoard() {
+
+            GameBoard gb = new GameBoard();
+            gb.GameDice.ToString();
+            Console.WriteLine("***************************** Roll ****************************************");
+            gb.Roll();
+            gb.GameDice.ToString();
+        }
     }
 }

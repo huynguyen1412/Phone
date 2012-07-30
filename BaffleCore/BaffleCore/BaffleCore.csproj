@@ -56,6 +56,9 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="WPToolKit">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\WPToolKit\WPToolKit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -68,6 +71,7 @@
     <Compile Include="Source\Dice.cs" />
     <Compile Include="Source\Die.cs" />
     <Compile Include="Source\DieFace.cs" />
+    <Compile Include="Source\GameBoard.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

@@ -11,8 +11,11 @@ using System.Windows.Shapes;
 
 namespace BaffleCore.Source
 {
+    
     public class Dice
     {
+       
+
         public Die[] ArrayOfDie { get; set; }
 
         // Construction
