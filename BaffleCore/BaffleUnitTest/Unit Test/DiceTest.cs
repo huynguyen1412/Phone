@@ -49,10 +49,8 @@ namespace BaffleCoreTest.Unit_Test {
         public void GameBoard() {
 
             GameBoard gb = new GameBoard();
-            gb.GameDice.ToString();
-            Console.WriteLine("***************************** Roll ****************************************");
             gb.Roll();
-            gb.GameDice.ToString();
+            DieFace[] set = gb.GetCurrentSet();
         }
     }
 }

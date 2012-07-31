@@ -29,5 +29,16 @@ namespace BaffleCore.Source
                 d.Roll();
             }
         }
+
+        public DieFace[] GetCurrentSet() {
+            DieFace[] set = new DieFace[ArrayOfDie.Length];
+            int pos = 0;
+
+            foreach (Die d in ArrayOfDie) {
+                set.SetValue(d.Face, pos++);
+            }
+
+            return set;
+        }
     }
 }
