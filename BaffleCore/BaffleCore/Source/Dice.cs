@@ -43,23 +43,5 @@ namespace BaffleCore.Source
             Die.Roll(set);
             return set;
         }
-
-        public DieFace[] GetCurrentSet() {
-            DieFace[] set = new DieFace[ArrayOfDie.Length];
-            int pos = 0;
-
-            foreach (Die d in ArrayOfDie) {
-                set.SetValue(d.Face, pos++);
-            }
-
-            Random rand = new Random();
-            for (int i = 0; i < set.Length; i++) {
-                DieFace tmp = set[i];
-                int r = rand.Next(set.Length - 1);
-                set[i] = set[r];
-                set[r] = tmp;
-            }
-            return set;
-        }
     }
 }
