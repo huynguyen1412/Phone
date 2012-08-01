@@ -14,6 +14,13 @@ namespace BaffleCore.Source
     public class Die
     {
         public DieFace[] ArrayOfFaces { get; set; }
+        public DieFace Face {
+            get {
+                // return one of faces randomly.  Assume a roll occured
+                Random rand = new Random();
+                return ArrayOfFaces[rand.Next(ArrayOfFaces.Length - 1)];
+            }
+        }
 
         // Construction
         public Die(DieFace[] arrayOfFaces) {
