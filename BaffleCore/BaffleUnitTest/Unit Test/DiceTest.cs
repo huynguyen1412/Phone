@@ -26,8 +26,8 @@ namespace BaffleCoreTest.Unit_Test {
         public void TestDiceConstruction() {
             Die[] die = { new Die(faceA) };
             Dice dice = new Dice(die);
-            Assert.IsTrue(dice.ArrayOfDie.Length == 1);
-            Assert.IsTrue(dice.ArrayOfDie[0] == die[0]);
+            Assert.IsTrue(dice.ListOfDie.Count == 1);
+            Assert.IsTrue(dice.ListOfDie[0] == die[0]);
         }
         [TestMethod]
         public void TestDiceRoll() {
@@ -36,9 +36,9 @@ namespace BaffleCoreTest.Unit_Test {
             Dice dice = new Dice(threeFaces);
             dice.Roll();
 
-            foreach (Die d in dice.ArrayOfDie) {
+            foreach (Die d in dice.ListOfDie) {
                 String sum = "";
-                foreach (DieFace s in d.ArrayOfFaces) {
+                foreach (DieFace s in d.ListOfFaces) {
                     sum += s.FaceCharacter;
                 }
                 Assert.IsTrue(sum.CompareTo(names_concat) != 0);

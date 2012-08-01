@@ -2,6 +2,7 @@
 using BaffleCore;
 using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 
 namespace BaffleCoreTest.Unit_Test {
 
@@ -30,7 +31,7 @@ namespace BaffleCoreTest.Unit_Test {
         [TestMethod]
         public void TestDieRoll() {
             Die d = new Die(faces);
-            d.Roll();
+            Die.Roll(d.ListOfFaces);
 
             String sum = "";
             foreach (DieFace s in faces) {

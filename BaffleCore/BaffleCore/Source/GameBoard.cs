@@ -14,10 +14,7 @@ namespace BaffleCore.Source
 {
     public class GameBoard
     {
-        const int NumberOfDie = 16;
-        const int FacesPerDie = 6;
         public Dice GameDice { get; set; }
-
         public GameBoard() {
 
             DieFace[] die01 = { new DieFace("A"), new DieFace("J"), new DieFace("B"), 
@@ -63,10 +60,6 @@ namespace BaffleCore.Source
                                 new Die(die13), new Die(die14), new Die(die15), new Die(die16)};
             
             GameDice = new Dice(arrayOfDie);
-
-
-            // Construct the Die
-            // Construct the Dice
         }
 
         public void Roll() {
