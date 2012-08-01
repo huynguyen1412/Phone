@@ -8,33 +8,35 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Collections.Generic;
 
 namespace BaffleCore.Source
 {
     public class Die
     {
-        public DieFace[] ArrayOfFaces { get; set; }
+        public IList<DieFace> ListOfFaces { get; set; }
         public DieFace Face {
             get {
                 // return one of faces randomly.  Assume a roll occured
                 Random rand = new Random();
-                return ArrayOfFaces[rand.Next(ArrayOfFaces.Length - 1)];
+                //return ListOfFaces[rand.Next(ListOfFaces.Count - 1)];
+                return ListOfFaces[0];
             }
         }
 
         // Construction
-        public Die(DieFace[] arrayOfFaces) {
-            ArrayOfFaces = arrayOfFaces;
+        public Die(IList<DieFace> listOfFaces) {
+            ListOfFaces = listOfFaces;
         }
 
         // Methods
-        public void Roll() {
+        static public void Roll<T>(IList<T> list) {
             Random rand = new Random();
-            for (int i = 0; i < ArrayOfFaces.Length; i++) {
-                DieFace tmp = ArrayOfFaces[i];
-                int r = rand.Next(ArrayOfFaces.Length - 1);
-                ArrayOfFaces[i] = ArrayOfFaces[r];
-                ArrayOfFaces[r] = tmp;
+            for (int i = 0; i < list.Count; i++) {
+                T tmp = list[i];
+                int r = rand.Next(list.Count - 1);
+                list[i] = list[r];
+                list[r] = tmp;
             }
         }
     }
