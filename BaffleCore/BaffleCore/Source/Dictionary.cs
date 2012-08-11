@@ -3,6 +3,7 @@ using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using System.ComponentModel;
+using System;
 
 namespace BaffleCore.Source {
    
@@ -24,13 +25,30 @@ namespace BaffleCore.Source {
                 dictionaryThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ReadDictionaryComplete);
                 dictionaryThread.RunWorkerAsync();
             }
-
             private void ReadDictionaryStream(object sender, DoWorkEventArgs e) {
-                StreamReader stream = new StreamReader(TitleContainer.OpenStream("dictionary.dat"));
-                XmlSerializer xmlFormat = new XmlSerializer(typeof(string[]));
 
-                // Store object in a local file.
-                Content = xmlFormat.Deserialize(stream) as string[];
+                Stream s=null;
+                StreamReader stream = null;
+                
+                try {
+                    s = TitleContainer.OpenStream("dictionary.dat");
+
+                    if (s == null) {
+                        throw new ArgumentException();
+                    }
+
+                    stream = new StreamReader(s);
+                    XmlSerializer xmlFormat = new XmlSerializer(typeof(string[]));
+
+                    // Store object in a local file.
+                    Content = xmlFormat.Deserialize(stream) as string[];
+                }
+                catch (Exception) {
+                }
+                finally {
+                    s.Close();
+                    stream.Close();
+                }
 
                 // create a hash the size of the dictionary
                 if (_dictionaryHash == null) {
@@ -41,8 +59,10 @@ namespace BaffleCore.Source {
                     _dictionaryHash[key] = true;
                 }
             }
-
             private void ReadDictionaryComplete(object sender, RunWorkerCompletedEventArgs e) {
+                if (e.Error == null && e.Cancelled == false) {
+                    Content = null;  // free the raw serialize data, hash table is created.
+                }
             }
         }
 }
