@@ -71,9 +71,11 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unit Test\DiceTest.cs" />
-    <Compile Include="Unit Test\DieFaceTest.cs" />
-    <Compile Include="Unit Test\DieTest.cs" />
+    <Content Include="dictionary.dat" />
+    <None Include="Unit Test\DiceTest.cs" />
+    <Compile Include="Unit Test\DictionaryTest.cs" />
+    <None Include="Unit Test\DieFaceTest.cs" />
+    <None Include="Unit Test\DieTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
