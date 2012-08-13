@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BaffleCore;
 using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,40 +9,38 @@ namespace BaffleCoreTest.Unit_Test {
 
     [TestClass]
     public class DiceTest {
+        readonly DieFace[] _faceA = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
+                            new DieFace("D"), new DieFace("E"), new DieFace("F")};
 
-        DieFace[] faceA = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
+        readonly DieFace[] _faceB = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
                             new DieFace("D"), new DieFace("E"), new DieFace("F")};
-        DieFace[] faceB = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
-                            new DieFace("D"), new DieFace("E"), new DieFace("F")};
-        DieFace[] faceC = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
+
+        readonly DieFace[] _faceC = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
                             new DieFace("D"), new DieFace("E"), new DieFace("F")};
 
         String[] names = { "A", "B", "C", "D", "E", "F" };
-        String names_concat = "ABCDEF";
+        private const String NamesConcat = "ABCDEF";
 
         [TestInitialize]
         public void Setup() {
         }
         [TestMethod]
         public void TestDiceConstruction() {
-            Die[] die = { new Die(faceA) };
+            Die[] die = { new Die(_faceA) };
             Dice dice = new Dice(die);
             Assert.IsTrue(dice.ListOfDie.Count == 1);
             Assert.IsTrue(dice.ListOfDie[0] == die[0]);
         }
         [TestMethod]
         public void TestDiceRoll() {
-            Die[] threeFaces = { new Die(faceA), new Die(faceB), new Die(faceC)};
+            Die[] threeFaces = { new Die(_faceA), new Die(_faceB), new Die(_faceC)};
 
-            Dice dice = new Dice(threeFaces);
+            var dice = new Dice(threeFaces);
             dice.Roll();
 
             foreach (Die d in dice.ListOfDie) {
-                String sum = "";
-                foreach (DieFace s in d.ListOfFaces) {
-                    sum += s.FaceCharacter;
-                }
-                Assert.IsTrue(sum.CompareTo(names_concat) != 0);
+                String sum = d.ListOfFaces.Aggregate("", (current, s) => current + s.FaceCharacter);
+                Assert.IsTrue(sum.CompareTo(NamesConcat) != 0);
             }
         }
 

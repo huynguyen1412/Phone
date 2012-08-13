@@ -72,10 +72,10 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="dictionary.dat" />
-    <None Include="Unit Test\DiceTest.cs" />
+    <Compile Include="Unit Test\DiceTest.cs" />
     <Compile Include="Unit Test\DictionaryTest.cs" />
-    <None Include="Unit Test\DieFaceTest.cs" />
-    <None Include="Unit Test\DieTest.cs" />
+    <Compile Include="Unit Test\DieFaceTest.cs" />
+    <Compile Include="Unit Test\DieTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

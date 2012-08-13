@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
@@ -10,52 +11,62 @@ namespace BaffleCore.Source {
     public class Dictionary {
             Dictionary<string, bool> _dictionaryHash;
 
-            public string[] Content { get; set; }
+            private string[] Content { get; set; }
+            public Dictionary<string, bool> DictionaryHash() {
+                return _dictionaryHash;
+            }
+
             public Dictionary() {
                 Content = null;
                 _dictionaryHash = null;
             }
-            public Dictionary<string, bool> DictionaryHash() {
-                return _dictionaryHash;
-            }
             public void CreateDictionaryHash() {
 
-                BackgroundWorker dictionaryThread = new BackgroundWorker();
-                dictionaryThread.DoWork += new DoWorkEventHandler(ReadDictionaryStream);
-                dictionaryThread.RunWorkerCompleted += new RunWorkerCompletedEventHandler(ReadDictionaryComplete);
+                var dictionaryThread = new BackgroundWorker();
+                dictionaryThread.DoWork += ReadDictionary;
+                dictionaryThread.RunWorkerCompleted += ReadDictionaryComplete;
                 dictionaryThread.RunWorkerAsync();
             }
-            private void ReadDictionaryStream(object sender, DoWorkEventArgs e) {
+            private void ReadDictionary(object sender, DoWorkEventArgs e) {
 
                 Stream s=null;
                 StreamReader stream = null;
                 
-                try {
+                try
+                {
                     s = TitleContainer.OpenStream("dictionary.dat");
 
                     if (s == null) {
-                        throw new ArgumentException();
+                        return;
                     }
 
                     stream = new StreamReader(s);
-                    XmlSerializer xmlFormat = new XmlSerializer(typeof(string[]));
-
-                    // Store object in a local file.
+                    var xmlFormat = new XmlSerializer(typeof(string[]));
                     Content = xmlFormat.Deserialize(stream) as string[];
+                    
                 }
-                catch (Exception) {
+                catch (InvalidOperationException)
+                {
                 }
                 finally {
-                    s.Close();
-                    stream.Close();
+                    if (s != null) {
+                        s.Close();
+                    }
+                    if (stream != null) {
+                        stream.Close();
+                    }
                 }
 
                 // create a hash the size of the dictionary
                 if (_dictionaryHash == null) {
-                    _dictionaryHash = new Dictionary<string, bool>(Content.Length);
+                    if (Content != null) _dictionaryHash = new Dictionary<string, bool>(Content.Length);
                 }
 
+                if (Content == null) {
+                    return;
+                }
                 foreach (string key in Content) {
+                    Debug.Assert(_dictionaryHash != null, "_dictionaryHash != null");
                     _dictionaryHash[key] = true;
                 }
             }
