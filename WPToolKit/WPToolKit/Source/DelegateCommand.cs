@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace WPToolKit
+namespace WPToolKit.Source
 {
     public sealed class DelegateCommand : ICommand
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPToolKit;
+using WPToolKit.Source;
 using System.IO;
 
 namespace WPToolKitUnitTest.Unit_Test

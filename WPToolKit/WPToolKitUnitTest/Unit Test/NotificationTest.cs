@@ -1,56 +1,56 @@
 ﻿using System;
-
+using WPToolKit.Source;
 using System.Threading;
-using System.ComponentModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPToolKit;
 #if(!CODE_COVERAGE)
     using System.Windows;
+
+
 #endif
 
-namespace WPToolKitUnitTest
+namespace WPToolKit.Unit_Test
 {
 
     [TestClass]
     public class NotificationTest
     {
-        Notification nc;
+        Notification _nc;
         public class TestObject
         {
-            public bool msgReceived1;
-            string msg1 = "TestProperty";
+            public bool MsgReceived1;
+            private const string Msg1 = "TestProperty";
 
-            public bool msgReceived2;
-            string msg2 = "ImageProperty";
+            public bool MsgReceived2;
+            private const string Msg2 = "ImageProperty";
 
-            public bool msgReceived3;
-            int results=10;
+            public bool MsgReceived3;
+            private const int Results = 10;
 
             public TestObject() {
-                msgReceived1 = false;
-                msgReceived2 = false;
-                msgReceived3 = false;
+                MsgReceived1 = false;
+                MsgReceived2 = false;
+                MsgReceived3 = false;
             }
             public void OnMessageReceived(object from, TestMessage e) {
-                msgReceived1 = (e.msg == msg1);
+                MsgReceived1 = (e.Msg == Msg1);
                 
             }
             public void OnMessageReceived(object from, string s) {
-                msgReceived2 = (s == msg2);
+                MsgReceived2 = (s == Msg2);
             }
 
             public int OnMessageReceived(object from, TestMessageFuncDelegate x) {
-                msgReceived3 = (x.value == results);
+                MsgReceived3 = (x.Value == Results);
                 return -1;
             }
 
             public int OnMessageReceived(object from, TestMessageFuncBadDelegate x) {
-                msgReceived3 = (x.value == results);
+                MsgReceived3 = (x.Value == Results);
                 return -1;
             }
 
             public string OnMessageReceivedWithReturn(object from, string x) {
-                msgReceived3 = (x == msg2);
+                MsgReceived3 = (x == Msg2);
                 return "OnMessageReceivedWithReturn";
             }
 
@@ -66,31 +66,31 @@ namespace WPToolKitUnitTest
         }
 
         public class TestMessage  {
-            public string msg = "TestProperty";
+            public string Msg = "TestProperty";
         }
 
         public class TestMessageFuncDelegate {
-            public int value = 10;
+            public int Value = 10;
         }
 
         public class TestMessageFuncBadDelegate {
-            public int value = 22;
+            public int Value = 22;
         }
 
-        public class MTTestMessage {
-            static private int numMessages;
+        public class MtTestMessage {
+            static private int _numMessages;
 
-            public void OnMTTestMessage(object from, TestMessage e) {
-                Interlocked.Increment(ref numMessages);
+            public void OnMtTestMessage(object from, TestMessage e) {
+                Interlocked.Increment(ref _numMessages);
             }
         }
         [TestInitialize]
         public void SetUp() {
 
 #if CODE_COVERAGE
-            nc = new Notification();
+            _nc = new Notification();
 #else
-            nc = Application.Current.GetApplicationNotificationObject();
+            _nc = Application.Current.GetApplicationNotificationObject();
 #endif
 
 
@@ -98,79 +98,79 @@ namespace WPToolKitUnitTest
 
         [TestCleanup]
         public void CleanUp() {
-            nc = null;
+            _nc = null;
         }
 
         [TestMethod]
         public void TestNotificationBasicMessage() {
 
-            TestObject msg = new TestObject();
-            TestMessage m = new TestMessage();
-            string TestProperty1 = "ImageProperty";
+            var msg = new TestObject();
+            var m = new TestMessage();
+            const string testProperty1 = "ImageProperty";
 
-            nc.Register<TestMessage>(msg.OnMessageReceived);
-            nc.Send<TestMessage>(this, m);
-            Assert.IsTrue(msg.msgReceived1);
+            _nc.Register<TestMessage>(msg.OnMessageReceived);
+            _nc.Send<TestMessage>(this, m);
+            Assert.IsTrue(msg.MsgReceived1);
 
-            nc.Send<TestMessage>(this, m);
-            Assert.IsTrue(msg.msgReceived1);
+            _nc.Send<TestMessage>(this, m);
+            Assert.IsTrue(msg.MsgReceived1);
 
-            nc.Register<string>(msg.OnMessageReceived);
-            nc.Send<string>(this, TestProperty1);
-            Assert.IsTrue(msg.msgReceived2);
+            _nc.Register<string>(msg.OnMessageReceived);
+            _nc.Send<string>(this, testProperty1);
+            Assert.IsTrue(msg.MsgReceived2);
 
-            nc.Unregister<TestMessage>();
-            nc.Unregister<string>();
-            Assert.IsTrue(nc.RegisteredCount == 0);
+            _nc.Unregister<TestMessage>();
+            _nc.Unregister<string>();
+            Assert.IsTrue(_nc.RegisteredCount == 0);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestNotificationUnregister() {
-            TestObject msg = new TestObject();
-            TestMessage m = new TestMessage();
+            var msg = new TestObject();
+            var m = new TestMessage();
 
-            nc.Register<TestMessage>(msg.OnMessageReceived);
-            nc.Send<TestMessage>(this, m);
+            _nc.Register<TestMessage>(msg.OnMessageReceived);
+            _nc.Send<TestMessage>(this, m);
 
-            Assert.IsTrue(msg.msgReceived1);
-            nc.Unregister<TestMessage>(msg.OnMessageReceived);
-            Assert.IsTrue(nc.RegisteredCount == 0);
+            Assert.IsTrue(msg.MsgReceived1);
+            _nc.Unregister<TestMessage>(msg.OnMessageReceived);
+            Assert.IsTrue(_nc.RegisteredCount == 0);
 
-            nc.Send<TestMessage>(this, m);
+            _nc.Send<TestMessage>(this, m);
         }
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestNotificationUnregisterAll() {
-            TestObject msg = new TestObject();
-            TestObject msg1 = new TestObject();
+            var msg = new TestObject();
+            var msg1 = new TestObject();
 
-            TestMessage m = new TestMessage();
+            var m = new TestMessage();
 
             // Register multiple receiptients 
-            nc.Register<TestMessage>(msg.OnMessageReceived);
-            nc.Register<TestMessage>(msg1.OnMessageReceived);
+            _nc.Register<TestMessage>(msg.OnMessageReceived);
+            _nc.Register<TestMessage>(msg1.OnMessageReceived);
 
-            nc.Send<TestMessage>(this, m);
-            Assert.IsTrue(msg.msgReceived1);
-            Assert.IsTrue(msg1.msgReceived1);
+            _nc.Send<TestMessage>(this, m);
+            Assert.IsTrue(msg.MsgReceived1);
+            Assert.IsTrue(msg1.MsgReceived1);
 
             // Unregister them all and the Send should throw
-            nc.Unregister<TestMessage>();
-            Assert.IsTrue(nc.RegisteredCount == 0);
-            nc.Send<TestMessage>(this, m);
+            _nc.Unregister<TestMessage>();
+            Assert.IsTrue(_nc.RegisteredCount == 0);
+            _nc.Send<TestMessage>(this, m);
 
         }
         [TestMethod]
         public void TestSyncMessage() {
 
-            Notification n = new Notification();
-            MTTestMessage mt = new MTTestMessage();
+            var n = new Notification();
+            var mt = new MtTestMessage();
 
             for(int i = 0; i < 10; i++) {
-                n.Register<TestMessage>(mt.OnMTTestMessage);
+                n.Register<TestMessage>(mt.OnMtTestMessage);
             }
 
             // not supported yet.
 #if WINDOWS_PHONE
-            mt.OnMTTestMessage(null, null);
+            mt.OnMtTestMessage(null, null);
 #else
             n.SendSync<TestMessage>(this, null);
 #endif
@@ -180,123 +180,123 @@ namespace WPToolKitUnitTest
         // Test for Func<T>
         [TestMethod]
         public void TestRegisterFunc() {
-            TestObject msg = new TestObject();
-            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
-            nc.Register<TestMessageFuncDelegate,int>(msg.OnMessageReceived);
-            Assert.IsTrue(nc.RegisteredCount == 1);
-            nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
-            Assert.IsTrue(nc.RegisteredCount == 0);
+            var msg = new TestObject();
+            var m = new TestMessageFuncDelegate();
+            _nc.Register<TestMessageFuncDelegate,int>(msg.OnMessageReceived);
+            Assert.IsTrue(_nc.RegisteredCount == 1);
+            _nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            Assert.IsTrue(_nc.RegisteredCount == 0);
         }
 
         [TestMethod]
         public void TestSendFunc() {
-            TestObject msg = new TestObject();
-            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
-            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
-            int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+            var msg = new TestObject();
+            var m = new TestMessageFuncDelegate();
+            _nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            int x = _nc.Send<TestMessageFuncDelegate, int>(this, m);
             Assert.IsTrue(x == -1);
-            Assert.IsTrue(msg.msgReceived3);
-            nc.Unregister<TestMessageFuncDelegate, int>();
+            Assert.IsTrue(msg.MsgReceived3);
+            _nc.Unregister<TestMessageFuncDelegate, int>();
 
         }
 
         [TestMethod]
         public void TestSendWithDelegateThrowingException() {
-            TestObject msg = new TestObject();
+            var msg = new TestObject();
 
             // explicitly register a bad delegate
             try {
-                nc.Register<int>(msg.OnMessageReceivedException);
-                nc.Send<int>(this, 5);
+                _nc.Register<int>(msg.OnMessageReceivedException);
+                _nc.Send<int>(this, 5);
             }
             catch (ArgumentException e) {
-                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+                Assert.IsTrue(e.GetType() == typeof(ArgumentException));
             }
             finally {
-                nc.Unregister<int>();
+                _nc.Unregister<int>();
             }
         }
 
         [TestMethod]
         public void TestSendWithFuncDelegateThrowingException() {
-            TestObject msg = new TestObject();
+            var msg = new TestObject();
 
             try {
                 // explicitly register a bad delegate
-                nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
-                int x = nc.Send<int, int>(this, 5);
+                _nc.Register<int, int>(msg.OnMessageReceivedWithReturnException);
+                int x = _nc.Send<int, int>(this, 5);
             }
             catch (ArgumentException e) {
-                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+                Assert.IsTrue(e.GetType() == typeof(ArgumentException));
             }
             finally {
-                nc.Unregister<int, int>();
+                _nc.Unregister<int, int>();
             }
         }
 
 
         [TestMethod]
         public void TestSendFuncInvalidDelegate() {
-            TestObject msg = new TestObject();
-            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            var msg = new TestObject();
+            var m = new TestMessageFuncDelegate();
             // explicitly register a bad delegate
 
             try {
-                nc.Register<TestMessageFuncDelegate, int>(null);
-                int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+                _nc.Register<TestMessageFuncDelegate, int>(null);
+                int x = _nc.Send<TestMessageFuncDelegate, int>(this, m);
             } 
             catch (ArgumentException e) {
-                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+                Assert.IsTrue(e.GetType() == typeof(ArgumentException));
             } 
             finally {
-                nc.Unregister<TestMessageFuncDelegate, int>();
+                _nc.Unregister<TestMessageFuncDelegate, int>();
             }
         }
 
         [TestMethod]
         public void TestSendFuncInvalidMessage() {
-            TestObject msg = new TestObject();
-            TestMessageFuncBadDelegate m = new TestMessageFuncBadDelegate();
+            var msg = new TestObject();
+            var m = new TestMessageFuncBadDelegate();
 
             try {
                 // explicity register a bad message type
-                nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
-                int x = nc.Send<TestMessageFuncBadDelegate, int>(this, m);
+                _nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+                int x = _nc.Send<TestMessageFuncBadDelegate, int>(this, m);
             } 
             catch (ArgumentException e) {
-                Assert.IsTrue(e.GetType().Equals(typeof(ArgumentException)));
+                Assert.IsTrue(e.GetType() == typeof(ArgumentException));
             } 
             finally {
-                nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+                _nc.Unregister<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
             }
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
         public void TestRegisterMessageInvalidDelegate() {
-            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
-            nc.Register<TestMessageFuncDelegate, int>(null);
+            var m = new TestMessageFuncDelegate();
+            _nc.Register<TestMessageFuncDelegate, int>(null);
         }
 
         [TestMethod]
         public void TestUnregisterAllFunc() {
-            TestObject msg = new TestObject();
-            TestMessageFuncDelegate m = new TestMessageFuncDelegate();
+            var msg = new TestObject();
+            var m = new TestMessageFuncDelegate();
  
-            nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
-            nc.Register<string, string>(msg.OnMessageReceivedWithReturn);
+            _nc.Register<TestMessageFuncDelegate, int>(msg.OnMessageReceived);
+            _nc.Register<string, string>(msg.OnMessageReceivedWithReturn);
   
-            Assert.IsTrue(nc.RegisteredCount == 2);
+            Assert.IsTrue(_nc.RegisteredCount == 2);
             for (int i = 0; i < 2; i++) {
-                int x = nc.Send<TestMessageFuncDelegate, int>(this, m);
+                int x = _nc.Send<TestMessageFuncDelegate, int>(this, m);
                 Assert.IsTrue(x == -1);
             }
             // Unregister all of one type and make sure the other type is still there
-            nc.Unregister<TestMessageFuncDelegate, int>();
-            Assert.IsTrue(nc.RegisteredCount == 1);
+            _nc.Unregister<TestMessageFuncDelegate, int>();
+            Assert.IsTrue(_nc.RegisteredCount == 1);
 
-            string res = nc.Send<string, string>(this, "This should make the bool set to false");
-            Assert.IsTrue(res.CompareTo("OnMessageReceivedWithReturn") == 0);
-            Assert.IsTrue(msg.msgReceived3 == false);
+            string res = _nc.Send<string, string>(this, "This should make the bool set to false");
+            Assert.IsTrue(String.Compare(res, "OnMessageReceivedWithReturn", StringComparison.Ordinal) == 0);
+            Assert.IsTrue(msg.MsgReceived3 == false);
         }
 
     }

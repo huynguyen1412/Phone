@@ -2,12 +2,11 @@
 using System.IO;
 using System.IO.IsolatedStorage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPToolKit;
+using WPToolKit.Source;
 using System.Collections.Generic;
 
-namespace WPToolKit
+namespace WPToolKit.Unit_Test
 {
-
     [TestClass]
     public class ApplicationSettingsTest
     {

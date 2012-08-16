@@ -1,7 +1,8 @@
 ﻿using System;
 using System.IO;
 
-namespace WPToolKit {
+namespace WPToolKit.Source
+{
     public class IOUrl {
         private Uri baseUriName;
 

@@ -3,7 +3,8 @@ using System.IO;
 using System.IO.IsolatedStorage;
 using System.ComponentModel;
 
-namespace WPToolKit {
+namespace WPToolKit.Source
+{
     public class IOStorage {
 
         private IOUrl url;

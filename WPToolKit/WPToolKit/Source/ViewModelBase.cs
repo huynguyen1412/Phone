@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace WPToolKit
+namespace WPToolKit.Source
 {
     public abstract class ViewModelBase : INotifyPropertyChanged
     {

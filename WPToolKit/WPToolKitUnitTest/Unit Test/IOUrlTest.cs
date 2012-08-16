@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using WPToolKit;
+using WPToolKit.Source;
 using System.Windows.Resources;
 using System.IO;
 using System.Windows;

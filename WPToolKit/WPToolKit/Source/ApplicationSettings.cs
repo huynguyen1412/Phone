@@ -3,7 +3,7 @@ using System.IO.IsolatedStorage;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
 
-namespace WPToolKit
+namespace WPToolKit.Source
 {
     public sealed class ApplicationSettings
     {

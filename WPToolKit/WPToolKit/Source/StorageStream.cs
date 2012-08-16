@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace WPToolKit
+namespace WPToolKit.Source
 {
     public class StorageStream : MemoryStream
     {
