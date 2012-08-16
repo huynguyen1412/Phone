@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using BaffleCore;
 using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,7 +17,7 @@ namespace BaffleCoreTest.Unit_Test {
         readonly DieFace[] _faceC = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
                             new DieFace("D"), new DieFace("E"), new DieFace("F")};
 
-        String[] names = { "A", "B", "C", "D", "E", "F" };
+        String[] _names = { "A", "B", "C", "D", "E", "F" };
         private const String NamesConcat = "ABCDEF";
 
         [TestInitialize]
@@ -47,7 +46,7 @@ namespace BaffleCoreTest.Unit_Test {
         [TestMethod]
         public void GameBoard() {
 
-            GameBoard gb = new GameBoard();
+            var gb = new GameBoard();
             gb.Roll();
             DieFace[] set = gb.GetCurrentSet();
         }

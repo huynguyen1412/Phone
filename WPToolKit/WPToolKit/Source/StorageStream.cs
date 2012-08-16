@@ -3,16 +3,14 @@ using System.IO;
 
 namespace WPToolKit.Source
 {
-    public class StorageStream : MemoryStream
+    public sealed class StorageStream : MemoryStream
     {
         /// <summary>
         /// Gets the stream.
         /// </summary>
         /// <remarks></remarks>
-        public MemoryStream Stream
-        {
-            get
-            {
+        public MemoryStream Stream {
+            get {
                 Position = 0;
                 return this;
             }
@@ -31,9 +29,7 @@ namespace WPToolKit.Source
         /// <remarks></remarks>
         public StorageStream(StorageStream s)
         {
-
-            if (s == null)
-            {
+            if (s == null) {
                 throw new ArgumentNullException();
             }
 
@@ -46,9 +42,7 @@ namespace WPToolKit.Source
         /// <remarks></remarks>
         public StorageStream(Stream s)
         {
-
-            if (s == null)
-            {
+            if (s == null) {
                 throw new ArgumentNullException();
             }
 
@@ -58,7 +52,7 @@ namespace WPToolKit.Source
             s.CopyTo(this);
 
             s.Position = pos;
-            this.Position = 0;
+            Position = 0;
         }
         /// <summary>
         /// Reads all the bytes from the current stream and writes them to the destination stream.
@@ -76,21 +70,12 @@ namespace WPToolKit.Source
         new public void CopyTo(Stream destination)
         {
 
-            if (destination == null)
-            {
+            if (destination == null) {
                 throw new ArgumentNullException();
             }
 
-            try
-            {
-                base.CopyTo(destination);
-                destination.Position = 0;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return;
+            base.CopyTo(destination);
+            destination.Position = 0;
         }
         /// <summary>
         /// Reads all the bytes from the current stream and writes them to the destination stream.
@@ -100,21 +85,12 @@ namespace WPToolKit.Source
         public void CopyTo(StorageStream destination)
         {
 
-            if (destination == null)
-            {
+            if (destination == null) {
                 throw new ArgumentNullException();
             }
 
-            try
-            {
-                base.CopyTo(destination);
-                destination.Position = 0;
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return;
+            base.CopyTo(destination);
+            destination.Position = 0;
         }
     }
 }

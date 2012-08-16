@@ -1,5 +1,4 @@
 ﻿using System;
-using BaffleCore;
 using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,7 +13,7 @@ namespace BaffleCoreTest.Unit_Test {
         [TestMethod]
         public void TestDieFaceConstruction() {
 
-            DieFace die = new DieFace("Qu");
+            var die = new DieFace("Qu");
             String dieFace = die.FaceCharacter;
             Assert.AreEqual("Qu", dieFace);
         }

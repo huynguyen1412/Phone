@@ -20,7 +20,7 @@ namespace BaffleCore.Source
         }
 
         public DieFace[] GetCurrentSet() {
-            DieFace[] set = new DieFace[ListOfDie.Count];
+            var set = new DieFace[ListOfDie.Count];
             int pos = 0;
 
             foreach (Die d in ListOfDie) {

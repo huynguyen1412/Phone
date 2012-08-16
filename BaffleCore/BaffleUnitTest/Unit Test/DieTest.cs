@@ -1,43 +1,37 @@
 ﻿using System;
-using BaffleCore;
+using System.Linq;
 using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
 
 namespace BaffleCoreTest.Unit_Test {
 
     
     [TestClass]
     public class DieTest {
-        DieFace[] faces = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
+        readonly DieFace[] _faces = { new DieFace("A"), new DieFace("B"), new DieFace("C"), 
                             new DieFace("D"), new DieFace("E"), new DieFace("F")};
 
-        String[] names = { "A", "B", "C", "D", "E", "F" };
-        String names_concat = "ABCDEF";
+        readonly String[] _names = { "A", "B", "C", "D", "E", "F" };
+        private const String NamesConcat = "ABCDEF";
 
         [TestInitialize]
         public void Setup() {
         }
         [TestMethod]
         public void TestDieConstruction() {
-            Die d = new Die(faces);
-
             int x=0;
-            foreach (String s in names) {
-                Assert.IsTrue(s.CompareTo(faces[x].FaceCharacter) == 0);
+            foreach (String s in _names) {
+                Assert.IsTrue(s.CompareTo(_faces[x].FaceCharacter) == 0);
                 ++x;
             }
         }
         [TestMethod]
         public void TestDieRoll() {
-            Die d = new Die(faces);
+            var d = new Die(_faces);
             Die.Roll(d.ListOfFaces);
 
-            String sum = "";
-            foreach (DieFace s in faces) {
-                sum += s.FaceCharacter;
-            }
-            Assert.IsTrue(sum.CompareTo(names_concat) != 0);
+            String sum = _faces.Aggregate("", (current, s) => current + s.FaceCharacter);
+            Assert.IsTrue(String.Compare(sum, NamesConcat) != 0);
         }
     }
 }

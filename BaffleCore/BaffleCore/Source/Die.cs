@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 
 namespace BaffleCore.Source
@@ -16,11 +7,14 @@ namespace BaffleCore.Source
     {
         public IList<DieFace> ListOfFaces { get; set; }
         public DieFace Face {
-            get {
+            get
+            {
                 // return one of faces randomly.  Assume a roll occured
-                Random rand = new Random();
-                //return ListOfFaces[rand.Next(ListOfFaces.Count - 1)];
-                return ListOfFaces[0];
+                var rand = new Random();
+                if (ListOfFaces != null) {
+                    return ListOfFaces[rand.Next(ListOfFaces.Count - 1)];
+                }
+                return null;
             }
         }
 
@@ -31,7 +25,7 @@ namespace BaffleCore.Source
 
         // Methods
         static public void Roll<T>(IList<T> list) {
-            Random rand = new Random();
+            var rand = new Random();
             for (int i = 0; i < list.Count; i++) {
                 T tmp = list[i];
                 int r = rand.Next(list.Count - 1);
