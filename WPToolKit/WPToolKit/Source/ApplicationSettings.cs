@@ -1,13 +1,12 @@
 ﻿using System;
 using System.IO.IsolatedStorage;
-using System.Runtime.Serialization;
 using System.Collections.Generic;
 
 namespace WPToolKit.Source
 {
     public sealed class ApplicationSettings
     {
-        private IsolatedStorageSettings appSettings;
+        private readonly IsolatedStorageSettings appSettings;
         public ApplicationSettings() {
              appSettings =
                 IsolatedStorageSettings.ApplicationSettings;
@@ -19,8 +18,6 @@ namespace WPToolKit.Source
         public int Count {
             get {
                 return appSettings.Count;
-            }
-            private set {
             }
         }
         /// <summary>
@@ -36,7 +33,7 @@ namespace WPToolKit.Source
                 appSettings[item.Key as string] = item.Value;
             }
 
-            _Save();
+            Save();
         }
         /// <summary>
         /// Gets or sets the <see cref="System.Object"/> with the specified key.
@@ -50,7 +47,7 @@ namespace WPToolKit.Source
                     throw new ArgumentNullException();
                 }
 
-                appSettings.TryGetValue<string>(key, out result);
+                appSettings.TryGetValue(key, out result);
 
                 return result;
             }
@@ -82,13 +79,13 @@ namespace WPToolKit.Source
         /// <remarks>Removes all the keys and saves the emptied storage</remarks>
         public void Reset() {
             appSettings.Clear();
-            _Save();
+            Save();
         }
         /// <summary>
         /// Internal Save function that wraps the exception.
         /// </summary>
         /// <remarks></remarks>
-        private void _Save() {
+        private void Save() {
             
             try {
                 appSettings.Save();
@@ -107,9 +104,12 @@ namespace WPToolKit.Source
         {
             // Assumes class is sealed
             public override bool Equals(string a, string b) {
-                return (a.CompareTo(b) == 0 ? true : false);
+                return String.Compare(a, b, StringComparison.Ordinal) == 0;
             }
             public override int GetHashCode(string a) {
+                if (a == null) {
+                    throw new ArgumentNullException();
+                }
                 return a.GetHashCode();
             }
         }

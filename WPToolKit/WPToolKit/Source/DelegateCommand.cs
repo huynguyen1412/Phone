@@ -5,8 +5,8 @@ namespace WPToolKit.Source
 {
     public sealed class DelegateCommand : ICommand
     {
-        Func<object, bool> canExecute;
-        Action<object> executeAction;
+        readonly Func<object, bool> canExecute;
+        readonly Action<object> executeAction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DelegateCommand"/> class.
@@ -39,7 +39,7 @@ namespace WPToolKit.Source
         /// <remarks></remarks>
         public bool CanExecute(object param) {
             bool result = true;
-            Func<object, bool> canExecuteHandler = this.canExecute;
+            Func<object, bool> canExecuteHandler = canExecute;
 
             if (canExecuteHandler != null) {
                 result = canExecuteHandler(param);
@@ -53,7 +53,7 @@ namespace WPToolKit.Source
         /// <param name="param">The param.</param>
         /// <remarks></remarks>
         public void Execute(object param) {
-            this.executeAction(param);
+            executeAction(param);
         }
         /// <summary>
         /// Occurs when changes occur that affect whether the command should execute.
@@ -66,7 +66,7 @@ namespace WPToolKit.Source
         /// <remarks></remarks>
         public void OnCanExecuteChanged() {
 
-            EventHandler handler = this.CanExecuteChanged;
+            EventHandler handler = CanExecuteChanged;
 
             if (handler != null) {
                 handler(this, new EventArgs());
