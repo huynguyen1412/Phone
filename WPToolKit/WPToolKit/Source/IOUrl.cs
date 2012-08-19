@@ -43,9 +43,7 @@ namespace WPToolKit.Source
         public IoUrl(Uri uri) {
             baseUriName = uri;
         }
-        private IoUrl() {
-            // must create this class with a Uri, hence this construction is private
-        }
+
         /// <summary>
         /// Determines whether this instance is file.
         /// </summary>
@@ -77,7 +75,7 @@ namespace WPToolKit.Source
         }
         // conversions
         /// <summary>
-        /// Performs an implicit conversion from <see cref="WPToolKit.IOUrl"/> to <see cref="System.String"/>.
+        /// Performs an implicit conversion from <see cref="IoUrl"/> to <see cref="System.String"/>.
         /// </summary>
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
@@ -100,10 +98,10 @@ namespace WPToolKit.Source
             }
 
             // it's neither a file or http Uri
-            throw new ArgumentOutOfRangeException("Url is not a filename");
+            throw new ArgumentOutOfRangeException("i");
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="WPToolKit.IOUrl"/> to <see cref="System.Uri"/>.
+        /// Performs an implicit conversion from <see cref="IoUrl"/> to <see cref="System.Uri"/>.
         /// </summary>
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
