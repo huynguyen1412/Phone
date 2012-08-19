@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WPToolKit.Source
 {
-    public class IOUrl {
+    public class IoUrl {
         private Uri baseUriName;
 
         /// <summary>
@@ -37,13 +37,13 @@ namespace WPToolKit.Source
 
             return baseUriName.AbsolutePath.Substring(0, subIdx+1);
         }
-        public IOUrl(String url) {
+        public IoUrl(String url) {
             baseUriName = new Uri(url);
         }
-        public IOUrl(Uri uri) {
+        public IoUrl(Uri uri) {
             baseUriName = uri;
         }
-        private IOUrl() {
+        private IoUrl() {
             // must create this class with a Uri, hence this construction is private
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace WPToolKit.Source
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator String(IOUrl i) {
+        public static implicit operator String(IoUrl i) {
             if (i.IsFile()) {
                 return Path.GetFileName(i.Url.OriginalString);
             }
@@ -108,7 +108,7 @@ namespace WPToolKit.Source
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator Uri(IOUrl i) {
+        public static implicit operator Uri(IoUrl i) {
             return i.Url;
         }
     }

@@ -12,16 +12,16 @@ namespace WPToolKitUnitTest.Unit_Test {
         String fullpath = "c:/test.cs";
         String path = "c:/";
         String filename = "test.cs";
-        IOUrl ioUrl;
-        IOUrl ioHttp;
+        IoUrl ioUrl;
+        IoUrl ioHttp;
 
         [TestInitialize]
         public void SetUp() {
-            ioUrl = new IOUrl(fullpath);
+            ioUrl = new IoUrl(fullpath);
             fullpath = "c:/test.cs";
             path = "c:/";
             filename = "test.cs";
-            ioHttp = new IOUrl("Http://www.foo.com");
+            ioHttp = new IoUrl("Http://www.foo.com");
         }
 
         [TestMethod]
@@ -51,13 +51,13 @@ namespace WPToolKitUnitTest.Unit_Test {
 
         [TestMethod]
         public void TestAdvancedGetPath() {
-            IOUrl pathTest = new IOUrl("/");
+            IoUrl pathTest = new IoUrl("/");
             String path = pathTest.GetPath();
             String fn = pathTest;
             Assert.IsTrue("/".CompareTo(path) == 0);
             Assert.IsTrue("".CompareTo(fn) == 0);
 
-            pathTest = new IOUrl("c:/");
+            pathTest = new IoUrl("c:/");
             path = pathTest.GetPath();
             Assert.IsTrue("c:/".CompareTo(path) == 0);
             Assert.IsTrue("".CompareTo(fn) == 0);
@@ -77,7 +77,7 @@ namespace WPToolKitUnitTest.Unit_Test {
             String f = ioUrl;
             Assert.IsTrue(filename.CompareTo(f) == 0);
 
-            IOUrl rawFilename = new IOUrl("/test.c");
+            IoUrl rawFilename = new IoUrl("/test.c");
             String ff = rawFilename;
             Assert.IsTrue("test.c".CompareTo(ff) == 0);
         }
