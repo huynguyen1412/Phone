@@ -26,7 +26,7 @@ namespace BaffleCoreTest.Unit_Test {
         [TestMethod]
         public void TestDiceConstruction() {
             Die[] die = { new Die(_faceA) };
-            Dice dice = new Dice(die);
+            var dice = new Dice(die);
             Assert.IsTrue(dice.ListOfDie.Count == 1);
             Assert.IsTrue(dice.ListOfDie[0] == die[0]);
         }

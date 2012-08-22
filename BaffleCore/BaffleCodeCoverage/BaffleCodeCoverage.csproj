@@ -57,6 +57,9 @@
     <Compile Include="..\BaffleUnitTest\Unit Test\DieTest.cs">
       <Link>Code Coverage\DieTest.cs</Link>
     </Compile>
+    <Compile Include="..\BaffleUnitTest\Unit Test\TrieTest.cs">
+      <Link>Code Coverage\TrieTest.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

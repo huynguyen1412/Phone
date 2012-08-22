@@ -1,13 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.ComponentModel;
 
 namespace WPToolKit.Source
 {
-    public class IoStorage {
+    public class IOStorage {
 
-        private IoUrl url;
-        public IoUrl Url {
+        private IOUrl url;
+        public IOUrl Url {
             get {
                 return url;
             }
@@ -24,25 +25,26 @@ namespace WPToolKit.Source
         get {
             return IsolatedStorageFile.GetUserStoreForApplication();
             }
+            private set { }
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="IoStorage"/> to <see cref="System.Uri"/>.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOStorage"/> to <see cref="System.Uri"/>.
         /// </summary>
         /// <param name="s">The s.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator Uri(IoStorage s) {
-            s.HasValidIoUrl();
+        public static implicit operator Uri(IOStorage s) {
+            s.HasValidIOUrl();
             return s.url;
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="IoStorage"/> to <see cref="System.String"/>.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOStorage"/> to <see cref="System.String"/>.
         /// </summary>
         /// <param name="s">The s.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator String(IoStorage s) {
-            s.HasValidIoUrl();
+        public static implicit operator String(IOStorage s) {
+            s.HasValidIOUrl();
             return s.url;
         }
         /// <summary>
@@ -51,40 +53,42 @@ namespace WPToolKit.Source
         /// <returns></returns>
         /// <remarks></remarks>
         public String GetPath() {
-            HasValidIoUrl();
+            HasValidIOUrl();
             return url.GetPath();
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="IoStorage"/> class.
+        /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
-        public IoStorage() {
+        public IOStorage() {
             url = null;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="IoStorage"/> class.
+        /// Initializes a new instance of the <see cref="IOStorage"/> class.
         /// </summary>
         /// <param name="url">The URL.</param>
-        public IoStorage(Uri url) {
-            this.url = new IoUrl(url);
+        public IOStorage(Uri url) {
+            this.url = new IOUrl(url);
         }
-        
-        public Stream Load(Uri uri) {
-            url = new IoUrl(uri);
-            return Load();
+        /// <summary>
+        /// Loads the specified new Uri.
+        /// </summary>
+        /// <param name="newUrl">The new URL.</param>
+        /// <returns></returns>
+        public Stream Load(Uri url) {
+            this.url = new IOUrl(url);
+            return this.Load();
         }
-
         /// <summary>
         /// Loads this instance of the stream.
         /// </summary>
-        /// <exception cref="ArgumentNullException"></exception>
         /// <returns></returns>
         /// <remarks></remarks>
         public Stream Load() {
-            HasValidIoUrl();
+            HasValidIOUrl();
 
-            MemoryStream stream;
+            MemoryStream stream = null;
             if(String.IsNullOrEmpty(this)) {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
             try {
@@ -98,7 +102,7 @@ namespace WPToolKit.Source
                 }
             }
             catch(IsolatedStorageException) {
-                throw new IsolatedStorageException(string.Format("Url {0} " + "not found in Isolated Storage", this));
+                throw new IsolatedStorageException("Url " + (String)this + " not found in Isolated Storage");
             }
 
             return stream;
@@ -110,8 +114,8 @@ namespace WPToolKit.Source
         /// <param name="buffer">The buffer.</param>
         /// <param name="bufferLength">Length of the buffer.</param>
         public void Save(Uri filename, Byte[] buffer, long bufferLength) {
-            url = new IoUrl(filename);
-            Save(buffer, bufferLength);
+            this.url = new IOUrl(filename);
+            this.Save(buffer, bufferLength);
         }
         /// <summary>
         /// Saves the specified buffer.
@@ -121,20 +125,24 @@ namespace WPToolKit.Source
         /// <remarks></remarks>
         public void Save(Byte[] buffer, long bufferLength) {
 
-            HasValidIoUrl();
+            HasValidIOUrl();
             if(String.IsNullOrEmpty(this)) {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
-            if(!IsSpaceAvailble(bufferLength)) {
-                throw new ArgumentOutOfRangeException("bufferLength");
+            try {
+                if(!IsSpaceAvailble(bufferLength)) {
+                    throw new ArgumentOutOfRangeException("Buffer length parameter too long for Save");
+                }
+
+                using(IsolatedStorageFileStream stream = new IsolatedStorageFileStream(this, System.IO.FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
+
+                    // Write it out to the file
+                    stream.Write(buffer, 0, (int)bufferLength);
+                    stream.Close();
+                }
             }
-
-            using(var stream = new IsolatedStorageFileStream(this, FileMode.Create, IsolatedStorageFile.GetUserStoreForApplication())) {
-
-                // Write it out to the file
-                stream.Write(buffer, 0, (int)bufferLength);
-                stream.Close();
+            finally {
             }
         }
         /// <summary>
@@ -151,32 +159,32 @@ namespace WPToolKit.Source
             // Make sure the stream is at the beginning of the file
             stream.Position = 0;
 
-            var buffer = new byte[stream.Length];
+            byte[] buffer = new byte[stream.Length];
             stream.Read(buffer, 0, (int)stream.Length);
-            Save(buffer, (int)stream.Length);
+            this.Save(buffer, (int)stream.Length);
         }
         /// <summary>
         /// Removes the specified filename.
         /// </summary>
-        /// <param name="uri">The filename.</param>
+        /// <param name="filename">The filename.</param>
         /// <remarks></remarks>
         public void Remove(Uri uri) {
             if (String.IsNullOrEmpty(uri.OriginalString)) {
                 throw new ArgumentNullException();
             }
 
-            url = new IoUrl(uri);
-            Remove();
+            this.url = new IOUrl(uri);
+            this.Remove();
         }
         /// <summary>
         /// Removes this instance of the file
         /// </summary>
         /// <remarks></remarks>
         public void Remove() {
-            HasValidIoUrl();
+            HasValidIOUrl();
 
             if (String.IsNullOrEmpty(this)) {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException("Url filename is invalid");
             }
 
             using (IsolatedStorageFile store = IsolatedStorageFile.GetUserStoreForApplication()) {
@@ -197,7 +205,7 @@ namespace WPToolKit.Source
             }
             return true;
         }
-        private void HasValidIoUrl() {
+        private void HasValidIOUrl() {
             if (url == null) {
                 throw new InvalidOperationException("Uri not set");
             }

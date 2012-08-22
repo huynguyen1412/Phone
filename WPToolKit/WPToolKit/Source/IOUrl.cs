@@ -3,7 +3,7 @@ using System.IO;
 
 namespace WPToolKit.Source
 {
-    public class IoUrl {
+    public class IOUrl {
         private Uri baseUriName;
 
         /// <summary>
@@ -37,13 +37,15 @@ namespace WPToolKit.Source
 
             return baseUriName.AbsolutePath.Substring(0, subIdx+1);
         }
-        public IoUrl(String url) {
+        public IOUrl(String url) {
             baseUriName = new Uri(url);
         }
-        public IoUrl(Uri uri) {
+        public IOUrl(Uri uri) {
             baseUriName = uri;
         }
-
+        private IOUrl() {
+            // must create this class with a Uri, hence this construction is private
+        }
         /// <summary>
         /// Determines whether this instance is file.
         /// </summary>
@@ -75,12 +77,12 @@ namespace WPToolKit.Source
         }
         // conversions
         /// <summary>
-        /// Performs an implicit conversion from <see cref="IoUrl"/> to <see cref="System.String"/>.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOUrl"/> to <see cref="System.String"/>.
         /// </summary>
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator String(IoUrl i) {
+        public static implicit operator String(IOUrl i) {
             if (i.IsFile()) {
                 return Path.GetFileName(i.Url.OriginalString);
             }
@@ -98,15 +100,15 @@ namespace WPToolKit.Source
             }
 
             // it's neither a file or http Uri
-            throw new ArgumentOutOfRangeException("i");
+            throw new ArgumentOutOfRangeException("Url is not a filename");
         }
         /// <summary>
-        /// Performs an implicit conversion from <see cref="IoUrl"/> to <see cref="System.Uri"/>.
+        /// Performs an implicit conversion from <see cref="WPToolKit.IOUrl"/> to <see cref="System.Uri"/>.
         /// </summary>
         /// <param name="i">The i.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator Uri(IoUrl i) {
+        public static implicit operator Uri(IOUrl i) {
             return i.Url;
         }
     }

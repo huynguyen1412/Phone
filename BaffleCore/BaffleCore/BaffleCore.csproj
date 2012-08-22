@@ -77,6 +77,7 @@
     <Compile Include="Source\DieFace.cs" />
     <Compile Include="Source\GameBoard.cs" />
     <Compile Include="Source\GameCore.cs" />
+    <Compile Include="Source\Trie.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
