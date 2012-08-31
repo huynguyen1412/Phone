@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 
@@ -10,268 +11,274 @@ namespace WPToolKit.Source
     /// Extension to Application to expose the Notification singleton
     /// </summary>
     /// <remarks></remarks>
-    public static partial class WPTKApplicationExtension {
-        static private Notification _ApplicationNotificationObject;
+    public static class WptkApplicationExtension {
+        static private Notification applicationNotificationObject;
         public static Notification GetApplicationNotificationObject(this Application a) {
-            if (_ApplicationNotificationObject == null) {
-                _ApplicationNotificationObject = new Notification();
-            }
-            return _ApplicationNotificationObject;
+            return applicationNotificationObject ?? (applicationNotificationObject = new Notification());
         }
     }
 
-    public class Notification
-     {
-         private Dictionary<Type, Delegate> messageMap;
-         /// <summary>
-         /// Initializes a new instance of the <see cref="Notification"/> class.
-         /// </summary>
-         /// <remarks></remarks>
-         public Notification() {
-             messageMap = new Dictionary<Type, Delegate>();
-         }
-         /// <summary>
-         /// Gets the register count.
-         /// </summary>
-         /// <remarks></remarks>
-         public int RegisteredCount {
-            get {
-                return messageMap.Count;
+    public class Notification{
+        private readonly Dictionary<Type, Delegate> messageMap;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Notification"/> class.
+        /// </summary>
+        /// <remarks></remarks>
+        public Notification() {
+            messageMap = new Dictionary<Type, Delegate>();
+        }
+
+        /// <summary>
+        /// Gets the register count.
+        /// </summary>
+        /// <remarks></remarks>
+        public int RegisteredCount {
+            get { return messageMap.Count; }
+        }
+
+        /// <summary>
+        /// Registers the specified handler.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <remarks></remarks>
+        public void Register<T>(Action<object, T> handler) {
+
+            Delegate action;
+
+            if (messageMap.TryGetValue(typeof (T), out action)) {
+                action = Delegate.Combine(action, handler);
+                messageMap[typeof (T)] = action;
             }
-         }
-         /// <summary>
-         /// Registers the specified handler.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <param name="handler">The handler.</param>
-         /// <remarks></remarks>
-         public void Register<T>(Action<object, T> handler) {
+            else {
+                messageMap.Add(typeof (T), handler);
+            }
+        }
 
-             Delegate action;
+        /// <summary>
+        /// Registers the specified handler.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <remarks></remarks>
+        public void Register<T, TResult>(Func<object, T, TResult> handler) {
 
-             if (messageMap.TryGetValue(typeof(T), out action) == true) {
-                 action = Delegate.Combine(action, handler);
-                 messageMap[typeof(T)] = action;
-             }
-             else {
-                 messageMap.Add(typeof(T), handler);
-             }
-         }
-         /// <summary>
-         /// Registers the specified handler.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <typeparam name="TResult">The type of the result.</typeparam>
-         /// <param name="handler">The handler.</param>
-         /// <remarks></remarks>
-         public void Register<T, TResult>(Func<object, T, TResult> handler) {
+            Delegate func;
 
-             Delegate func;
+            if (handler == null) {
+                throw new ArgumentException("Handler can not be null");
+            }
 
-             if(handler == null) {
-                 throw new ArgumentException("Handler can not be null");
-             }
+            if (messageMap.TryGetValue(typeof (T), out func)) {
+                func = Delegate.Combine(func, handler);
+                messageMap[typeof (T)] = func;
+            }
+            else {
+                messageMap.Add(typeof (T), handler);
+            }
+        }
 
-             if (messageMap.TryGetValue(typeof(T), out func) == true) {
-                 func = Delegate.Combine(func, handler);
-                 messageMap[typeof(T)] = func;
-             }
-             else {
-                 messageMap.Add(typeof(T), handler);
-             }
-         }
-         /// <summary>
-         /// Unregisters the specified handler for the message of type T.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <param name="handler">The handler.</param>
-         /// <remarks></remarks>
-         public void Unregister<T>(Action<object, T> handler) {
+        /// <summary>
+        /// Unregisters the specified handler for the message of type T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <remarks></remarks>
+        public void Unregister<T>(Action<object, T> handler) {
 
-             Delegate action;
-             if (messageMap.TryGetValue(typeof(T), out action) == true) {
-                 action = MulticastDelegate.Remove((MulticastDelegate)action, handler);
+            Delegate action;
+            if (messageMap.TryGetValue(typeof (T), out action)) {
+                action = Delegate.Remove(action, handler);
 
-                 // if the delegate list is empty, remove the key
-                 // otherwise, set it to the new delegate list
-                 if (action == null) {
-                     messageMap.Remove(typeof(T));
-                 }
-                 else {
-                     messageMap[typeof(T)] = action;
-                 }
-             }
-         }
-         /// <summary>
-         /// Unregisters the specified handler.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <typeparam name="TResult">The type of the result.</typeparam>
-         /// <param name="handler">The handler.</param>
-         /// <remarks></remarks>
-         public void Unregister<T, TResult>(Func<object, T, TResult> handler) {
+                // if the delegate list is empty, remove the key
+                // otherwise, set it to the new delegate list
+                if (action == null) {
+                    messageMap.Remove(typeof (T));
+                }
+                else {
+                    messageMap[typeof (T)] = action;
+                }
+            }
+        }
 
-             Delegate func;
-             if (messageMap.TryGetValue(typeof(T), out func) == true) {
-                 func = MulticastDelegate.Remove((MulticastDelegate)func, handler);
+        /// <summary>
+        /// Unregisters the specified handler.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <remarks></remarks>
+        public void Unregister<T, TResult>(Func<object, T, TResult> handler) {
 
-                 // if the delegate list is empty, remove the key
-                 // otherwise, set it to the new delegate list
-                 if (func == null) {
-                     messageMap.Remove(typeof(T));
-                 }
-                 else {
-                     messageMap[typeof(T)] = func;
-                 }
-             }
-         }
-         /// <summary>
-         /// Unregisters all specified handlers for the message of type T.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <remarks></remarks>
-         public void Unregister<T>() {
+            Delegate func;
+            if (messageMap.TryGetValue(typeof (T), out func)) {
+                func = Delegate.Remove(func, handler);
 
-             Delegate action;
-             if (messageMap.TryGetValue(typeof(T), out action) == true) {
-                 // Remove all the delegates first then remove the key from the map
-                 Delegate[] dl = ((Action<object, T>)(action)).GetInvocationList();
+                // if the delegate list is empty, remove the key
+                // otherwise, set it to the new delegate list
+                if (func == null) {
+                    messageMap.Remove(typeof (T));
+                }
+                else {
+                    messageMap[typeof (T)] = func;
+                }
+            }
+        }
 
-                 foreach (Action<object, T> d in dl) {
-                     Delegate.Remove(d, d);
-                 }
-                 messageMap.Remove(typeof(T));
-             }
-         }
-         /// <summary>
-         /// Unregisters this instance.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <typeparam name="TResult">The type of the result.</typeparam>
-         /// <remarks></remarks>
-         public void Unregister<T, TResult>() {
-             Delegate func;
-             if (messageMap.TryGetValue(typeof(T), out func) == true) {
-                 // Remove all the delegates first then remove the key from the map
-                 Delegate[] dl = ((Func<object, T, TResult>)(func)).GetInvocationList();
+        /// <summary>
+        /// Unregisters all specified handlers for the message of type T.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <remarks></remarks>
+        public void Unregister<T>() {
 
-                 foreach (Func<object, T, TResult> d in dl) {
-                     Delegate.Remove(d, d);
-                 }
-                 messageMap.Remove(typeof(T));
-             }
-         }
-         /// <summary>
-         /// Sends a message type T to all the registered handlers.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <param name="from">From.</param>
-         /// <param name="message">The message.</param>
-         /// <remarks></remarks>
-         public void Send<T>(object from, T message) {
-             Delegate action;
-             if (messageMap.TryGetValue(typeof(T), out action) != false) {
+            Delegate action;
+            if (messageMap.TryGetValue(typeof (T), out action)) {
+                // Remove all the delegates first then remove the key from the map
+                Delegate[] dl = action.GetInvocationList();
 
-                 try {
-                     ((Action<object, T>)action)(from, message);
-                 }
-                 catch (Exception e) {
-                     throw new ArgumentException("InvalidHandlerMethod", e);
-                 }
-             }
-             else {
-                 throw new ArgumentException("Key: " + typeof(T) + " Not Found");
-             }
-         }
-         /// <summary>
-         /// Sends the specified message and returns a result
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <typeparam name="TResult">The type of the result.</typeparam>
-         /// <param name="from">From.</param>
-         /// <param name="message">The message.</param>
-         /// <returns></returns>
-         /// <remarks></remarks>
-         public TResult Send<T, TResult>(object from, T message) {
-             
-             Delegate func;
-             TResult result;
+                foreach (Action<object, T> d in dl) {
+                    Delegate.Remove(d, d);
+                }
+                messageMap.Remove(typeof (T));
+            }
+        }
 
-             if (messageMap.TryGetValue(typeof(T), out func) != false) {
+        /// <summary>
+        /// Unregisters this instance.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <remarks></remarks>
+        public void Unregister<T, TResult>() {
+            Delegate func;
+            if (messageMap.TryGetValue(typeof (T), out func)) {
+                // Remove all the delegates first then remove the key from the map
+                Delegate[] dl = func.GetInvocationList();
 
-                 try {
-                     result = ((Func<object, T, TResult>)func)(from, message);
-                 }
-                 catch(Exception e) {
-                     throw new ArgumentException("InvalidHandlerMethod", e);
-                 }
-             }
-             else {
-                 String s = "Key(" + typeof(T) + ") Not Found";
-                 throw new ArgumentException(s);
-             }
+                foreach (Func<object, T, TResult> d in dl) {
+                    Delegate.Remove(d, d);
+                }
+                messageMap.Remove(typeof (T));
+            }
+        }
 
-             return result;
-         }
-         /// <summary>
-         /// Sends a message type T to all the registered handlers asynchronously.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <param name="from">From.</param>
-         /// <param name="message">The message.</param>
-         /// <remarks>This method return immediately</remarks>
-         public void SendAsync<T>(object from, T message) {
-             Delegate action;
+        /// <summary>
+        /// Sends a message type T to all the registered handlers.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from">From.</param>
+        /// <param name="message">The message.</param>
+        /// <remarks></remarks>
+        public void Send<T>(object from, T message) {
+            Delegate action;
+            if (messageMap.TryGetValue(typeof (T), out action)) {
 
-             if (messageMap.TryGetValue(typeof(T), out action) == false) {
-                 return;
-             }
+                try {
+                    ((Action<object, T>) action)(from, message);
+                }
+                catch (Exception e) {
+                    throw new ArgumentException("InvalidHandlerMethod", e);
+                }
+            }
+            else {
+                throw new ArgumentException("Key: " + typeof (T) + " Not Found");
+            }
+        }
 
-             Delegate[] invocationList = action.GetInvocationList();
+        /// <summary>
+        /// Sends the specified message and returns a result
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
+        /// <param name="from">From.</param>
+        /// <param name="message">The message.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public TResult Send<T, TResult>(object from, T message) {
 
-#if WINDOWS_PHONE    
-             
-             foreach(Action<object, T> d in invocationList) {
-                 IAsyncResult r = d.BeginInvoke(from, message, null, null);
-             }
+            Delegate func;
+            TResult result;
+
+            if (messageMap.TryGetValue(typeof (T), out func)) {
+
+                try {
+                    result = ((Func<object, T, TResult>) func)(from, message);
+                }
+                catch (Exception e) {
+                    throw new ArgumentException("InvalidHandlerMethod", e);
+                }
+            }
+            else {
+                String s = "Key(" + typeof (T) + ") Not Found";
+                throw new ArgumentException(s);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Sends a message type T to all the registered handlers asynchronously.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from">From.</param>
+        /// <param name="message">The message.</param>
+        /// <remarks>This method return immediately</remarks>
+        public void SendAsync<T>(object from, T message) {
+            Delegate action;
+
+            if (messageMap.TryGetValue(typeof (T), out action) == false) {
+                return;
+            }
+
+            Delegate[] invocationList = action.GetInvocationList();
+
+#if WINDOWS_PHONE
+
+            foreach (Action<object, T> d in invocationList) {
+                Debug.Assert(d != null);
+                IAsyncResult r = d.BeginInvoke(from, message, null, null);
+            }
 #else        
-             // not availble on WP
+    // not availble on WP
              parallel.foreach(invocationlist, (item) => {
                  action<object, t> a = item as action<object, t>;
                  a(from, message);
              });
 #endif
-             return;
-         }
-         /// <summary>
-         /// Sends a message type T to all the registered handlers asynchronously. Blocks until all are completed.
-         /// </summary>
-         /// <typeparam name="T"></typeparam>
-         /// <param name="from">From.</param>
-         /// <param name="message">The message.</param>
-         /// <remarks>Limit of 32 handlers imposed</remarks>
-         public void SendSync<T>(object from, T message) {
-             Delegate action;
-             const int NumberOfWaitsAllowed = 32;
+        }
 
-             if (messageMap.TryGetValue(typeof(T), out action) == false) {
-                 return;
-             }
+        /// <summary>
+        /// Sends a message type T to all the registered handlers asynchronously. Blocks until all are completed.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from">From.</param>
+        /// <param name="message">The message.</param>
+        /// <remarks>Limit of 32 handlers imposed</remarks>
+        public void SendSync<T>(object from, T message) {
+            Delegate action;
+            const int numberOfWaitsAllowed = 32;
 
-             Delegate[] invocationList = action.GetInvocationList();
-             if (invocationList.GetLength(0) > NumberOfWaitsAllowed) {
-                 throw new ArgumentOutOfRangeException("Too many delegates to wait on");
-             }
+            if (messageMap.TryGetValue(typeof (T), out action) == false) {
+                return;
+            }
 
-             List<WaitHandle> asyncResult = new List<WaitHandle>();
+            Delegate[] invocationList = action.GetInvocationList();
+            if (invocationList.GetLength(0) > numberOfWaitsAllowed) {
+                throw new ArgumentOutOfRangeException();
+            }
 
-             foreach (Action<object, T> d in invocationList) {
-                 IAsyncResult r = d.BeginInvoke(from, message, null, null);
-                 asyncResult.Add(r.AsyncWaitHandle);
-             }
+            var asyncResult = new List<WaitHandle>();
 
-             WaitHandle.WaitAll(asyncResult.ToArray());
-             return;
-         }
-     }
+            foreach (Action<object, T> d in invocationList) {
+                IAsyncResult r = d.BeginInvoke(from, message, null, null);
+                asyncResult.Add(r.AsyncWaitHandle);
+
+                WaitHandle.WaitAll(asyncResult.ToArray());
+                return;
+            }
+        }
+    }
 }
