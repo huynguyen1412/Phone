@@ -20,12 +20,13 @@ namespace BaffleCore.Source
 
     public class Trie {
 
-        readonly TrieNode root;
+        private TrieNode root;
         private readonly Dictionary<char, int> map;
 
         public int NumberOfUniqueCharacters {
             get { return map.Count; }
         }
+        public int Count { get; set; }
         public int MapCharacter(char c) {
             int index;
 
@@ -80,7 +81,47 @@ namespace BaffleCore.Source
             }
 
             node.IsWord = true;
+            Count++;
+        }
+        public List<String> EnumerateAllWords() {
+            var list = new List<String>();
+
+            const string runningString = "";
+            EnumerateAllWords(root, runningString, list);
+            return list;
+        }
+        public void Empty() {
+            root = null;
+            Count = 0;
+        }
+        public bool Contains(String s) {
+            TrieNode n = root;
+            s = s.ToUpper();
+
+            foreach(var ch in s) {
+                int idx = MapCharacter(ch);
+                if (idx == -1) { return false; }
+
+                n = n.SubTrieNode[idx];
+                if (n == null) { return false; }
+
+                if (n.IsWord) { return true; }
+            }
+
+            return false;
+        }
+        private void EnumerateAllWords(TrieNode n, String runningString, List<String> runningList) {
+
+            for (var i=0; i < TrieNode.Size; i++) {
+                if (n.SubTrieNode[i] == null) {
+                    continue;
+                }
+                if (n.SubTrieNode[i].IsWord) {
+                    // concat the letter and add it to the running list
+                    runningList.Add(runningString + n.SubTrieNode[i].Character);
+                }
+                EnumerateAllWords(n.SubTrieNode[i], runningString + n.SubTrieNode[i].Character, runningList);
+            }
         }
     }
-
 }
