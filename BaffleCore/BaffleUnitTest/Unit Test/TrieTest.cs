@@ -55,18 +55,85 @@ namespace BaffleUnitTest.Unit_Test
         }
 
         [TestMethod]
-        public void TestAdd() {
+        public void TestBasicAdd() {
             const String characters = "LELoHP";
             var table = new Trie(characters);
 
-            table.Add("Hello");
-            table.Add("Hell");
-            table.Add("Help");
-            table.Add("Phelp");
+            table.Add("HELLO");
+            table.Add("HELL");
+            table.Add("HELP");
+            table.Add("PHELP");
 
+            Assert.IsTrue(table.Count == 4);
+            var list = table.EnumerateAllWords();
 
+            Assert.IsTrue(list.Count == 4);
+            Assert.IsTrue(list.Contains("HELLO"));
+            Assert.IsTrue(list.Contains("HELL"));
+            Assert.IsTrue(list.Contains("HELP"));
+            Assert.IsTrue(list.Contains("PHELP"));
+        }
 
+        [TestMethod]
+        public void TestEnumerate() {
+            const String characters = "DOUTYA";
+            var table = new Trie(characters);
 
+            // Test with none in the table
+            Assert.IsTrue(table.Count == 0);
+            var list = table.EnumerateAllWords();
+            Assert.IsTrue(list.Count == 0);
+
+            // Test with one in the table
+            table.Add("Duty");
+            Assert.IsTrue(table.Count == 1);
+            list = table.EnumerateAllWords();
+            Assert.IsTrue(list.Count == 1);
+            Assert.IsTrue(list.Contains("DUTY"));
+            
+            // Add some more words and test
+            table.Add("Toad");
+            table.Add("Dot");
+            table.Add("You");
+            table.Add("Dat");
+            table.Add("Tad");
+            Assert.IsTrue(table.Count == 6);
+            list = table.EnumerateAllWords();
+            Assert.IsTrue(list.Count == 6);
+
+            Assert.IsTrue(table.Contains("Toad"));
+
+        }
+
+        [TestMethod]
+        public void TestContains() {
+            const String characters = "DOUTYA";
+            var table = new Trie(characters);
+
+            // test with no words
+            Assert.IsFalse(table.Contains("Bogus"));
+
+            // Add some more words and test
+            table.Add("Duty");
+            table.Add("Toad");
+            table.Add("Dot");
+            table.Add("You");
+            table.Add("Dat");
+            table.Add("Tad");
+            Assert.IsTrue(table.Count == 6);
+            Assert.IsTrue(table.Contains("Duty"));
+            Assert.IsTrue(table.Contains("Tad"));
+            Assert.IsTrue(table.Contains("You"));
+            Assert.IsTrue(table.Contains("Toad"));
+            Assert.IsTrue(table.Contains("Dat"));
+            Assert.IsTrue(table.Contains("Dot"));
+
+            // test not found with a mix of letters
+            Assert.IsFalse(table.Contains("NoFound"));
+            // test not found with know letters
+            Assert.IsFalse(table.Contains("DDDDDDDDDDDDDDD"));
+
+            
         }
     }
 }
