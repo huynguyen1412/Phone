@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
@@ -8,33 +7,32 @@ using System;
 
 namespace BaffleCore.Source {
    
-    public class Dictionary {
-        private Trie dictionaryTable;
+    public class PrefixTree {
+        private Trie prefixTreeTable;
 
         private string[] Content { get; set; }
-        public Trie DictionaryTable() {
-            return dictionaryTable;
+        public Trie PrefixTreeTable() {
+            return prefixTreeTable;
         }
 
         public bool Ready { get; set; }
         public bool Contains(String s) {
-            return dictionaryTable.Contains(s);
+            return prefixTreeTable.Contains(s);
         }
 
-        public Dictionary() {
-            this.dictionaryTable = dictionaryTable;
+        public PrefixTree() {
             Content = null;
-            dictionaryTable = null;
+            prefixTreeTable = null;
             Ready = false;
         }
         public void CreateDictionaryHash() {
 
-            var dictionaryThread = new BackgroundWorker();
-            dictionaryThread.DoWork += ReadDictionary;
-            dictionaryThread.RunWorkerCompleted += ReadDictionaryComplete;
-            dictionaryThread.RunWorkerAsync();
+            var prefixTreeThread = new BackgroundWorker();
+            prefixTreeThread.DoWork += ReadPrefixTree;
+            prefixTreeThread.RunWorkerCompleted += ReadPrefixTreeComplete;
+            prefixTreeThread.RunWorkerAsync();
         }
-        private void ReadDictionary(object sender, DoWorkEventArgs e) {
+        private void ReadPrefixTree(object sender, DoWorkEventArgs e) {
 
             Stream s=null;
             StreamReader stream = null;
@@ -64,9 +62,9 @@ namespace BaffleCore.Source {
                 }
             }
 
-            if (dictionaryTable == null) {
+            if (prefixTreeTable == null) {
                 if (Content != null) {
-                    dictionaryTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
                 }
             }
 
@@ -74,12 +72,12 @@ namespace BaffleCore.Source {
                 return;
             }
             foreach (string word in Content) {
-                Debug.Assert(dictionaryTable != null, "dictionaryTable != null");
-                dictionaryTable.Add(word);
+                Debug.Assert(prefixTreeTable != null, "prefixTreeTable != null");
+                prefixTreeTable.Add(word);
             }
             Ready = true;
         }
-        private void ReadDictionaryComplete(object sender, RunWorkerCompletedEventArgs e) {
+        private void ReadPrefixTreeComplete(object sender, RunWorkerCompletedEventArgs e) {
             if (e.Error == null && e.Cancelled == false)
             {
                 Content = null;  // free the raw serialize data, Trie table is created.

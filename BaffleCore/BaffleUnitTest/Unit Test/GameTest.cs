@@ -10,22 +10,24 @@ namespace BaffleUnitTest.Unit_Test
     [TestClass]
     public class GameTest {
 
-        private Dictionary dictionary;
         [TestInitialize]
         public void SetUp() {
-            dictionary = new Dictionary();
-            dictionary.CreateDictionaryHash();
-
+            //Note, the PrefixTree is created in MainPage to build it before testing
         }
         
         [TestMethod]
         public void TestWordLookUp() {
-            while (!dictionary.Ready) {
-                Thread.Sleep(100);
+
+            // incase the PrefixTree is not ready
+            while (! MainPage.dictionary.Ready) {
+                Thread.Sleep(10);
             }
 
-            Assert.IsTrue(dictionary.Contains("Hello"));
-
+            Assert.IsTrue(MainPage.dictionary.Contains("Hello"));
+            Assert.IsTrue(MainPage.dictionary.Contains("AAH"));
+            Assert.IsTrue(MainPage.dictionary.Contains("LARGEHEARTEDNESS"));
+            Assert.IsTrue(MainPage.dictionary.Contains("PETUNIAS"));
+            Assert.IsTrue(MainPage.dictionary.Contains("ZYZZYVAS"));
         }
 
     }
