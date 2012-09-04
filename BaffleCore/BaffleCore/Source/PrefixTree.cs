@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,14 @@ namespace BaffleCore.Source {
         public bool Contains(String s) {
             return prefixTreeTable.Contains(s);
         }
+
+        public List<String> EnumerateWordsBeginWith(char c) {
+            return prefixTreeTable.EnumerateAllWordsBeginWith(c);
+        }
+
+        public List<String> EnumerateWordsBeginWith(String prefix) {
+            return prefixTreeTable.EnumerateAllWordsBeginWith(prefix);
+        } 
 
         public PrefixTree() {
             Content = null;
@@ -78,8 +87,7 @@ namespace BaffleCore.Source {
             Ready = true;
         }
         private void ReadPrefixTreeComplete(object sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error == null && e.Cancelled == false)
-            {
+            if (e.Error == null && e.Cancelled == false) {
                 Content = null;  // free the raw serialize data, Trie table is created.
             }
         }

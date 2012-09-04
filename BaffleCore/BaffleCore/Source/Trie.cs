@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace BaffleCore.Source
-{
-    public class TrieNode
-    {
+namespace BaffleCore.Source {
+    public class TrieNode {
         public const int Size = 26;
         public bool IsWord { get; set; }
         public char Character { get; set; }
@@ -17,38 +15,35 @@ namespace BaffleCore.Source
             Character = '0';
         }
     }
-    public class Trie {
 
+    public class Trie {
         private TrieNode root;
         private readonly Dictionary<char, int> map;
 
-        public int NumberOfUniqueCharacters
-        {
+        public int NumberOfUniqueCharacters {
             get { return map.Count; }
         }
+
         public int Count { get; set; }
 
-        public Trie(String characters)
-        {
+        public Trie(String characters) {
             map = new Dictionary<char, int>(TrieNode.Size);
             root = new TrieNode();
 
             // no default constructor;therefore, so null argument is not possible.  No need to test
-            if (characters.Length == 0 || characters.Length > TrieNode.Size)
-            {
+            if (characters.Length == 0 || characters.Length > TrieNode.Size) {
                 throw new ArgumentOutOfRangeException();
             }
 
             int x = 0;
-            foreach (var c in characters)
-            {
-                if (!map.ContainsKey(Char.ToUpper(c)))
-                {
+            foreach (var c in characters) {
+                if (!map.ContainsKey(Char.ToUpper(c))) {
                     map[Char.ToUpper(c)] = x;
                     ++x;
                 }
             }
         }
+
         public int MapCharacter(char c) {
             int index;
 
@@ -56,44 +51,65 @@ namespace BaffleCore.Source
                 index = map[Char.ToUpper(c)];
             }
             catch (KeyNotFoundException) {
-
                 index = -1;
             }
 
             return index;
         }
-        private void EnumerateAllWords(TrieNode n, String runningString, List<String> runningList)
-        {
-
-            for (var i = 0; i < TrieNode.Size; i++)
-            {
-                if (n.SubTrieNode[i] == null)
-                {
+        private void EnumerateAllWords(TrieNode n, String runningString, List<String> runningList) {
+            for (var i = 0; i < TrieNode.Size; i++) {
+                if (n.SubTrieNode[i] == null) {
                     continue;
                 }
-                if (n.SubTrieNode[i].IsWord)
-                {
+                if (n.SubTrieNode[i].IsWord) {
                     // concat the letter and add it to the running list
                     runningList.Add(runningString + n.SubTrieNode[i].Character);
                 }
                 EnumerateAllWords(n.SubTrieNode[i], runningString + n.SubTrieNode[i].Character, runningList);
             }
         }
+        public List<String> EnumerateAllWordsBeginWith(String prefix) {
+            var list = new List<String>();
+            String runningString = prefix;
+            int idx=0;
 
-        public List<String> EnumerateAllWords()
-        {
+            foreach (var c in runningString) {
+                idx = MapCharacter(c);
+
+                if (root == null || idx == -1) {
+                    return list;
+                }
+            }
+
+            var node = root.SubTrieNode[idx];
+            EnumerateAllWords(node, runningString, list);
+            return list;
+        } 
+
+        public List<String> EnumerateAllWordsBeginWith(char letter) {
+            var list = new List<String>();
+            String runningString = "";
+            int idx = MapCharacter(letter);
+
+            if (root == null || idx == -1) {
+                return list;
+            }
+            var node = root.SubTrieNode[idx];
+            runningString += letter;
+            EnumerateAllWords(node, runningString, list);
+            return list;
+        }
+        public List<String> EnumerateAllWords() {
             var list = new List<String>();
 
             const string runningString = "";
             EnumerateAllWords(root, runningString, list);
             return list;
         }
-        public void Add(String s)
-        {
+        public void Add(String s) {
             TrieNode node = root;
 
             foreach (var c in s) {
-
                 Char cc = Char.ToUpper(c);
                 int index = MapCharacter(cc);
                 Debug.Assert(index != -1);
@@ -123,7 +139,7 @@ namespace BaffleCore.Source
             TrieNode n = root;
             s = s.ToUpper();
 
-            foreach(var ch in s) {
+            foreach (var ch in s) {
                 int idx = MapCharacter(ch);
                 if (idx == -1) {
                     return false;

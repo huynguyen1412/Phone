@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using BaffleCore.Source;
+﻿using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -16,7 +14,7 @@ namespace BaffleUnitTest.Unit_Test
         }
         
         [TestMethod]
-        public void TestWordLookUp() {
+        public void TestWordLookup() {
 
             // incase the PrefixTree is not ready
             while (! MainPage.dictionary.Ready) {
@@ -28,7 +26,32 @@ namespace BaffleUnitTest.Unit_Test
             Assert.IsTrue(MainPage.dictionary.Contains("LARGEHEARTEDNESS"));
             Assert.IsTrue(MainPage.dictionary.Contains("PETUNIAS"));
             Assert.IsTrue(MainPage.dictionary.Contains("ZYZZYVAS"));
+
+
         }
 
+        [TestMethod]
+        public void TestWordPrefixLookup() {
+
+            // incase the PrefixTree is not ready
+            while (! MainPage.dictionary.Ready) {
+                Thread.Sleep(10);
+            }
+
+
+            // all these test numbers are based on the dictionary.dat file included.  If it changes,
+            // these test need to be updated.
+            var list = MainPage.dictionary.EnumerateWordsBeginWith("AEO");
+            list = MainPage.dictionary.EnumerateWordsBeginWith("AOE");
+            list = MainPage.dictionary.EnumerateWordsBeginWith("OEA");
+            list = MainPage.dictionary.EnumerateWordsBeginWith("EOA");
+
+          //  Assert.IsTrue(list.Count == 10320);
+           // Assert.IsTrue(System.String.Compare(list[0], "AAH", System.StringComparison.Ordinal) == 0);
+   //         Assert.IsTrue(System.String.Compare(list[list.Count - 1], "AZYGOUS", System.StringComparison.Ordinal) == 0);
+
+     //       list = MainPage.dictionary.EnumerateWordsBeginWith("AEO");
+
+        }
     }
 }

@@ -10,8 +10,6 @@ namespace BaffleUnitTest.Unit_Test {
 
         [TestMethod]
         public void TestDictionaryCreate() {
-       //     var pt = new PrefixTree();
-         //   pt.CreateDictionaryHash();
         }
     }
 }
