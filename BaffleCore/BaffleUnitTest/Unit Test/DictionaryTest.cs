@@ -10,8 +10,10 @@ namespace BaffleUnitTest.Unit_Test {
 
         [TestMethod]
         public void TestDictionaryCreate() {
-            Dictionary dict = new Dictionary();
+            var dict = new Dictionary();
             dict.CreateDictionaryHash();
+
+
         }
     }
 }

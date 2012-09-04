@@ -6,7 +6,7 @@ namespace BaffleCore.Source
 {
     public class TrieNode
     {
-        public const int Size = 16;
+        public const int Size = 26;
         public bool IsWord { get; set; }
         public char Character { get; set; }
         public TrieNode[] SubTrieNode;
@@ -17,16 +17,38 @@ namespace BaffleCore.Source
             Character = '0';
         }
     }
-
     public class Trie {
 
         private TrieNode root;
         private readonly Dictionary<char, int> map;
 
-        public int NumberOfUniqueCharacters {
+        public int NumberOfUniqueCharacters
+        {
             get { return map.Count; }
         }
         public int Count { get; set; }
+
+        public Trie(String characters)
+        {
+            map = new Dictionary<char, int>(TrieNode.Size);
+            root = new TrieNode();
+
+            // no default constructor;therefore, so null argument is not possible.  No need to test
+            if (characters.Length == 0 || characters.Length > TrieNode.Size)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            int x = 0;
+            foreach (var c in characters)
+            {
+                if (!map.ContainsKey(Char.ToUpper(c)))
+                {
+                    map[Char.ToUpper(c)] = x;
+                    ++x;
+                }
+            }
+        }
         public int MapCharacter(char c) {
             int index;
 
@@ -40,24 +62,34 @@ namespace BaffleCore.Source
 
             return index;
         }
-        public Trie(String characters) {
-            map = new Dictionary<char, int>(TrieNode.Size);
-            root = new TrieNode();
+        private void EnumerateAllWords(TrieNode n, String runningString, List<String> runningList)
+        {
 
-            // no default constructor;therefore, so null argument is not possible.  No need to test
-            if (characters.Length == 0 || characters.Length > TrieNode.Size) {
-                throw new ArgumentOutOfRangeException();
-            }
-
-            int x = 0;
-            foreach (var c in characters) {
-                if (!map.ContainsKey(Char.ToUpper(c))) {
-                    map[Char.ToUpper(c)] = x;
-                    ++x;
+            for (var i = 0; i < TrieNode.Size; i++)
+            {
+                if (n.SubTrieNode[i] == null)
+                {
+                    continue;
                 }
+                if (n.SubTrieNode[i].IsWord)
+                {
+                    // concat the letter and add it to the running list
+                    runningList.Add(runningString + n.SubTrieNode[i].Character);
+                }
+                EnumerateAllWords(n.SubTrieNode[i], runningString + n.SubTrieNode[i].Character, runningList);
             }
         }
-        public void Add(String s) {
+
+        public List<String> EnumerateAllWords()
+        {
+            var list = new List<String>();
+
+            const string runningString = "";
+            EnumerateAllWords(root, runningString, list);
+            return list;
+        }
+        public void Add(String s)
+        {
             TrieNode node = root;
 
             foreach (var c in s) {
@@ -83,13 +115,6 @@ namespace BaffleCore.Source
             node.IsWord = true;
             Count++;
         }
-        public List<String> EnumerateAllWords() {
-            var list = new List<String>();
-
-            const string runningString = "";
-            EnumerateAllWords(root, runningString, list);
-            return list;
-        }
         public void Empty() {
             root = null;
             Count = 0;
@@ -100,28 +125,21 @@ namespace BaffleCore.Source
 
             foreach(var ch in s) {
                 int idx = MapCharacter(ch);
-                if (idx == -1) { return false; }
+                if (idx == -1) {
+                    return false;
+                }
 
                 n = n.SubTrieNode[idx];
-                if (n == null) { return false; }
+                if (n == null) {
+                    return false;
+                }
 
-                if (n.IsWord) { return true; }
+                if (n.IsWord) {
+                    return true;
+                }
             }
 
             return false;
-        }
-        private void EnumerateAllWords(TrieNode n, String runningString, List<String> runningList) {
-
-            for (var i=0; i < TrieNode.Size; i++) {
-                if (n.SubTrieNode[i] == null) {
-                    continue;
-                }
-                if (n.SubTrieNode[i].IsWord) {
-                    // concat the letter and add it to the running list
-                    runningList.Add(runningString + n.SubTrieNode[i].Character);
-                }
-                EnumerateAllWords(n.SubTrieNode[i], runningString + n.SubTrieNode[i].Character, runningList);
-            }
         }
     }
 }

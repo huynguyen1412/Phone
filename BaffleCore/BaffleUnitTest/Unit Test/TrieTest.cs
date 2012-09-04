@@ -15,13 +15,11 @@ namespace BaffleUnitTest.Unit_Test
         public void TestTriesCreateWithEmptyString() {
             var table = new Trie("");
         }
-
         [TestMethod, ExpectedException(typeof (ArgumentOutOfRangeException))]
         public void TestTriesCreateWithOversizeString() {
-            // Sixteen is the maximum size, make sure it throws if greater than 16.
-            var table = new Trie("AAAAAAAAAAAAAAAAA");
+            // Sixteen is the maximum size, make sure it throws if greater than 26.
+            var table = new Trie("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
         }
-
         [TestMethod]
         public void TestMapping() {
             const String characters = "AbXZCA";
@@ -43,7 +41,6 @@ namespace BaffleUnitTest.Unit_Test
                 }
             }
         }
-
         [TestMethod]
         public void TestBadMapping() {
             const String characters = "AbXZCA";
@@ -53,7 +50,6 @@ namespace BaffleUnitTest.Unit_Test
             int index = table.MapCharacter('W');
             Assert.IsTrue(index == -1);
         }
-
         [TestMethod]
         public void TestBasicAdd() {
             const String characters = "LELoHP";
@@ -73,7 +69,6 @@ namespace BaffleUnitTest.Unit_Test
             Assert.IsTrue(list.Contains("HELP"));
             Assert.IsTrue(list.Contains("PHELP"));
         }
-
         [TestMethod]
         public void TestEnumerate() {
             const String characters = "DOUTYA";
@@ -104,7 +99,6 @@ namespace BaffleUnitTest.Unit_Test
             Assert.IsTrue(table.Contains("Toad"));
 
         }
-
         [TestMethod]
         public void TestContains() {
             const String characters = "DOUTYA";

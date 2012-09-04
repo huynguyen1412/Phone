@@ -9,71 +9,74 @@ using System;
 namespace BaffleCore.Source {
    
     public class Dictionary {
-            Dictionary<string, bool> _dictionaryHash;
+        private Trie dictionaryTable;
 
-            private string[] Content { get; set; }
-            public Dictionary<string, bool> DictionaryHash() {
-                return _dictionaryHash;
-            }
+        private string[] Content { get; set; }
+        public Trie DictionaryTable() {
+            return dictionaryTable;
+        }
 
-            public Dictionary() {
-                Content = null;
-                _dictionaryHash = null;
-            }
-            public void CreateDictionaryHash() {
+        public Dictionary() {
+            this.dictionaryTable = dictionaryTable;
+            Content = null;
+            dictionaryTable = null;
+        }
+        public void CreateDictionaryHash() {
 
-                var dictionaryThread = new BackgroundWorker();
-                dictionaryThread.DoWork += ReadDictionary;
-                dictionaryThread.RunWorkerCompleted += ReadDictionaryComplete;
-                dictionaryThread.RunWorkerAsync();
-            }
-            private void ReadDictionary(object sender, DoWorkEventArgs e) {
+            var dictionaryThread = new BackgroundWorker();
+            dictionaryThread.DoWork += ReadDictionary;
+            dictionaryThread.RunWorkerCompleted += ReadDictionaryComplete;
+            dictionaryThread.RunWorkerAsync();
+        }
+        private void ReadDictionary(object sender, DoWorkEventArgs e) {
 
-                Stream s=null;
-                StreamReader stream = null;
+            Stream s=null;
+            StreamReader stream = null;
                 
-                try
-                {
-                    s = TitleContainer.OpenStream("dictionary.dat");
+            try
+            {
+                s = TitleContainer.OpenStream("dictionary.dat");
 
-                    if (s == null) {
-                        return;
-                    }
-
-                    stream = new StreamReader(s);
-                    var xmlFormat = new XmlSerializer(typeof(string[]));
-                    Content = xmlFormat.Deserialize(stream) as string[];
-                    
-                }
-                catch (InvalidOperationException)
-                {
-                }
-                finally {
-                    if (s != null) {
-                        s.Close();
-                    }
-                    if (stream != null) {
-                        stream.Close();
-                    }
-                }
-
-                // create a hash the size of the dictionary
-                if (_dictionaryHash == null) {
-                    if (Content != null) _dictionaryHash = new Dictionary<string, bool>(Content.Length);
-                }
-
-                if (Content == null) {
+                if (s == null) {
                     return;
                 }
-                foreach (string key in Content) {
-                    Debug.Assert(_dictionaryHash != null, "_dictionaryHash != null");
-                    _dictionaryHash[key] = true;
+
+                stream = new StreamReader(s);
+                var xmlFormat = new XmlSerializer(typeof(string[]));
+                Content = xmlFormat.Deserialize(stream) as string[];
+                    
+            }
+            catch (InvalidOperationException)
+            {
+            }
+            finally {
+                if (s != null) {
+                    s.Close();
+                }
+                if (stream != null) {
+                    stream.Close();
                 }
             }
-            private void ReadDictionaryComplete(object sender, RunWorkerCompletedEventArgs e) {
-                if (e.Error == null && e.Cancelled == false) {
-                    Content = null;  // free the raw serialize data, hash table is created.
+
+            // create a hash the size of the dictionaryTable
+            if (dictionaryTable == null) {
+                if (Content != null) {
+                    dictionaryTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
                 }
+            }
+
+            if (Content == null) {
+                return;
+            }
+            foreach (string word in Content) {
+                Debug.Assert(dictionaryTable != null, "dictionaryTable != null");
+                dictionaryTable.Add(word);
             }
         }
+        private void ReadDictionaryComplete(object sender, RunWorkerCompletedEventArgs e) {
+            if (e.Error == null && e.Cancelled == false) {
+                Content = null;  // free the raw serialize data, hash table is created.
+            }
+        }
+    }
 }
