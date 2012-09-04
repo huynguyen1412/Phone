@@ -16,10 +16,16 @@ namespace BaffleCore.Source {
             return dictionaryTable;
         }
 
+        public bool Ready { get; set; }
+        public bool Contains(String s) {
+            return dictionaryTable.Contains(s);
+        }
+
         public Dictionary() {
             this.dictionaryTable = dictionaryTable;
             Content = null;
             dictionaryTable = null;
+            Ready = false;
         }
         public void CreateDictionaryHash() {
 
@@ -58,7 +64,6 @@ namespace BaffleCore.Source {
                 }
             }
 
-            // create a hash the size of the dictionaryTable
             if (dictionaryTable == null) {
                 if (Content != null) {
                     dictionaryTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
@@ -72,10 +77,12 @@ namespace BaffleCore.Source {
                 Debug.Assert(dictionaryTable != null, "dictionaryTable != null");
                 dictionaryTable.Add(word);
             }
+            Ready = true;
         }
         private void ReadDictionaryComplete(object sender, RunWorkerCompletedEventArgs e) {
-            if (e.Error == null && e.Cancelled == false) {
-                Content = null;  // free the raw serialize data, hash table is created.
+            if (e.Error == null && e.Cancelled == false)
+            {
+                Content = null;  // free the raw serialize data, Trie table is created.
             }
         }
     }

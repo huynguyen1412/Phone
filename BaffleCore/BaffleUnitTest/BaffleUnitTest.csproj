@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="dictionary.dat" />
+    <Compile Include="Unit Test\GameTest.cs" />
     <Compile Include="Unit Test\TrieTest.cs" />
     <Compile Include="Unit Test\DiceTest.cs" />
     <Compile Include="Unit Test\DictionaryTest.cs" />
