@@ -77,7 +77,6 @@
     <Compile Include="Source\DieFace.cs" />
     <Compile Include="Source\GameBoard.cs" />
     <Compile Include="Source\GameCore.cs" />
-    <Compile Include="Source\GameTest.cs" />
     <Compile Include="Source\Trie.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -92,7 +92,7 @@ namespace BaffleCore.Source {
                 list.Add(prefix);
             }
 
-            EnumerateAllWords(node, runningString, list);
+            EnumerateAllWords(node, prefix, list);
             return list;
         } 
         public List<String> EnumerateAllWords() {
