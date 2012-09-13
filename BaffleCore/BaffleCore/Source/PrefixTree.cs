@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
@@ -22,7 +23,7 @@ namespace BaffleCore.Source {
         }
 
         public List<String> EnumerateWordsBeginWith(char c) {
-            return prefixTreeTable.EnumerateAllWordsBeginWith(c);
+            return prefixTreeTable.EnumerateAllWordsBeginWith(c.ToString(CultureInfo.InvariantCulture));
         }
 
         public List<String> EnumerateWordsBeginWith(String prefix) {

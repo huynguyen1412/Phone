@@ -42,16 +42,16 @@ namespace BaffleUnitTest.Unit_Test
             // all these test numbers are based on the dictionary.dat file included.  If it changes,
             // these test need to be updated.
             var list = MainPage.dictionary.EnumerateWordsBeginWith("AEO");
+            Assert.IsTrue(list.Count == 5);
+
             list = MainPage.dictionary.EnumerateWordsBeginWith("AOE");
-            list = MainPage.dictionary.EnumerateWordsBeginWith("OEA");
-            list = MainPage.dictionary.EnumerateWordsBeginWith("EOA");
+            Assert.IsTrue(list.Count == 0);
 
-          //  Assert.IsTrue(list.Count == 10320);
-           // Assert.IsTrue(System.String.Compare(list[0], "AAH", System.StringComparison.Ordinal) == 0);
-   //         Assert.IsTrue(System.String.Compare(list[list.Count - 1], "AZYGOUS", System.StringComparison.Ordinal) == 0);
-
-     //       list = MainPage.dictionary.EnumerateWordsBeginWith("AEO");
-
+            list = MainPage.dictionary.EnumerateWordsBeginWith("LUMINISMS");
+            Assert.IsTrue(list.Count == 1);
+            Assert.IsTrue(System.String.Compare(list[0], "LUMINISMS", System.StringComparison.Ordinal) == 0);
+            list = MainPage.dictionary.EnumerateWordsBeginWith("ZYZZYV");
+            Assert.IsTrue(list.Count == 2);
         }
     }
 }

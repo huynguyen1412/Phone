@@ -71,34 +71,31 @@ namespace BaffleCore.Source {
         public List<String> EnumerateAllWordsBeginWith(String prefix) {
             var list = new List<String>();
             String runningString = prefix;
-            int idx=0;
+            var node = root;
 
+            Debug.Assert(node != null, "node != null");
             foreach (var c in runningString) {
-                idx = MapCharacter(c);
+                var idx = MapCharacter(c);
 
-                if (root == null || idx == -1) {
+                if ( idx == -1) {
+                    return list;
+                }
+
+                node = node.SubTrieNode[idx];
+
+                if (node == null) {
                     return list;
                 }
             }
 
-            var node = root.SubTrieNode[idx];
+            // the prefix could be a word, so add it to the list
+            if (node.IsWord == true) {
+                list.Add(prefix);
+            }
+
             EnumerateAllWords(node, runningString, list);
             return list;
         } 
-
-        public List<String> EnumerateAllWordsBeginWith(char letter) {
-            var list = new List<String>();
-            String runningString = "";
-            int idx = MapCharacter(letter);
-
-            if (root == null || idx == -1) {
-                return list;
-            }
-            var node = root.SubTrieNode[idx];
-            runningString += letter;
-            EnumerateAllWords(node, runningString, list);
-            return list;
-        }
         public List<String> EnumerateAllWords() {
             var list = new List<String>();
 
@@ -115,17 +112,12 @@ namespace BaffleCore.Source {
                 Debug.Assert(index != -1);
                 Debug.Assert(node != null);
 
-                if (node.SubTrieNode[index] != null) {
-                    // we have that letter in the Trie, so get the next node in the path
-                    node = node.SubTrieNode[index];
-                }
-                else {
+                if (node.SubTrieNode[index] == null) {
                     // we don't have the letter, so create a new node and assign the letter
-                    var newNode = new TrieNode();
+                    var newNode = new TrieNode() { Character = cc };
                     node.SubTrieNode[index] = newNode;
-                    newNode.Character = cc;
-                    node = newNode;
                 }
+                node = node.SubTrieNode[index];
             }
 
             node.IsWord = true;
