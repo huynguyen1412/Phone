@@ -69,11 +69,10 @@ namespace BaffleCore.Source {
         }
         public List<String> EnumerateAllWordsBeginWith(String prefix) {
             var list = new List<String>();
-            String runningString = prefix;
             var node = root;
 
             Debug.Assert(node != null, "node != null");
-            foreach (var c in runningString) {
+            foreach (var c in prefix) {
                 var idx = MapCharacter(c);
 
                 if ( idx == -1) {
