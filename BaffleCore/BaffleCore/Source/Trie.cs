@@ -43,7 +43,6 @@ namespace BaffleCore.Source {
                 }
             }
         }
-
         public int MapCharacter(char c) {
             int index;
 
