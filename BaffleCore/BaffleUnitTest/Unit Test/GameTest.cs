@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
+using BaffleCore.Source;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -53,5 +55,21 @@ namespace BaffleUnitTest.Unit_Test
             list = MainPage.dictionary.EnumerateWordsBeginWith("ZYZZYV");
             Assert.IsTrue(list.Count == 2);
         }
+
+        [TestMethod]
+        public void TestWordResolve() {
+            var gb = new GameBoard();
+            gb.Roll();
+            DieFace[] set = gb.GetCurrentSet();
+
+            // incase the PrefixTree is not ready
+            while (!MainPage.dictionary.Ready) {
+                Thread.Sleep(10);
+            }
+
+            List<string> wordList = gb.ResolveWords(MainPage.dictionary, gb.GetCurrentSet());
+        }
     }
+
+
 }

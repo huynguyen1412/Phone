@@ -126,24 +126,60 @@ namespace BaffleCore.Source {
             Count = 0;
         }
         public bool Contains(String s) {
+            int idx;
+            bool word = true;
             TrieNode n = root;
+            TrieNode oldNode = root;
+
             s = s.ToUpper();
 
-            foreach (var ch in s) {
-                int idx = MapCharacter(ch);
-                if (idx == -1) {
-                    return false;
+                foreach (var ch in s) {
+                    if (ch == 0) {
+                        break;
+                    }
+
+                    idx = MapCharacter(ch);
+                    if (idx == -1)
+                        return false;
+
+                    n = n.SubTrieNode[idx];
+
+                    if (n == null) {
+                        word = false;
+                        break;
+                    }
+                    oldNode = n;
                 }
+
+            if (word && oldNode.IsWord) {return true; }
+
+            return false;
+        }
+        public bool Contains(char[] s) {
+            int idx;
+            bool word = true;
+            TrieNode n = root;
+            TrieNode oldNode = root;
+
+            for (int x=0; x < s.Length; x++) {
+                if (s[x] == 0) {
+                    break;
+                }
+
+                idx = MapCharacter(s[x]);
+                if (idx == -1)
+                    return false;
 
                 n = n.SubTrieNode[idx];
-                if (n == null) {
-                    return false;
-                }
 
-                if (n.IsWord) {
-                    return true;
+                if (n == null) {
+                    word = false;
+                    break;
                 }
+                oldNode = n;
             }
+
+            if (word && oldNode.IsWord) { return true; }
 
             return false;
         }

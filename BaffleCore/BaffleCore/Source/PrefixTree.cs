@@ -21,6 +21,9 @@ namespace BaffleCore.Source {
         public bool Contains(String s) {
             return prefixTreeTable.Contains(s);
         }
+        public bool Contains(char[] s) {
+            return prefixTreeTable.Contains(s);
+        }
 
         public List<String> EnumerateWordsBeginWith(char c) {
             return prefixTreeTable.EnumerateAllWordsBeginWith(c.ToString(CultureInfo.InvariantCulture));
