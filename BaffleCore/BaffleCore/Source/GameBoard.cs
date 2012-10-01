@@ -116,7 +116,7 @@ namespace BaffleCore.Source
                 map.Add(node.NodeNumber, node);
             }
         }
-        private void BuildCombinations(AdjacencyNode node, char[] runnungWord) {
+        private void BuildCombinations(AdjacencyNode node, char[] runningWord) {
             var list = node.Adjacency;
             string w;
 
@@ -126,15 +126,19 @@ namespace BaffleCore.Source
                 if (al.Visted == 1)
                     continue;
 
-                ++index;
-                runnungWord[index] = al.NodeContent;
-                if (dict.Contains(runnungWord)) {
-                    wordList.Add(new string(runnungWord));
+                if(!dict.PrefixExist(runningWord)) {
+                    return;
                 }
 
+                ++index;
+                runningWord[index] = al.NodeContent;
+                if (dict.Contains(runningWord)) {
+                  wordList.Add(new string(runningWord));
+               }
+
                 al.Visted = 1;
-                BuildCombinations(al, runnungWord);
-                runnungWord[index] = (char)0;
+                BuildCombinations(al, runningWord);
+                runningWord[index] = (char)0;
                 --index;
                 al.Visted = 0;
             }

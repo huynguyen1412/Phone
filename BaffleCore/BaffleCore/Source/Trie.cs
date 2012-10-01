@@ -15,7 +15,6 @@ namespace BaffleCore.Source {
             Character = '0';
         }
     }
-
     public class Trie {
         private TrieNode root;
         private readonly Dictionary<char, int> map;
@@ -66,6 +65,31 @@ namespace BaffleCore.Source {
                 }
                 EnumerateAllWords(n.SubTrieNode[i], runningString + n.SubTrieNode[i].Character, runningList);
             }
+        }
+        public bool PrefixExist(char [] prefix) {
+            var node = root;
+            bool returnValue = false;
+            bool exist = true;
+
+            foreach(var c in prefix) {
+                
+                // null characters are padded at the end
+                if (c == 0) {
+                    break;
+                }
+
+                int idx = MapCharacter(c);
+                if (idx == -1) {
+                    exist = false;
+                    break;
+                }
+                node = node.SubTrieNode[idx];
+                if (node == null) {
+                    exist =  false;
+                }
+            }
+
+            return exist;
         }
         public List<String> EnumerateAllWordsBeginWith(String prefix) {
             var list = new List<String>();
@@ -156,17 +180,16 @@ namespace BaffleCore.Source {
             return false;
         }
         public bool Contains(char[] s) {
-            int idx;
             bool word = true;
             TrieNode n = root;
             TrieNode oldNode = root;
 
-            for (int x=0; x < s.Length; x++) {
-                if (s[x] == 0) {
+            foreach (char t in s) {
+                if (t == 0) {
                     break;
                 }
 
-                idx = MapCharacter(s[x]);
+                int idx = MapCharacter(t);
                 if (idx == -1)
                     return false;
 
