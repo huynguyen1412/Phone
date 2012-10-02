@@ -94,6 +94,7 @@
     <None Include="Properties\WMAppManifest.xml" />
     <Content Include="dictionary.dat">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

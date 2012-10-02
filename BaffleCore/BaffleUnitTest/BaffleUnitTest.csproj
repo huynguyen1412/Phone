@@ -71,7 +71,6 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="dictionary.dat" />
     <Compile Include="Unit Test\GameTest.cs" />
     <Compile Include="Unit Test\TrieTest.cs" />
     <Compile Include="Unit Test\DiceTest.cs" />
@@ -90,6 +89,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\BaffleCore\dictionary.dat">
+      <Link>dictionary.dat</Link>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>

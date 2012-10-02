@@ -39,7 +39,7 @@ namespace BaffleCore.Source
 
             DieFace[] die13 = {new DieFace("A"), new DieFace("T"), new DieFace("T"), 
                            new DieFace("O"), new DieFace("W"), new DieFace("O")};
-            DieFace[] die14 = {new DieFace("M"), new DieFace("I"), new DieFace("Qu"), 
+            DieFace[] die14 = {new DieFace("M"), new DieFace("I"), new DieFace("7"), 
                            new DieFace("U"), new DieFace("H"), new DieFace("N")};
             DieFace[] die15 = {new DieFace("T"), new DieFace("L"), new DieFace("R"), 
                            new DieFace("T"), new DieFace("E"), new DieFace("Y")};
@@ -122,7 +122,9 @@ namespace BaffleCore.Source
 
             foreach (int nn in list) {
                 AdjacencyNode al = graph.map[nn];
-                
+
+                if (nn == '7')
+                    break;
                 if (al.Visted == 1)
                     continue;
 

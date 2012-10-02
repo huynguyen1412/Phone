@@ -11,7 +11,6 @@ namespace BaffleCore.Source {
    
     public class PrefixTree {
         private Trie prefixTreeTable;
-  //      public Dictionary<char[],bool> WordHash; 
 
         private string[] Content { get; set; }
         public Trie PrefixTreeTable() {
@@ -41,7 +40,6 @@ namespace BaffleCore.Source {
             Content = null;
             prefixTreeTable = null;
             Ready = false;
-     //       WordHash = new Dictionary<char[],bool>(180000);
         }
         public void CreateDictionaryHash() {
 
@@ -82,7 +80,7 @@ namespace BaffleCore.Source {
 
             if (prefixTreeTable == null) {
                 if (Content != null) {
-                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOP7RSTUVWXYZ");
                 }
             }
 
@@ -92,7 +90,6 @@ namespace BaffleCore.Source {
             foreach (string word in Content) {
                 Debug.Assert(prefixTreeTable != null, "prefixTreeTable != null");
                 prefixTreeTable.Add(word);
-           //     WordHash.Add(word.ToCharArray(),true);
             }
             Ready = true;
         }
