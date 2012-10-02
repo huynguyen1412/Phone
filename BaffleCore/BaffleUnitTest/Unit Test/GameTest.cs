@@ -67,7 +67,7 @@ namespace BaffleUnitTest.Unit_Test
                 Thread.Sleep(10);
             }
 
-            List<string> wordList = gb.ResolveWords(MainPage.dictionary, gb.GetCurrentSet());
+            Dictionary<string,bool> wordList = gb.ResolveWords(MainPage.dictionary, gb.GetCurrentSet());
         }
     }
 

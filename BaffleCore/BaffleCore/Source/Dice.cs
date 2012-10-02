@@ -6,10 +6,12 @@ namespace BaffleCore.Source
     public class Dice
     {
         public IList<Die> ListOfDie { get; set; }
+        public bool QInSet;
 
         // Construction
         public Dice(IList<Die> listOfDie) {
             ListOfDie = listOfDie;
+            QInSet = false;
         }
 
         // Methods
@@ -24,7 +26,11 @@ namespace BaffleCore.Source
             int pos = 0;
 
             foreach (Die d in ListOfDie) {
-                set.SetValue(d.Face, pos++);
+                DieFace f = d.Face;
+                if (f.FaceCharacter.CompareTo("Q") == 0) {
+                    QInSet = true;
+                }
+                set.SetValue(f, pos++);
             }
 
             // Now mix the die so they change position.

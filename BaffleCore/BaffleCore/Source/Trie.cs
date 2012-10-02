@@ -22,9 +22,7 @@ namespace BaffleCore.Source {
         public int NumberOfUniqueCharacters {
             get { return map.Count; }
         }
-
         public int Count { get; set; }
-
         public Trie(String characters) {
             map = new Dictionary<char, int>(TrieNode.Size);
             root = new TrieNode();

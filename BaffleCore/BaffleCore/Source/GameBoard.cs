@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace BaffleCore.Source
 {
@@ -39,7 +40,7 @@ namespace BaffleCore.Source
 
             DieFace[] die13 = {new DieFace("A"), new DieFace("T"), new DieFace("T"), 
                            new DieFace("O"), new DieFace("W"), new DieFace("O")};
-            DieFace[] die14 = {new DieFace("M"), new DieFace("I"), new DieFace("7"), 
+            DieFace[] die14 = {new DieFace("M"), new DieFace("I"), new DieFace("Q"), 
                            new DieFace("U"), new DieFace("H"), new DieFace("N")};
             DieFace[] die15 = {new DieFace("T"), new DieFace("L"), new DieFace("R"), 
                            new DieFace("T"), new DieFace("E"), new DieFace("Y")};
@@ -56,19 +57,19 @@ namespace BaffleCore.Source
 
         private int index = 0;
         private char[] word = new char[20];
-        private List<string> wordList;
+        private char[] tmp = new char[20];
+        private Dictionary<string,bool> wordList;
         private AdjacencyMap graph;
         private PrefixTree dict;
 
         public void Roll() {
             GameDice.Roll();
         }
-
         public DieFace[] GetCurrentSet() {
             return GameDice.GetCurrentSet();
         }
 
-        public List<string> ResolveWords(PrefixTree dictionary, DieFace[] currentBoard) {
+        public Dictionary<string,bool> ResolveWords(PrefixTree dictionary, DieFace[] currentBoard) {
             int[,] nodes = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 0xA, 0xB, 0xC }, { 0xD, 0xE, 0xF, 0x10 } };
             var letters = new char[4,4];
             int x = 0;
@@ -80,7 +81,7 @@ namespace BaffleCore.Source
                     x++;
                 }
             }
-            wordList= new List<string>();
+            wordList= new Dictionary<string,bool>();
             dict = dictionary;
             graph = BuildGraph<char>(nodes, letters);
 
@@ -123,8 +124,6 @@ namespace BaffleCore.Source
             foreach (int nn in list) {
                 AdjacencyNode al = graph.map[nn];
 
-                if (nn == '7')
-                    break;
                 if (al.Visted == 1)
                     continue;
 
@@ -135,8 +134,28 @@ namespace BaffleCore.Source
                 ++index;
                 runningWord[index] = al.NodeContent;
                 if (dict.Contains(runningWord)) {
-                  wordList.Add(new string(runningWord));
-               }
+                    if (GameDice.QInSet == true) {
+                        // buffer is len=20, longest possible word is 17.
+                        // so i will iterate until 18, and ii 19.  No overflow
+                        for(int i=0, ii=0; i < tmp.Length-1; i++, ii++) {
+                            tmp[ii] = runningWord[i];
+
+                            // if there is a 'Q', append a 'U'
+                            if (runningWord[i] == 'Q') {
+                                ii++;
+                                tmp[ii] = 'U';
+                            }
+                        }
+                        w = new string(tmp);
+                    }
+                    else {
+                        w = new string(runningWord);
+                    }
+                
+                    if (wordList.ContainsKey(w) == false) {
+                        wordList.Add(w,true);
+                    }
+                }
 
                 al.Visted = 1;
                 BuildCombinations(al, runningWord);

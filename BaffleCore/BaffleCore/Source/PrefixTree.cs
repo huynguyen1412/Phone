@@ -80,7 +80,8 @@ namespace BaffleCore.Source {
 
             if (prefixTreeTable == null) {
                 if (Content != null) {
-                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOP7RSTUVWXYZ");
+                    // remember, Q is a token for Qu
+                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
                 }
             }
 
