@@ -17,6 +17,7 @@ namespace BaffleCore {
     public partial class MainPage : PhoneApplicationPage {
         static public PrefixTree dictionary;
         private GameBoard gb;
+        private Dictionary<string, bool> wordList;
 
         // Constructor
         public MainPage() {
@@ -37,8 +38,9 @@ namespace BaffleCore {
             while (!MainPage.dictionary.Ready) {
                   Thread.Sleep(10);
             }
-           Dictionary<string, bool> wordList = gb.ResolveWords(MainPage.dictionary, gb.GetCurrentSet());
+            wordList = gb.ResolveWords(MainPage.dictionary, gb.GetCurrentSet());
             WordList.ItemsSource = wordList;
+            NumberOfWords.DataContext = wordList;
 
         }
 

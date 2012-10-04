@@ -127,14 +127,14 @@ namespace BaffleCore.Source {
             TrieNode node = root;
 
             foreach (var c in s) {
-                Char cc = Char.ToUpper(c);
-                int index = MapCharacter(cc);
+             //   Char cc = Char.ToUpper(c);
+                int index = MapCharacter(c);
                 Debug.Assert(index != -1);
                 Debug.Assert(node != null);
 
                 if (node.SubTrieNode[index] == null) {
                     // we don't have the letter, so create a new node and assign the letter
-                    var newNode = new TrieNode() { Character = cc };
+                    var newNode = new TrieNode() { Character = c };
                     node.SubTrieNode[index] = newNode;
                 }
                 node = node.SubTrieNode[index];

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Windows;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using System.ComponentModel;
@@ -52,22 +53,28 @@ namespace BaffleCore.Source {
 
             Stream s=null;
             StreamReader stream = null;
-                
-            try
-            {
-                s = TitleContainer.OpenStream("dictionary.dat");
 
-                if (s == null) {
-                    return;
+            if (prefixTreeTable == null) {
+                // remember, Q is a token for Qu
+                prefixTreeTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+          }
+
+            try {
+
+                var rs = Application.GetResourceStream(new Uri("dictionary.dat", UriKind.Relative));
+                if (rs != null) {
+                    Stream myFileStream = rs.Stream;
+                    if (myFileStream.CanRead) {
+                        var myStreamReader = new StreamReader(myFileStream);
+                        String line;
+                        while ((line = myStreamReader.ReadLine()) != null) {
+                            prefixTreeTable.Add(line);
+                        }
+                        Ready = true;
+                    }
                 }
-
-                stream = new StreamReader(s);
-                var xmlFormat = new XmlSerializer(typeof(string[]));
-                Content = xmlFormat.Deserialize(stream) as string[];
-                    
             }
-            catch (InvalidOperationException)
-            {
+            catch (InvalidOperationException) {
             }
             finally {
                 if (s != null) {
@@ -77,22 +84,6 @@ namespace BaffleCore.Source {
                     stream.Close();
                 }
             }
-
-            if (prefixTreeTable == null) {
-                if (Content != null) {
-                    // remember, Q is a token for Qu
-                    prefixTreeTable = new Trie("ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-                }
-            }
-
-            if (Content == null) {
-                return;
-            }
-            foreach (string word in Content) {
-                Debug.Assert(prefixTreeTable != null, "prefixTreeTable != null");
-                prefixTreeTable.Add(word);
-            }
-            Ready = true;
         }
         private void ReadPrefixTreeComplete(object sender, RunWorkerCompletedEventArgs e) {
             if (e.Error == null && e.Cancelled == false) {

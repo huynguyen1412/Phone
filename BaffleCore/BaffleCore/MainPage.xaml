@@ -39,6 +39,8 @@
             </ListBox>
             <Button Content="List" Height="72" HorizontalAlignment="Left" Margin="129,529,0,0" Name="List" VerticalAlignment="Top" Width="160" Click="List_Click" />
             <Button Content="Reset" Height="72" HorizontalAlignment="Right" Margin="0,529,7,0" Name="Reset" VerticalAlignment="Top" Width="160" Click="Reset_Click" />
+            <TextBlock Height="30" HorizontalAlignment="Left" Margin="12,451,0,0" Name="label" Text="Word Count:" VerticalAlignment="Top" Width="116" />
+            <TextBlock Height="30" HorizontalAlignment="Left" Margin="129,452,0,0" Name="NumberOfWords" Text="{Binding Count}" VerticalAlignment="Top" />
         </Grid>
     </Grid>
  
