@@ -83,7 +83,7 @@ namespace BaffleUnitTest.Unit_Test
             Assert.IsTrue(table.Count == 1);
             list = table.EnumerateAllWords();
             Assert.IsTrue(list.Count == 1);
-            Assert.IsTrue(list.Contains("DUTY"));
+            Assert.IsTrue(list.Contains("Duty"));
             
             // Add some more words and test
             table.Add("Toad");
@@ -96,6 +96,10 @@ namespace BaffleUnitTest.Unit_Test
             Assert.IsTrue(list.Count == 6);
 
             Assert.IsTrue(table.Contains("Toad"));
+            Assert.IsTrue(table.Contains("Dot"));
+            Assert.IsTrue(table.Contains("Dat"));
+            Assert.IsTrue(table.Contains("You"));
+            Assert.IsTrue(table.Contains("Tad"));
 
         }
         [TestMethod]

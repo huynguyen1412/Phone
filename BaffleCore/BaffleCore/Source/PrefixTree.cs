@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Xml.Serialization;
-using Microsoft.Xna.Framework;
 using System.ComponentModel;
 using System;
 
