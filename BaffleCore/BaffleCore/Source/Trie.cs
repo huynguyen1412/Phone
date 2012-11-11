@@ -66,7 +66,6 @@ namespace BaffleCore.Source {
         }
         public bool PrefixExist(char [] prefix) {
             var node = root;
-            bool returnValue = false;
             bool exist = true;
 
             foreach(var c in prefix) {
@@ -81,6 +80,7 @@ namespace BaffleCore.Source {
                     exist = false;
                     break;
                 }
+                Debug.Assert(node != null, "node != null");
                 node = node.SubTrieNode[idx];
                 if (node == null) {
                     exist =  false;
@@ -109,7 +109,7 @@ namespace BaffleCore.Source {
             }
 
             // the prefix could be a word, so add it to the list
-            if (node.IsWord == true) {
+            if (node.IsWord) {
                 list.Add(prefix);
             }
 
@@ -134,7 +134,7 @@ namespace BaffleCore.Source {
 
                 if (node.SubTrieNode[index] == null) {
                     // we don't have the letter, so create a new node and assign the letter
-                    var newNode = new TrieNode() { Character = c };
+                    var newNode = new TrieNode { Character = c };
                     node.SubTrieNode[index] = newNode;
                 }
                 node = node.SubTrieNode[index];
